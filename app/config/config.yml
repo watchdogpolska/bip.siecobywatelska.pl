@@ -31,11 +31,14 @@ framework:
     fragments:       ~
     http_method_override: true
     assets: ~
+    translator: ~
 
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form_themes:
+        - 'bootstrap_3_horizontal_layout.html.twig'
 
 # Doctrine Configuration
 doctrine:
