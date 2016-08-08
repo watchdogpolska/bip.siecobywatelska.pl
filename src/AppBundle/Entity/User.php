@@ -3,13 +3,13 @@
  * Created by PhpStorm.
  * User: lenus
  * Date: 03.08.16
- * Time: 21:16
+ * Time: 21:16,
  */
 
 namespace AppBundle\Entity;
 
-use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * @ORM\Entity
@@ -29,5 +29,4 @@ class User extends BaseUser
     {
         parent::__construct();
     }
-
 }

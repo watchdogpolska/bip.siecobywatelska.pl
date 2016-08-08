@@ -1,11 +1,11 @@
 <?php
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\User;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use AppBundle\Entity\User;
 
 class LoadUserData implements FixtureInterface, ContainerAwareInterface
 {
@@ -25,14 +25,14 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         $userManager = $this->container->get('fos_user.user_manager');
         $credentials = [
             [
-                'login' => 'root', 
-                'password' => 'root', 
-                'email' => 'root@example.com'
+                'login'     => 'root', 
+                'password'  => 'root', 
+                'email'     => 'root@example.com',
             ],
             [
-                'login' => 'michal', 
-                'password' => 'kokoszka', 
-                'email' => 'michal@example.com'
+                'login'     => 'michal', 
+                'password'  => 'kokoszka', 
+                'email'     => 'michal@example.com',
             ],
         ];
 
