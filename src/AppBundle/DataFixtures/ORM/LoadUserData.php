@@ -12,9 +12,9 @@ class LoadUserData implements FixtureInterface
     {
         $userAdmin = new User();
         $userAdmin->setUsername('root');
-        $userAdmin->setPassword('root');
+        $userAdmin->setPlainPassword('root');
         $userAdmin->setEmail('root@example.org');
-        $userAdmin->isEnabled(true);
+        $userAdmin->setEnabled(true);
         $userAdmin->setRoles(array('ROLE_SUPER_ADMIN'));
 
         $manager->persist($userAdmin);
