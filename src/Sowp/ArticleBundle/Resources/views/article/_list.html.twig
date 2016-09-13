@@ -1,0 +1,44 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2 class="panel-title">List</h2>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Slug</th>
+            <th>Title</th>
+            <th>Content</th>
+            <th>Createdat</th>
+            <th>Modifitedat</th>
+            <th>Attachments</th>
+            <th>Editnote</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+            <tr>
+                <td><a href="{{ path('admin_article_show', { 'id': article.id }) }}">{{ article.id }}</a></td>
+                <td>{{ article.slug }}</td>
+                <td>{{ article.title }}</td>
+                <td>{{ article.content }}</td>
+                <td>{% if article.createdAt %}{{ article.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if article.modifitedAt %}{{ article.modifitedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ article.attachments }}</td>
+                <td>{{ article.editNote }}</td>
+                <td>
+                    <a href="{{ path('admin_article_show', { 'id': article.id }) }}" class="btn btn-default">
+                        <i class="fa fa-eye"></i>
+                        Show
+                    </a>
+                    <a href="{{ path('admin_article_edit', { 'id': article.id }) }}" class="btn btn-default">
+                        <i class="fa fa-pencil"></i>
+                        Edit
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

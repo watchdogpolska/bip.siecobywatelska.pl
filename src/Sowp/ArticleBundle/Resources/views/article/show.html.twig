@@ -1,0 +1,98 @@
+    {% extends 'base.html.twig' %}
+
+    {% block body %}
+    <div class="pull-right">
+
+        <a href="{{ path('admin_article_index') }}" class="btn btn-default">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            Back to the list
+        </a>
+
+        <a href="{{ path('admin_article_edit', { 'id': article.id }) }}" class="btn btn-default">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            Edit
+        </a>
+
+        {{ form_start(delete_form, {"attr": {"style": "display: inline-block"}}) }}
+            <button type="submit" class="btn btn-danger">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                Delete
+            </button>
+        {{ form_end(delete_form) }}
+
+    </div>
+
+    <h1>Article</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title">Info</h2>
+        </div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ article.id }}</td>
+                </tr>
+                <tr>
+                    <th>Slug</th>
+                    <td>{{ article.slug }}</td>
+                </tr>
+                <tr>
+                    <th>Title</th>
+                    <td>{{ article.title }}</td>
+                </tr>
+                <tr>
+                    <th>Content</th>
+                    <td>{{ article.content }}</td>
+                </tr>
+                <tr>
+                    <th>Createdby</th>
+                    <td>{% if article.createdBy %}{{ article.createdBy.username }}{% endif %}</td>
+                </tr>
+
+                <tr>
+                    <th>Attachments</th>
+                    <td>{{ article.attachments }}</td>
+                </tr>
+                <tr>
+                    <th>Editnote</th>
+                    <td>{{ article.editNote }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title">History</h2>
+        </div>
+        <table class="table table-boredered">
+            <tbody>
+               {% if article.modifitedBy %}
+                <tr>
+                    <th>Modifitedby</th>
+                    <td>{{ article.modifitedBy.username }}</td>
+                </tr>
+                {% endif %}
+                {% if article.modifitedAt %}
+                <tr>
+                    <th>Modifitedat</th>
+                    <td>{{ article.modifitedAt|date('Y-m-d H:i:s') }}</td>
+                </tr>
+                {% endif %}
+                {% if article.createdAt %}
+                <tr>
+                    <th>CreatedBy</th>
+                    <td>{{ article.createdBy.username }}</td>
+                </tr>
+                {% endif %}
+                {% if article.createdAt %}
+                <tr>
+                    <th>CreatedAt</th>
+                    <td>{{ article.createdAt|date('Y-m-d H:i:s') }}</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
