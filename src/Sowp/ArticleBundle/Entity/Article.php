@@ -2,14 +2,13 @@
 
 namespace Sowp\ArticleBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Loggable\Loggable;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\SoftDeleteable;
 
 /**
- * Article
+ * Article.
  *
  * @ORM\Table(
  *     name="article",
@@ -28,7 +27,7 @@ use Gedmo\SoftDeleteable\SoftDeleteable;
 class Article implements Loggable, SoftDeleteable
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -100,7 +99,7 @@ class Article implements Loggable, SoftDeleteable
 
     /**
      * @var string
-     * 
+     *
      * @Gedmo\Versioned
      * @ORM\Column(name="attachments", type="text", length=65535, nullable=true)
      */
@@ -131,9 +130,9 @@ class Article implements Loggable, SoftDeleteable
     private $deletedAt;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -141,7 +140,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Set slug
+     * Set slug.
      *
      * @param string $slug
      *
@@ -155,7 +154,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Get slug
+     * Get slug.
      *
      * @return string
      */
@@ -165,7 +164,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
      *
@@ -179,7 +178,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -189,7 +188,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Set content
+     * Set content.
      *
      * @param string $content
      *
@@ -203,7 +202,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Get content
+     * Get content.
      *
      * @return string
      */
@@ -213,7 +212,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Set createdAt
+     * Set createdAt.
      *
      * @param \DateTime $createdAt
      *
@@ -227,7 +226,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Get createdAt
+     * Get createdAt.
      *
      * @return \DateTime
      */
@@ -237,7 +236,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Set createdBy
+     * Set createdBy.
      *
      * @param \AppBundle\Entity\User $createdBy
      *
@@ -251,7 +250,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Get createdBy
+     * Get createdBy.
      *
      * @return \AppBundle\Entity\User
      */
@@ -261,7 +260,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Set modifitedAt
+     * Set modifitedAt.
      *
      * @param \DateTime $modifitedAt
      *
@@ -275,7 +274,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Get modifitedAt
+     * Get modifitedAt.
      *
      * @return \DateTime
      */
@@ -285,7 +284,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Set modifitedBy
+     * Set modifitedBy.
      *
      * @param \AppBundle\Entity\User $modifitedBy
      *
@@ -299,7 +298,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Get modifitedBy
+     * Get modifitedBy.
      *
      * @return \AppBundle\Entity\User
      */
@@ -309,7 +308,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Set attachments
+     * Set attachments.
      *
      * @param string $attachments
      *
@@ -323,7 +322,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Get attachments
+     * Get attachments.
      *
      * @return string
      */
@@ -333,7 +332,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Set editNote
+     * Set editNote.
      *
      * @param string $editNote
      *
@@ -347,7 +346,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Get editNote
+     * Get editNote.
      *
      * @return string
      */
@@ -357,7 +356,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Set deletedAt
+     * Set deletedAt.
      *
      * @param \DateTime $deletedAt
      *
@@ -371,7 +370,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Get deletedAt
+     * Get deletedAt.
      *
      * @return \DateTime
      */
@@ -391,7 +390,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Set collections
+     * Set collections.
      *
      * @param \Sowp\ArticleBundle\Entity\Collection $collection
      *
@@ -405,7 +404,7 @@ class Article implements Loggable, SoftDeleteable
     }
 
     /**
-     * Get collections
+     * Get collections.
      *
      * @return \Sowp\ArticleBundle\Entity\Collection
      */
@@ -413,6 +412,4 @@ class Article implements Loggable, SoftDeleteable
     {
         return $this->collection;
     }
-
-
 }

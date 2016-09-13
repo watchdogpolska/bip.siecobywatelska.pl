@@ -10,7 +10,7 @@ class ArticleType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -22,14 +22,14 @@ class ArticleType extends AbstractType
             ->add('collection')
         ;
     }
-    
+
     /**
      * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Sowp\ArticleBundle\Entity\Article'
+            'data_class' => 'Sowp\ArticleBundle\Entity\Article',
         ));
     }
 }

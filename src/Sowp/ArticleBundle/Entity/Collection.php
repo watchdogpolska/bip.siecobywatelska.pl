@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Collection
+ * Collection.
  *
  * @ORM\Table(name="collection")
  * @ORM\Entity(repositoryClass="Sowp\ArticleBundle\Entity\CollectionRepository")
@@ -15,7 +15,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class Collection
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -42,7 +42,6 @@ class Collection
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Sowp\ArticleBundle\Entity\Article", mappedBy="collection")
-     *
      */
     private $articles;
 
@@ -52,9 +51,9 @@ class Collection
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -62,7 +61,7 @@ class Collection
     }
 
     /**
-     * Set slug
+     * Set slug.
      *
      * @param string $slug
      *
@@ -76,7 +75,7 @@ class Collection
     }
 
     /**
-     * Get slug
+     * Get slug.
      *
      * @return string
      */
@@ -86,7 +85,7 @@ class Collection
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -100,7 +99,7 @@ class Collection
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -110,7 +109,7 @@ class Collection
     }
 
     /**
-     * Add article
+     * Add article.
      *
      * @param \Sowp\ArticleBundle\Entity\Article $article
      *
@@ -124,7 +123,7 @@ class Collection
     }
 
     /**
-     * Remove article
+     * Remove article.
      *
      * @param \Sowp\ArticleBundle\Entity\Article $article
      */
@@ -134,7 +133,7 @@ class Collection
     }
 
     /**
-     * Get articles
+     * Get articles.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
