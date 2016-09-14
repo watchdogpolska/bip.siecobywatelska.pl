@@ -8,10 +8,8 @@
             <th>Id</th>
             <th>Slug</th>
             <th>Title</th>
-            <th>Content</th>
             <th>Createdat</th>
             <th>Modifitedat</th>
-            <th>Attachments</th>
             <th>Editnote</th>
             <th>Actions</th>
         </tr>
@@ -22,10 +20,8 @@
                 <td><a href="{{ path('admin_article_show', { 'id': article.id }) }}">{{ article.id }}</a></td>
                 <td>{{ article.slug }}</td>
                 <td>{{ article.title }}</td>
-                <td>{{ article.content }}</td>
                 <td>{% if article.createdAt %}{{ article.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if article.modifitedAt %}{{ article.modifitedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ article.attachments }}</td>
                 <td>{{ article.editNote }}</td>
                 <td>
                     <a href="{{ path('admin_article_show', { 'id': article.id }) }}" class="btn btn-default">
@@ -41,4 +37,7 @@
         {% endfor %}
         </tbody>
     </table>
+    <div class="panel-fotter">
+        {{ pagerfanta(articles) }}
+    </div>
 </div>

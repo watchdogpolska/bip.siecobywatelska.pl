@@ -23,6 +23,9 @@ class AppKernel extends Kernel
             // Doctrine Extensions
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
 
+            // Pagination
+            new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+
             // SWOP Bundles
             new Sowp\ArticleBundle\SowpArticleBundle(),
         ];

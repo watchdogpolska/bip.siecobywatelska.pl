@@ -2,11 +2,15 @@
 
 namespace Sowp\ArticleBundle\Controller;
 
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Exception\NotValidCurrentPageException;
+use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sowp\ArticleBundle\Entity\Article;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Article controller.
@@ -18,14 +22,23 @@ class ArticleController extends Controller
     /**
      * Lists all Article non-deleted entities.
      *
-     * @Route("/", name="admin_article_index")
+     * @Route(
+     *     "/",
+     *     name="admin_article_index",
+     * )
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+        $page = $request->query->get('page', 1);
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('SowpArticleBundle:Article')->findAll();
+        $qb = $em->getRepository('SowpArticleBundle:Article')->findAllQueryBuilder();
+
+        $articles = new Pagerfanta(new DoctrineORMAdapter($qb));
+        $articles->setMaxPerPage(10);
+        $articles->setCurrentPage($page);
+
 
         return $this->render('SowpArticleBundle:article:index_deleted.html.twig', array(
             'articles' => $articles,
