@@ -3,14 +3,12 @@
 namespace Sowp\ArticleBundle\Controller;
 
 use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Exception\NotValidCurrentPageException;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sowp\ArticleBundle\Entity\Article;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Article controller.

@@ -15,7 +15,7 @@ class LoadArticleData implements FixtureInterface
 
         $users = $manager->getRepository(User::class)->findAll() + [];
 
-        for ($i = 0; $i < 100; $i++){
+        for ($i = 0; $i < 100; ++$i) {
             $article = new Article();
             $article->setTitle($faker->text(255));
             $article->setContent($faker->paragraph(20));

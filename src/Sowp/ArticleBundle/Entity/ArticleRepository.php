@@ -12,17 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class ArticleRepository extends EntityRepository
 {
-
-    public function findAllQueryBuilder(){
+    public function findAllQueryBuilder()
+    {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
+
         return $qb->select('a')->from(Article::class, 'a');
     }
 
-    public function findAllQuery() {
+    public function findAllQuery()
+    {
         return $this->findAllQueryBuilder()->getQuery();
     }
-
 
     public function findDeletedQueryBuilder()
     {
