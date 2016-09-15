@@ -4,14 +4,14 @@
     <div class="pull-right">
         <a href="{{ path('admin_article_index') }}" class="btn btn-primary">
             <i class="fa fa-plus" aria-hidden="true"></i>
-            Back to the list
+            Back to the list of published
         </a>
         <a href="{{ path('admin_article_new') }}" class="btn btn-primary">
             <i class="fa fa-plus" aria-hidden="true"></i>
             Create a new entry
         </a>
     </div>
-    <h1>Article list of deleted</h1>
+    <h1>List of deleted article</h1>
 
     {{ include('@SowpArticle/article/_list.html.twig') }}
 {% endblock %}

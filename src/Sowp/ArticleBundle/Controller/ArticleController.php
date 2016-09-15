@@ -30,15 +30,16 @@ class ArticleController extends Controller
     {
         $page = $request->query->get('page', 1);
         $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository('SowpArticleBundle:Article');
 
-        $qb = $em->getRepository('SowpArticleBundle:Article')->findAllQueryBuilder();
+        $qb = $repo->findPublishedQueryBuilder();
 
         $articles = new Pagerfanta(new DoctrineORMAdapter($qb));
         $articles->setMaxPerPage(10);
         $articles->setCurrentPage($page);
 
 
-        return $this->render('SowpArticleBundle:article:index_deleted.html.twig', array(
+        return $this->render('SowpArticleBundle:article:index.html.twig', array(
             'articles' => $articles,
         ));
     }
@@ -49,15 +50,19 @@ class ArticleController extends Controller
      * @Route("/deleted", name="admin_article_index_deleted")
      * @Method("GET")
      */
-    public function indexDeletedAction()
+    public function indexDeletedAction(Request $request)
     {
+        $page = $request->query->get('page', 1);
         $em = $this->getDoctrine()->getManager();
-
         $repo = $em->getRepository('SowpArticleBundle:Article');
 
-        $articles = $repo->findDeleted();
+        $qb = $repo->findDeletedQueryBuilder();
 
-        return $this->render('article/index.html.twig', array(
+        $articles = new Pagerfanta(new DoctrineORMAdapter($qb));
+        $articles->setMaxPerPage(10);
+        $articles->setCurrentPage($page);
+
+        return $this->render('SowpArticleBundle:article:index_deleted.html.twig', array(
             'articles' => $articles,
         ));
     }
