@@ -71,7 +71,7 @@ class Article implements Loggable, SoftDeleteable
      * @var \AppBundle\Entity\User
      *
      * @Gedmo\Blameable(on="create")
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      * })
@@ -90,7 +90,7 @@ class Article implements Loggable, SoftDeleteable
      * @var \AppBundle\Entity\User
      *
      * @Gedmo\Blameable(on="change", field={"title", "content", "attachments", "editNote"})
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="modifited_by", referencedColumnName="id")
      * })

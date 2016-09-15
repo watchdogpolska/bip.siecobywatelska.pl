@@ -4,6 +4,7 @@ namespace Sowp\ArticleBundle\Controller;
 
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -32,7 +33,7 @@ class ArticleController extends Controller
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('SowpArticleBundle:Article');
 
-        $qb = $repo->findPublishedQueryBuilder();
+        $qb = $repo->findPublishedWithAuthorsQueryBuilder();
 
         $articles = new Pagerfanta(new DoctrineORMAdapter($qb));
         $articles->setMaxPerPage(10);
@@ -56,7 +57,7 @@ class ArticleController extends Controller
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('SowpArticleBundle:Article');
 
-        $qb = $repo->findDeletedQueryBuilder();
+        $qb = $repo->findDeletedWithAuthorsQueryBuilder();
 
         $articles = new Pagerfanta(new DoctrineORMAdapter($qb));
         $articles->setMaxPerPage(10);
@@ -115,6 +116,7 @@ class ArticleController extends Controller
      * Displays a form to edit an existing Article entity.
      *
      * @Route("/{id}/edit", name="admin_article_edit")
+     * @ParamConverter("article", options={"repository_method" = "findPublishedById"})
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Article $article)
@@ -142,6 +144,7 @@ class ArticleController extends Controller
      * Deletes a Article entity.
      *
      * @Route("/{id}", name="admin_article_delete")
+     * @ParamConverter("article", options={"repository_method" = "findPublishedById"})
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, Article $article)
@@ -162,6 +165,7 @@ class ArticleController extends Controller
      * Deletes a Article entity.
      *
      * @Route("/{id}/restore", name="admin_article_restore")
+     * @ParamConverter("article", options={"repository_method" = "findDeletedById"})
      * @Method("POST")
      */
     public function restoreAction(Request $request, Article $article)

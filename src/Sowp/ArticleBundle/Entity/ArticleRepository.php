@@ -2,6 +2,7 @@
 
 namespace Sowp\ArticleBundle\Entity;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,12 +13,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class ArticleRepository extends EntityRepository
 {
+    // All query
     public function findAllQueryBuilder()
     {
-        $em = $this->getEntityManager();
-        $qb = $em->createQueryBuilder();
-
-        return $qb->select('a')->from(Article::class, 'a');
+        return $this->createQueryBuilder('a');
     }
 
     public function findAllQuery()
@@ -25,15 +24,12 @@ class ArticleRepository extends EntityRepository
         return $this->findAllQueryBuilder()->getQuery();
     }
 
+    // Deleted query
     public function findDeletedQueryBuilder()
     {
-        $em = $this->getEntityManager();
-
         $now = new \DateTime('now');
 
-        $qb = $em->createQueryBuilder();
-        $qb = $qb->select('a')
-            ->from(Article::class, 'a')
+        $qb = $this->createQueryBuilder('a')
             ->where('a.deletedAt < ?1')
             ->setParameter(1, $now);
 
@@ -50,15 +46,19 @@ class ArticleRepository extends EntityRepository
         return $this->findDeletedQuery()->getResult();
     }
 
+    public function findDeletedById($id)
+    {
+        $qb = $this->findDeletedQueryBuilder();
+        $this->filterById($qb, $id);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    // Published query
     public function findPublishedQueryBuilder()
     {
-        $em = $this->getEntityManager();
-
         $now = new \DateTime('now');
 
-        $qb = $em->createQueryBuilder();
-        $qb = $qb->select('a')
-            ->from(Article::class, 'a')
+        $qb = $this->createQueryBuilder('a')
             ->where('a.deletedAt > ?1')
             ->orWhere('a.deletedAt IS NULL')
             ->setParameter(1, $now);
@@ -74,5 +74,43 @@ class ArticleRepository extends EntityRepository
     public function findPublished()
     {
         return $this->findPublishedQuery()->getResult();
+    }
+
+    public function findPublishedById($id)
+    {
+        $qb = $this->findPublishedQueryBuilder();
+        $this->filterById($qb, $id);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    // With authors
+    public function findAllWithAuthorsQueryBuilder(){
+        $qb = $this->findAllQueryBuilder();
+        $this->joinAuthorsData($qb);
+        return $qb;
+    }
+
+    public function findPublishedWithAuthorsQueryBuilder(){
+        $qb = $this->findPublishedQueryBuilder();
+        $this->joinAuthorsData($qb);
+        return $qb;
+    }
+
+    public function findDeletedWithAuthorsQueryBuilder(){
+        $qb = $this->findDeletedQueryBuilder();
+        $this->joinAuthorsData($qb);
+        return $qb;
+    }
+
+    // Join/Filter functions
+    public function joinAuthorsData(QueryBuilder $qb){
+        $qb
+            ->leftjoin('a.createdBy', 'cb')
+            ->leftjoin('a.modifitedBy', 'mb')
+            ->select(['a', 'cb', 'mb']);
+    }
+
+    public function filterById(QueryBuilder $qb, $id){
+        $qb->andWhere($qb->expr()->eq('a.id', $id));
     }
 }

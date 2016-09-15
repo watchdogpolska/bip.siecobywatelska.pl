@@ -8,10 +8,7 @@
             Back to the list
         </a>
 
-        <a href="{{ path('admin_article_edit', { 'id': article.id }) }}" class="btn btn-default">
-            <i class="fa fa-pencil" aria-hidden="true"></i>
-            Edit
-        </a>
+        {% include '@SowpArticle/article/_edit_btn.html.twig' with {'obj': article } %}
 
         {% if article.isDeleted() %}
             {{ include('@SowpArticle/article/_restore_form.html.twig') }}
@@ -51,11 +48,6 @@
                     <td>{{ article.content }}</td>
                 </tr>
                 <tr>
-                    <th>Createdby</th>
-                    <td>{% if article.createdBy %}{{ article.createdBy.username }}{% endif %}</td>
-                </tr>
-
-                <tr>
                     <th>Attachments</th>
                     <td>{{ article.attachments }}</td>
                 </tr>
@@ -75,7 +67,7 @@
                {% if article.modifitedBy %}
                 <tr>
                     <th>Modifitedby</th>
-                    <td>{{ article.modifitedBy.username }}</td>
+                    <td>{{ article.modifitedBy }}</td>
                 </tr>
                 {% endif %}
                 {% if article.modifitedAt %}
@@ -87,7 +79,7 @@
                 {% if article.createdAt %}
                 <tr>
                     <th>CreatedBy</th>
-                    <td>{{ article.createdBy.username }}</td>
+                    <td>{{ article.createdBy }}</td>
                 </tr>
                 {% endif %}
                 {% if article.createdAt %}
