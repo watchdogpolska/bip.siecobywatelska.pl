@@ -54,6 +54,15 @@
 
                                 {% if app.user %}
                                     <li>
+                                        <a
+                                                href="{{ path('fos_user_profile_show') }}"
+                                                data-toggle="tooltip"
+                                                data-placement="bottom"
+                                                title="You are logged as {{ app.user }}">
+                                            <i class="fa fa-user" aria-hidden="true"></i> Profile
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="{{ logout_path() }}">
                                             <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
                                         </a>
@@ -113,8 +122,19 @@
         {% endblock %}
 
         {% block javascripts %}
-
-            <script src="{{ asset('js/app.js') }}"></script>
+            <script
+                    src="https://code.jquery.com/jquery-3.1.0.js"
+                    integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk="
+                    crossorigin="anonymous"></script>
+            <script
+                    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+                    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+                    crossorigin="anonymous"></script>
+            <script>
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip()
+                })
+            </script>
         {% endblock %}
     </body>
 </html>
