@@ -102,10 +102,12 @@ class ArticleController extends Controller
     public function showAction(Article $article)
     {
         $deleteForm = $this->createDeleteForm($article);
+        $restoreForm = $this->createRestoreForm($article);
 
         return $this->render('SowpArticleBundle:article:show.html.twig', array(
             'article' => $article,
             'delete_form' => $deleteForm->createView(),
+            'restore_form' => $restoreForm->createView(),
         ));
     }
 
@@ -153,7 +155,30 @@ class ArticleController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('admin_article_index');
+        return $this->redirectToRoute('admin_article_show', array('id' => $article->getId()));
+    }
+
+    /**
+     * Deletes a Article entity.
+     *
+     * @Route("/{id}/restore", name="admin_article_restore")
+     * @Method("POST")
+     */
+    public function restoreAction(Request $request, Article $article)
+    {
+        $form = $this->createRestoreForm($article);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $article->setDeletedAt(null);
+            $em->persist($article);
+
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('admin_article_show', array('id' => $article->getId()));
     }
 
     /**
@@ -170,5 +195,21 @@ class ArticleController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * Creates a form to restore a Article entity.
+     *
+     * @param Article $article The Article entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createRestoreForm(Article $article)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('admin_article_restore', array('id' => $article->getId())))
+            ->setMethod('POST')
+            ->getForm()
+            ;
     }
 }

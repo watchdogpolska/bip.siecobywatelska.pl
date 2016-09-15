@@ -1,6 +1,6 @@
-    {% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %}
 
-    {% block body %}
+{% block body %}
     <div class="pull-right">
 
         <a href="{{ path('admin_article_index') }}" class="btn btn-default">
@@ -13,17 +13,21 @@
             Edit
         </a>
 
-        {{ form_start(delete_form, {"attr": {"style": "display: inline-block"}}) }}
-            <button type="submit" class="btn btn-danger">
-                <i class="fa fa-trash" aria-hidden="true"></i>
-                Delete
-            </button>
-        {{ form_end(delete_form) }}
+        {% if article.isDeleted() %}
+            {{ include('@SowpArticle/article/_restore_form.html.twig') }}
+        {% else %}
+            {{ include('@SowpArticle/article/_delete_form.html.twig') }}
+        {% endif %}
 
     </div>
 
     <h1>Article</h1>
 
+    {% if article.isDeleted() %}
+    <div class="alert alert-warning">
+        <strong>Deleted!</strong> This article was deleted at {{ article.deletedAt|date('Y-m-d H:i:s') }}
+    </div>
+    {% endif %}
     <div class="panel panel-default">
         <div class="panel-heading">
             <h2 class="panel-title">Info</h2>
