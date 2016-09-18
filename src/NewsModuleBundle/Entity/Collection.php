@@ -37,7 +37,7 @@ class Collection
     private $public;
     
     /**
-     * many to many i need array here??
+     * @ManyToMany(targetEntity="NewsModuleBundle\Collection", mappedBy="collections")
      */
     private $news;
     
@@ -77,6 +77,11 @@ class Collection
      */
     private $modifiedBy;    
 
+    public function __construct()
+    {
+        $this->news = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *

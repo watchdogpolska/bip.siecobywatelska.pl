@@ -29,10 +29,10 @@ class News {
     private $title;
 
     /**
-     * many to many
-     * 
+     * @ManyToMany(targetEntity="NewsModuleBundle\Entity\Collection", inversedBy="news")
+     * @JoinTable(name="news_collection")
      */
-    private $collection;
+    private $collections;
     
     /**
      * @var string
@@ -89,6 +89,11 @@ class News {
      */
     private $modifiedBy;
     
+    public function __construct()
+    {
+        $this->collections = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * @return int
      */
@@ -114,14 +119,14 @@ class News {
     /**
      * @return string
      */
-    public function getCollection()
+    public function getCollections()
     {
-        return $this->collection;
+        return $this->collections;
     }
 
-    public function setCollection($collection)
+    public function setCollections($collection)
     {
-        $this->collection = $collection;
+        $this->collections = $collection;
         return $this;
     }
 
