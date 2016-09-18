@@ -37,7 +37,7 @@ class Collection
     private $public;
     
     /**
-     * @ManyToMany(targetEntity="NewsModuleBundle\Collection", mappedBy="collections")
+     * @ORM\ManyToMany(targetEntity="NewsModuleBundle\Collection", mappedBy="collections")
      */
     private $news;
     
