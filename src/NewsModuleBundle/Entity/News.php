@@ -1,10 +1,11 @@
 <?php
-namespace AppBundle\Entity;
+namespace NewsModuleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @Entity
+ * @ORM\Entity
  * @ORM\Table(name="news")
  */
 class News {
@@ -23,7 +24,7 @@ class News {
      *
      * @var string
      * 
-     * @ORM\Column(name="title", type="string", lenght=255, unique=true, nullable=false)
+     * @ORM\Column(name="title", type="string", length=255, unique=true, nullable=false)
      */
     private $title;
 
@@ -36,12 +37,12 @@ class News {
     /**
      * @var string
      * 
-     * @ORM\Column(name="content", type="text", lenght=65535, nullable=true)
+     * @ORM\Column(name="content", type="text", length=65535, nullable=true)
      */
     private $content;
     
     /**
-     *
+     * some kind of array
      */
     private $attachments;
     
@@ -107,6 +108,7 @@ class News {
     public function setTitle($title)
     {
         $this->title = $title;
+        return $this;
     }
 
     /**
@@ -120,6 +122,7 @@ class News {
     public function setCollection($collection)
     {
         $this->collection = $collection;
+        return $this;
     }
 
     /**
@@ -133,6 +136,7 @@ class News {
     public function setContent($content)
     {
         $this->content = $content;
+        return $this;
     }
     
     /**
@@ -146,6 +150,7 @@ class News {
     public function setAttachments($attachments)
     {
         $this->attachments = $attachments;
+        return $this;
     }
     
     /**
@@ -159,6 +164,7 @@ class News {
     public function setPinned($pinned)
     {
         $this->pinned = $pinned;
+        return $this;
     }
 
     /**
@@ -173,6 +179,7 @@ class News {
     public function setCreatedBy(\AppBundle\Entity\User $user)
     {
         $this->createdBy = $user;
+        return $this;
     }
 
     /**
@@ -187,6 +194,7 @@ class News {
     public function setModifiedBy(\AppBundle\Entity\User $user)
     {
         $this->modifiedBy = $user;
+        return $this;
     }
     
     /**
@@ -200,6 +208,7 @@ class News {
     public function setCreatedAt(\DateTime $leTime)
     {
         $this->createdAt = $leTime;
+        return $this;
     }
 
     /**
@@ -213,5 +222,6 @@ class News {
     public function setModifiedAt(\DateTime $leTime)
     {
         $this->modifiedAt = $leTime;
+        return $this;
     }    
 }
