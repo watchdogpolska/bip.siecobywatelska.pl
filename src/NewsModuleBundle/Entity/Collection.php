@@ -6,7 +6,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="news_collection")
+ * @ORM\Table(name="collection_news")
  */
 class Collection
 {
@@ -37,7 +37,7 @@ class Collection
     private $public;
     
     /**
-     * @ORM\ManyToMany(targetEntity="NewsModuleBundle\Collection", mappedBy="collections")
+     * @ORM\ManyToMany(targetEntity="NewsModuleBundle\Entity\Collection", mappedBy="collections")
      */
     private $news;
     
@@ -69,7 +69,7 @@ class Collection
     /**
      * @var \AppBundle\Entity\User
      *
-     * @Gedmo\Blameable(on="change")
+     * @Gedmo\Blameable(on="change", field="modifiedBy")
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="modified_by", referencedColumnName="id")
