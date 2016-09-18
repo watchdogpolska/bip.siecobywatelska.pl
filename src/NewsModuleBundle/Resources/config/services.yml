@@ -1,0 +1,4 @@
+services:
+#    news_module.example:
+#        class: NewsModuleBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]

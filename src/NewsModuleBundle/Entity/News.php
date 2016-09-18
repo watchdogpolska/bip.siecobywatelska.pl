@@ -28,7 +28,7 @@ class News {
     private $title;
 
     /**
-     * @var string
+     * many to many
      * 
      */
     private $collection;
@@ -41,18 +41,16 @@ class News {
     private $content;
     
     /**
-     * @var string
-     * 
-     * @ORM\Column(name="attachments", type="text", lenght=65535, nullable=true)
+     *
      */
     private $attachments;
     
     /**
      * @var bool
      * 
-     * @ORM\Column(name="visible", type="boolean", nullable=false)
+     * @ORM\Column(name="pinned", type="boolean", nullable=false)
      */
-    private $visibile;
+    private $pinned;
     
     /**
      * @var \DateTime
@@ -153,14 +151,14 @@ class News {
     /**
      * @return boolean
      */
-    public function getVisible()
+    public function getPinned()
     {
-        return $this->visible;
+        return $this->pinned;
     }
     
-    public function setVisible($visible)
+    public function setPinned($pinned)
     {
-        $this->visible = $visible;
+        $this->pinned = $pinned;
     }
 
     /**
