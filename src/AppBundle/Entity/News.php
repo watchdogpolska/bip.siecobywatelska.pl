@@ -36,6 +36,13 @@ class News {
     /**
      * @var string
      * 
+     * @ORM\Column(name="content", type="text", lenght=65535, nullable=true)
+     */
+    private $content;
+    
+    /**
+     * @var string
+     * 
      * @ORM\Column(name="attachments", type="text", lenght=65535, nullable=true)
      */
     private $attachments;
@@ -115,6 +122,19 @@ class News {
     public function setCollection($collection)
     {
         $this->collection = $collection;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    public function setContent($content)
+    {
+        $this->content = $content;
     }
     
     /**
