@@ -30,7 +30,7 @@ class News {
 
     /**
      * @ORM\ManyToMany(targetEntity="NewsModuleBundle\Entity\Collection", inversedBy="news")
-     * @ORM\JoinTable(name="collection_news")
+     * @ORM\JoinTable(name="news_collection")
      */
     private $collections;
     

@@ -6,7 +6,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="collection_news")
+ * @ORM\Table(name="news_collection")
  */
 class Collection
 {
@@ -37,7 +37,7 @@ class Collection
     private $public;
     
     /**
-     * @ORM\ManyToMany(targetEntity="NewsModuleBundle\Entity\Collection", mappedBy="collections")
+     * @ORM\ManyToMany(targetEntity="NewsModuleBundle\Entity\News", mappedBy="collections")
      */
     private $news;
     
