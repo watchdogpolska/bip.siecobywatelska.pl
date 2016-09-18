@@ -37,12 +37,12 @@ class News {
     /**
      * @var string
      * 
-     * @ORM\Column(name="content", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="content", type="text", length=65535, nullable=false)
      */
     private $content;
     
     /**
-     * some kind of array
+     * @ORM\Column(name="attachments", type="array", nullable=true)
      */
     private $attachments;
     
