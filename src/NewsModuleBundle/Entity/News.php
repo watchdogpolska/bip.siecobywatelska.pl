@@ -143,21 +143,7 @@ class News {
         $this->content = $content;
         return $this;
     }
-    
-    /**
-     * @return string
-     */
-    public function getAttachments()
-    {
-        return $this->attachments;
-    }
-
-    public function setAttachments($attachments)
-    {
-        $this->attachments = $attachments;
-        return $this;
-    }
-    
+        
     /**
      * @return boolean
      */
@@ -229,4 +215,52 @@ class News {
         $this->modifiedAt = $leTime;
         return $this;
     }    
+
+    /**
+     * Add collection
+     *
+     * @param \NewsModuleBundle\Entity\Collection $collection
+     *
+     * @return News
+     */
+    public function addCollection(\NewsModuleBundle\Entity\Collection $collection)
+    {
+        $this->collections[] = $collection;
+
+        return $this;
+    }
+
+    /**
+     * Remove collection
+     *
+     * @param \NewsModuleBundle\Entity\Collection $collection
+     */
+    public function removeCollection(\NewsModuleBundle\Entity\Collection $collection)
+    {
+        $this->collections->removeElement($collection);
+    }
+
+    /**
+     * Set attachments
+     *
+     * @param array $attachments
+     *
+     * @return News
+     */
+    public function setAttachments($attachments)
+    {
+        $this->attachments = $attachments;
+
+        return $this;
+    }
+
+    /**
+     * Get attachments
+     *
+     * @return array
+     */
+    public function getAttachments()
+    {
+        return $this->attachments;
+    }
 }

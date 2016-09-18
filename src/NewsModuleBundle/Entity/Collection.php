@@ -235,4 +235,38 @@ class Collection
     {
         return $this->modifiedBy;
     }
+
+    /**
+     * Add news
+     *
+     * @param \NewsModuleBundle\Collection $news
+     *
+     * @return Collection
+     */
+    public function addNews(\NewsModuleBundle\Collection $news)
+    {
+        $this->news[] = $news;
+
+        return $this;
+    }
+
+    /**
+     * Remove news
+     *
+     * @param \NewsModuleBundle\Collection $news
+     */
+    public function removeNews(\NewsModuleBundle\Collection $news)
+    {
+        $this->news->removeElement($news);
+    }
+
+    /**
+     * Get news
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNews()
+    {
+        return $this->news;
+    }
 }
