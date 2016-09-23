@@ -7,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Entity(repositoryClass="NewsModuleBundle\Entity\NewsRepository")
  * @ORM\Table(name="news")
+ * @Gedmo\Loggable(logEntryClass="NewsModuleBundle\Entity\NewsLog")
  */
 class News {
     
@@ -25,6 +26,7 @@ class News {
      * @var string
      * 
      * @ORM\Column(name="title", type="string", length=255, unique=true, nullable=false)
+     * @Gedmo\Versioned 
      */
     private $title;
 
@@ -38,11 +40,13 @@ class News {
      * @var string
      * 
      * @ORM\Column(name="content", type="text", length=65535, nullable=false)
+     * @Gedmo\Versioned
      */
     private $content;
     
     /**
      * @ORM\Column(name="attachments", type="array", nullable=true)
+     * @Gedmo\Versioned
      */
     private $attachments;
     
@@ -56,6 +60,7 @@ class News {
     /**
      * @var \DateTime
      * 
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
@@ -74,6 +79,7 @@ class News {
     /**
      * @var \DateTime
      * 
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="modified_at", type="datetime", nullable=true)
      */
     private $modifiedAt;
@@ -88,7 +94,7 @@ class News {
      * })
      */
     private $modifiedBy;
-    
+        
     public function __construct()
     {
         $this->collections = new \Doctrine\Common\Collections\ArrayCollection();
@@ -239,6 +245,7 @@ class News {
     {
         $this->collections->removeElement($collection);
     }
+
 
     /**
      * Set attachments
