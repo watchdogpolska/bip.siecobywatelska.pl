@@ -5,8 +5,8 @@ use Doctrine\Common\DataFixtures\AbstractFixture           as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface   as OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager              as ObjectManager;
 use AppBundle\Entity\User                                  as User;
-use NewsModuleBundle\Collection                            as NewsCollection;
-use NewsModuleBundle\News                                  as News;
+use NewsModuleBundle\Entity\Collection                     as NewsCollection;
+use NewsModuleBundle\Entity\News                           as News;
 
 class LoadNewsData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -28,6 +28,12 @@ class LoadNewsData extends AbstractFixture implements OrderedFixtureInterface
             $oneNews->setTitle('Ciekawy tytuł urzędowy ' . $x);
             $oneNews->addCollection($this->getReference($col1Ref));
             $oneNews->addCollection($this->getReference($col2Ref));
+            
+            /*$col1 = $this->getReference($col1Ref);
+            $col1 = $this->getReference($col2Ref);
+            $col1->addNews($oneNews);
+            $col2->addNews($oneNews);*/
+            
             $oneNews->setContent($this->generateContent());
             
             if (($x%2 === 0) && ($x%3 === 0)) {
@@ -38,6 +44,9 @@ class LoadNewsData extends AbstractFixture implements OrderedFixtureInterface
             
             $oneNews->setCreatedAt($date);
             $oneNews->setCreatedBy($this->getReference($userRef));
+            
+            $om->persist($oneNews);
+            $om->flush();
         }
     }
     
@@ -66,13 +75,15 @@ class LoadNewsData extends AbstractFixture implements OrderedFixtureInterface
         for ($x = 10; $x >= 0; $x--) {
             
             for ($y = 20; $y >= 0; $y--) {
-                $p .= $phrases[array_rand($phrases)] . ' ';
+                $content .= $phrases[array_rand($phrases)] . ' ';
             }
             
             if ($x%2 === 0) {
-                $p .= '<br>';
+                $content .= '<br>';
             }
             
         }
+        
+        return $content;
     }
 }

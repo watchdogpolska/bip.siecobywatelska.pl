@@ -7,7 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Entity(repositoryClass="NewsModuleBundle\Entity\NewsRepository")
  * @ORM\Table(name="news")
- * @Gedmo\Loggable(logEntryClass="NewsModuleBundle\Entity\NewsLog")
+ * @Gedmo\Loggable
  */
 class News {
     
@@ -115,20 +115,6 @@ class News {
     public function setTitle($title)
     {
         $this->title = $title;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCollections()
-    {
-        return $this->collections;
-    }
-
-    public function setCollections($collection)
-    {
-        $this->collections = $collection;
         return $this;
     }
 
@@ -265,5 +251,15 @@ class News {
     public function getAttachments()
     {
         return $this->attachments;
+    }
+
+    /**
+     * Get collections
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCollections()
+    {
+        return $this->collections;
     }
 }

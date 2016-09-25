@@ -5,8 +5,8 @@ use Doctrine\Common\DataFixtures\AbstractFixture           as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface   as OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager              as ObjectManager;
 use AppBundle\Entity\User                                  as User;
-use NewsModuleBundle\Collection                            as NewsCollection;
-use NewsModuleBundle\News                                  as News;
+use NewsModuleBundle\Entity\Collection                     as NewsCollection;
+use NewsModuleBundle\Entity\News                           as News;
 
 class LoadNewsCollectionData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -26,7 +26,7 @@ class LoadNewsCollectionData extends AbstractFixture implements OrderedFixtureIn
             $om->persist($col);
             $om->flush();
 
-            $this->addReference($refCall);
+            $this->addReference($refCall, $col);
         }
     }
 

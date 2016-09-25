@@ -241,7 +241,7 @@ class Collection
      *
      * @return Collection
      */
-    public function addNews(\NewsModuleBundle\Collection $news)
+    public function addNews(\NewsModuleBundle\Entity\News $news)
     {
         $this->news[] = $news;
 
@@ -253,7 +253,7 @@ class Collection
      *
      * @param \NewsModuleBundle\Collection $news
      */
-    public function removeNews(\NewsModuleBundle\Collection $news)
+    public function removeNews(\NewsModuleBundle\Entity\News $news)
     {
         $this->news->removeElement($news);
     }

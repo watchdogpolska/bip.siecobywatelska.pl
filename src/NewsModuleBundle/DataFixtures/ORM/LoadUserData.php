@@ -14,7 +14,12 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
     {
         for ($x = 0; $x < 10; $x++) {
             $leUser = new User();
-        
+            $leUser->setUsername('user-' . $x);
+            $leUser->setPlainPassword('qwerty123');
+            $leUser->setEmail('root' . $x . '@example.org');
+            $leUser->setEnabled(true);
+            $leUser->setRoles(array('ROLE_SUPER_ADMIN'));
+                
             $om->persist($leUser);
             $om->flush();
         
