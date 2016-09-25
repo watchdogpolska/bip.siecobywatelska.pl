@@ -28,19 +28,8 @@ class LoadNewsData extends AbstractFixture implements OrderedFixtureInterface
             $oneNews->setTitle('Ciekawy tytuł urzędowy ' . $x);
             $oneNews->addCollection($this->getReference($col1Ref));
             $oneNews->addCollection($this->getReference($col2Ref));
-            
-            /*$col1 = $this->getReference($col1Ref);
-            $col1 = $this->getReference($col2Ref);
-            $col1->addNews($oneNews);
-            $col2->addNews($oneNews);*/
-            
             $oneNews->setContent($this->generateContent());
-            
-            if (($x%2 === 0) && ($x%3 === 0)) {
-                $oneNews->setPinned(true);
-            } else {
-                $oneNews->setPinned(false);
-            }
+            $oneNews->setPinned($x%6 === 0 ? true : false);
             
             $oneNews->setCreatedAt($date);
             $oneNews->setCreatedBy($this->getReference($userRef));
