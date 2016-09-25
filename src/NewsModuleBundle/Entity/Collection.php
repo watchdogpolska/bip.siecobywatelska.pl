@@ -54,9 +54,7 @@ class Collection
      *
      * @Gedmo\Blameable(on="create")
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     * })
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      */    
     private $createdBy;
     
@@ -73,9 +71,7 @@ class Collection
      *
      * @Gedmo\Blameable(on="change", field="modifiedBy")
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="modified_by", referencedColumnName="id")
-     * })
+     * @ORM\JoinColumn(name="modified_by", referencedColumnName="id")
      */
     private $modifiedBy;    
 
