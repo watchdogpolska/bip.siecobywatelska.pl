@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+    <h1>News list</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">List</h3>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Content</th>
+                    <th>Attachments</th>
+                    <th>Pinned</th>
+                    <th>Createdat</th>
+                    <th>Modifiedat</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for news in news %}
+                <tr>
+                    <td><a href="{{ path('artykul_show', { 'id': news.id }) }}">{{ news.id }}</a></td>
+                    <td>{{ news.title }}</td>
+                    <td>{{ news.content }}</td>
+                    <td>{% if news.attachments %}{{ news.attachments|join(', ') }}{% endif %}</td>
+                    <td>{% if news.pinned %}Yes{% else %}No{% endif %}</td>
+                    <td>{% if news.createdAt %}{{ news.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{% if news.modifiedAt %}{{ news.modifiedAt|date('Y-m-d H:i:s') }}{% endif %}</td>                    <td>
+                        <a href="{{ path('artykul_show', { 'id': news.id }) }}" class="btn btn-default">
+                            <i class="fa fa-eye"></i>
+                            Show
+                        </a>                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

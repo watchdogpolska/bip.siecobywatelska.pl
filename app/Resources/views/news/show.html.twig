@@ -1,0 +1,51 @@
+    {% extends 'base.html.twig' %}
+
+    {% block body %}
+    <div class="pull-right">
+    
+        <a href="{{ path('artykul_index') }}" class="btn btn-default">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            Back to the list
+        </a>
+    </div>
+<h1>News</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title">Info</h2>
+        </div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ news.id }}</td>
+                </tr>
+                <tr>
+                    <th>Title</th>
+                    <td>{{ news.title }}</td>
+                </tr>
+                <tr>
+                    <th>Content</th>
+                    <td>{{ news.content }}</td>
+                </tr>
+                <tr>
+                    <th>Attachments</th>
+                    <td>{% if news.attachments %}{{ news.attachments|join(', ') }}{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Pinned</th>
+                    <td>{% if news.pinned %}Yes{% else %}No{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Createdat</th>
+                    <td>{% if news.createdAt %}{{ news.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Modifiedat</th>
+                    <td>{% if news.modifiedAt %}{{ news.modifiedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
