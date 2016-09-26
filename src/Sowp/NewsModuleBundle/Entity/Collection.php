@@ -1,4 +1,5 @@
 <?php
+
 namespace Sowp\NewsModuleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -11,61 +12,58 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class Collection
 {
     /**
-     *
      * @var int
-     * 
+     *
      * @ORM\Column(name="id", type="integer")
-     * @ORM\Id 
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     *
      * @var string
-     * 
+     *
      * @ORM\Column(name="title", type="string", length=255, unique=true, nullable=false)
      */
     private $title;
 
     /**
+     * @var bool
      *
-     * @var boolean
-     * 
      * @ORM\Column(name="public", type="boolean", nullable=false)
      */
     private $public;
-    
+
     /**
      * @ORM\ManyToMany(targetEntity="Sowp\NewsModuleBundle\Entity\News", mappedBy="collections")
      */
     private $news;
-    
+
     /**
      * @var \DateTime
-     * 
+     *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
-    
+
     /**
      * @var \AppBundle\Entity\User
      *
      * @Gedmo\Blameable(on="create")
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     */    
+     */
     private $createdBy;
-    
+
     /**
      * @var \DateTime
-     * 
+     *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="modified_at", type="datetime", nullable=true)
      */
     private $modifiedAt;
-    
+
     /**
      * @var \AppBundle\Entity\User
      *
@@ -73,17 +71,17 @@ class Collection
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="modified_by", referencedColumnName="id")
      */
-    private $modifiedBy;    
+    private $modifiedBy;
 
     public function __construct()
     {
         $this->news = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -91,7 +89,7 @@ class Collection
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
      *
@@ -105,7 +103,7 @@ class Collection
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -115,9 +113,9 @@ class Collection
     }
 
     /**
-     * Set public
+     * Set public.
      *
-     * @param boolean $public
+     * @param bool $public
      *
      * @return Collection
      */
@@ -129,9 +127,9 @@ class Collection
     }
 
     /**
-     * Get public
+     * Get public.
      *
-     * @return boolean
+     * @return bool
      */
     public function getPublic()
     {
@@ -139,7 +137,7 @@ class Collection
     }
 
     /**
-     * Set createdAt
+     * Set createdAt.
      *
      * @param \DateTime $createdAt
      *
@@ -153,7 +151,7 @@ class Collection
     }
 
     /**
-     * Get createdAt
+     * Get createdAt.
      *
      * @return \DateTime
      */
@@ -163,7 +161,7 @@ class Collection
     }
 
     /**
-     * Set modifiedAt
+     * Set modifiedAt.
      *
      * @param \DateTime $modifiedAt
      *
@@ -177,7 +175,7 @@ class Collection
     }
 
     /**
-     * Get modifiedAt
+     * Get modifiedAt.
      *
      * @return \DateTime
      */
@@ -187,7 +185,7 @@ class Collection
     }
 
     /**
-     * Set createdBy
+     * Set createdBy.
      *
      * @param \AppBundle\Entity\User $createdBy
      *
@@ -201,7 +199,7 @@ class Collection
     }
 
     /**
-     * Get createdBy
+     * Get createdBy.
      *
      * @return \AppBundle\Entity\User
      */
@@ -211,7 +209,7 @@ class Collection
     }
 
     /**
-     * Set modifiedBy
+     * Set modifiedBy.
      *
      * @param \AppBundle\Entity\User $modifiedBy
      *
@@ -225,7 +223,7 @@ class Collection
     }
 
     /**
-     * Get modifiedBy
+     * Get modifiedBy.
      *
      * @return \AppBundle\Entity\User
      */
@@ -235,7 +233,7 @@ class Collection
     }
 
     /**
-     * Add news
+     * Add news.
      *
      * @param \NewsModuleBundle\Collection $news
      *
@@ -249,7 +247,7 @@ class Collection
     }
 
     /**
-     * Remove news
+     * Remove news.
      *
      * @param \NewsModuleBundle\Collection $news
      */
@@ -259,7 +257,7 @@ class Collection
     }
 
     /**
-     * Get news
+     * Get news.
      *
      * @return \Doctrine\Common\Collections\Collection
      */

@@ -2,7 +2,6 @@
 
 namespace Sowp\NewsModuleBundle\Controller;
 
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -40,7 +39,6 @@ class NewsController extends Controller
      */
     public function showAction(News $news)
     {
-
         return $this->render('news/show.html.twig', array(
             'news' => $news,
         ));

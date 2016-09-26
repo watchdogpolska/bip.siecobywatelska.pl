@@ -2,7 +2,6 @@
 
 namespace Sowp\NewsModuleBundle\Controller;
 
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -40,7 +39,6 @@ class CollectionController extends Controller
      */
     public function showAction(Collection $collection)
     {
-
         return $this->render('collection/show.html.twig', array(
             'collection' => $collection,
         ));

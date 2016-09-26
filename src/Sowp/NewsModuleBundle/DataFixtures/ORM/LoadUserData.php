@@ -9,7 +9,6 @@ use AppBundle\Entity\User as User;
 
 class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
 {
-
     public function load(ObjectManager $om)
     {
         for ($x = 0; $x < 10; ++$x) {
@@ -19,15 +18,14 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
             $leUser->setEmail('root'.$x.'@example.org');
             $leUser->setEnabled(true);
             $leUser->setRoles(array('ROLE_SUPER_ADMIN'));
-                
+
             $om->persist($leUser);
             $om->flush();
-        
+
             $refCall = 'user'.$x;
             $this->addReference($refCall, $leUser);
         }
     }
-    
 
     public function getOrder()
     {

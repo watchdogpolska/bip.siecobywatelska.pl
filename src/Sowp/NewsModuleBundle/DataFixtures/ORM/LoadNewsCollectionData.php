@@ -10,14 +10,13 @@ use Sowp\NewsModuleBundle\Entity\Collection                     as NewsCollectio
 
 class LoadNewsCollectionData extends AbstractFixture implements OrderedFixtureInterface
 {
-   
     public function load(ObjectManager $om)
     {
-        for ($x = 0; $x < 20; $x++) {
+        for ($x = 0; $x < 20; ++$x) {
             $col = new NewsCollection();
             $foreignRefCallUser = 'user'.mt_rand(0, 9);
             $refCall = "collection{$x}";
-            
+
             $col->setTitle("Important collection {$x}");
             $col->setPublic(true);
             $col->setCreatedAt(new \DateTime());
@@ -29,7 +28,6 @@ class LoadNewsCollectionData extends AbstractFixture implements OrderedFixtureIn
             $this->addReference($refCall, $col);
         }
     }
-
 
     public function getOrder()
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace Sowp\NewsModuleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,24 +10,22 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="news")
  * @Gedmo\Loggable
  */
-class News {
-    
+class News
+{
     /**
-     *
      * @var int
-     * 
+     *
      * @ORM\Column(name="id", type="integer")
-     * @ORM\Id 
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
-     *
      * @var string
-     * 
+     *
      * @ORM\Column(name="title", type="string", length=255, unique=true, nullable=false)
-     * @Gedmo\Versioned 
+     * @Gedmo\Versioned
      */
     private $title;
 
@@ -35,53 +34,53 @@ class News {
      * @ORM\JoinTable(name="collection_news")
      */
     private $collections;
-    
+
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(name="content", type="text", length=65535, nullable=false)
      * @Gedmo\Versioned
      */
     private $content;
-    
+
     /**
      * @ORM\Column(name="attachments", type="array", nullable=true)
      * @Gedmo\Versioned
      */
     private $attachments;
-    
+
     /**
      * @var bool
-     * 
+     *
      * @ORM\Column(name="pinned", type="boolean", nullable=false)
      */
     private $pinned;
-    
+
     /**
      * @var \DateTime
-     * 
+     *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
-    
+
     /**
      * @var \AppBundle\Entity\User
      *
      * @Gedmo\Blameable(on="create")
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     */    
+     */
     private $createdBy;
-    
+
     /**
      * @var \DateTime
-     * 
+     *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="modified_at", type="datetime", nullable=true)
      */
     private $modifiedAt;
-    
+
     /**
      * @var \AppBundle\Entity\User
      *
@@ -90,12 +89,12 @@ class News {
      * @ORM\JoinColumn(name="modified_by", referencedColumnName="id")
      */
     private $modifiedBy;
-        
+
     public function __construct()
     {
         $this->collections = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * @return int
      */
@@ -103,7 +102,7 @@ class News {
     {
         return $this->id;
     }
-    
+
     /**
      * @return string
      */
@@ -115,6 +114,7 @@ class News {
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -129,25 +129,26 @@ class News {
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
-        
+
     /**
-     * @return boolean
+     * @return bool
      */
     public function getPinned()
     {
         return $this->pinned;
     }
-    
+
     public function setPinned($pinned)
     {
         $this->pinned = $pinned;
+
         return $this;
     }
 
     /**
-     * 
      * @return \AppBundle\Entity\User
      */
     public function getCreatedBy()
@@ -158,13 +159,13 @@ class News {
     public function setCreatedBy(\AppBundle\Entity\User $user)
     {
         $this->createdBy = $user;
+
         return $this;
     }
 
     /**
-     * 
      * @return \AppBundle\Entity\User
-     */    
+     */
     public function getModifiedBy()
     {
         return $this->modifiedBy;
@@ -173,9 +174,10 @@ class News {
     public function setModifiedBy(\AppBundle\Entity\User $user)
     {
         $this->modifiedBy = $user;
+
         return $this;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -187,25 +189,27 @@ class News {
     public function setCreatedAt(\DateTime $leTime)
     {
         $this->createdAt = $leTime;
+
         return $this;
     }
 
     /**
      * @return \DateTime
-     */    
+     */
     public function getModifiedAt()
     {
-       return $this->modifiedAt; 
+        return $this->modifiedAt;
     }
 
     public function setModifiedAt(\DateTime $leTime)
     {
         $this->modifiedAt = $leTime;
+
         return $this;
-    }    
+    }
 
     /**
-     * Add collection
+     * Add collection.
      *
      * @param \NewsModuleBundle\Entity\Collection $collection
      *
@@ -219,7 +223,7 @@ class News {
     }
 
     /**
-     * Remove collection
+     * Remove collection.
      *
      * @param \NewsModuleBundle\Entity\Collection $collection
      */
@@ -228,9 +232,8 @@ class News {
         $this->collections->removeElement($collection);
     }
 
-
     /**
-     * Set attachments
+     * Set attachments.
      *
      * @param array $attachments
      *
@@ -244,7 +247,7 @@ class News {
     }
 
     /**
-     * Get attachments
+     * Get attachments.
      *
      * @return array
      */
@@ -254,7 +257,7 @@ class News {
     }
 
     /**
-     * Get collections
+     * Get collections.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
