@@ -1,12 +1,12 @@
 <?php
-namespace NewsModuleBundle\DataFixtures\ORM;
+
+namespace Sowp\NewsModuleBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture           as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface   as OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager              as ObjectManager;
 use AppBundle\Entity\User                                  as User;
-use NewsModuleBundle\Entity\Collection                     as NewsCollection;
-use NewsModuleBundle\Entity\News                           as News;
+use Sowp\NewsModuleBundle\Entity\Collection                     as NewsCollection;
 
 class LoadNewsCollectionData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -14,9 +14,9 @@ class LoadNewsCollectionData extends AbstractFixture implements OrderedFixtureIn
     public function load(ObjectManager $om)
     {
         for ($x = 0; $x < 20; $x++) {
-            $col                = new NewsCollection();
-            $foreignRefCallUser = 'user' . mt_rand(0, 9);
-            $refCall            = "collection{$x}";
+            $col = new NewsCollection();
+            $foreignRefCallUser = 'user'.mt_rand(0, 9);
+            $refCall = "collection{$x}";
             
             $col->setTitle("Important collection {$x}");
             $col->setPublic(true);

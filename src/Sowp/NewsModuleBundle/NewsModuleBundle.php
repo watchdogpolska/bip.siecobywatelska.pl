@@ -1,6 +1,6 @@
 <?php
 
-namespace NewsModuleBundle;
+namespace Sowp\NewsModuleBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

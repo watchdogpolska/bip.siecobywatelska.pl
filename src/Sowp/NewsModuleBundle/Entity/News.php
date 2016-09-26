@@ -1,11 +1,11 @@
 <?php
-namespace NewsModuleBundle\Entity;
+namespace Sowp\NewsModuleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Entity(repositoryClass="NewsModuleBundle\Entity\NewsRepository")
+ * @ORM\Entity(repositoryClass="Sowp\NewsModuleBundle\Entity\NewsRepository")
  * @ORM\Table(name="news")
  * @Gedmo\Loggable
  */
@@ -31,7 +31,7 @@ class News {
     private $title;
 
     /**
-     * @ORM\ManyToMany(targetEntity="NewsModuleBundle\Entity\Collection", inversedBy="news")
+     * @ORM\ManyToMany(targetEntity="Sowp\NewsModuleBundle\Entity\Collection", inversedBy="news")
      * @ORM\JoinTable(name="collection_news")
      */
     private $collections;
@@ -211,7 +211,7 @@ class News {
      *
      * @return News
      */
-    public function addCollection(\NewsModuleBundle\Entity\Collection $collection)
+    public function addCollection(\Sowp\NewsModuleBundle\Entity\Collection $collection)
     {
         $this->collections[] = $collection;
 
@@ -223,7 +223,7 @@ class News {
      *
      * @param \NewsModuleBundle\Entity\Collection $collection
      */
-    public function removeCollection(\NewsModuleBundle\Entity\Collection $collection)
+    public function removeCollection(\Sowp\NewsModuleBundle\Entity\Collection $collection)
     {
         $this->collections->removeElement($collection);
     }

@@ -1,12 +1,12 @@
 <?php
 
-namespace NewsModuleBundle\Controller;
+namespace Sowp\NewsModuleBundle\Controller;
 
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use NewsModuleBundle\Entity\Collection;
+use Sowp\NewsModuleBundle\Entity\Collection;
 
 /**
  * Collection controller.
@@ -25,7 +25,7 @@ class CollectionController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $collections = $em->getRepository('NewsModuleBundle:Collection')->findAll();
+        $collections = $em->getRepository('Sowp:NewsModuleBundle:Collection')->findAll();
 
         return $this->render('collection/index.html.twig', array(
             'collections' => $collections,
