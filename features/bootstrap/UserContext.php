@@ -18,7 +18,6 @@ class UserContext implements Context
         $environment = $scope->getEnvironment();
 
         $this->minkContext = $environment->getContext('Behat\MinkExtension\Context\MinkContext');
-
     }
 
     /**
@@ -36,6 +35,7 @@ class UserContext implements Context
     {
         $this->createUser($username, $password, array('ROLE_SUPER_ADMIN'));
     }
+
     /**
      * @Given /^there is a user "([^"]*)" with password "([^"]*)" and role "([^"]*)"$/
      */
@@ -50,7 +50,7 @@ class UserContext implements Context
         $user = new User();
         $user->setUsername($username);
         $user->setPlainPassword($plainPassword);
-        $user->setEmail($username . '@example.org');
+        $user->setEmail($username.'@example.org');
         $user->setEnabled(true);
         $user->setRoles($role);
 
@@ -67,11 +67,9 @@ class UserContext implements Context
     {
         $repo = $this->getManager()->getRepository(User::class);
 
-        $user = $repo->findOneBy(['username'=> $username]);
+        $user = $repo->findOneBy(['username' => $username]);
         $token = $user->getConfirmationToken();
 
         $this->minkContext->visit("resetting/reset/{$token}");
     }
-
-
 }
