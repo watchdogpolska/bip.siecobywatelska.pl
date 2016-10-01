@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sowp\NewsModuleBundle\Entity\Collection;
-
+use Sowp\NewsModuleBundle\Form\addCollectionForm as addForm;
 /**
  * Collection controller.
  *
@@ -14,6 +14,45 @@ use Sowp\NewsModuleBundle\Entity\Collection;
  */
 class CollectionController extends Controller
 {
+    /**
+     * add new collection entry
+     * 
+     * @Route("/dodaj", name="addCollection")
+     * @Method({"GET","POST"})
+     */
+    public function addAction(Request $req)
+    {
+        $collection = new Collection();
+        $form = $this->create(addForm::class, $collection);
+        $form->handle($req);
+        
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $this->getDoctrine()
+                     ->getManager()
+                     ->persist($collection)
+                     ->flush();
+            } else {
+                
+            }
+        }
+        
+        return $this->render('collection/add.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * add new collection entry
+     * 
+     * @Route("/edytuj/{id}", name="editCollection")
+     * @Method({"GET","POST"})
+     */
+    public function editAction(Request $req, Collection $col)
+    {
+        
+    }
+    
     /**
      * Lists all Collection entities.
      *

@@ -55,7 +55,7 @@ class News
      * @ORM\Column(name="pinned", type="boolean", nullable=false)
      */
     private $pinned;
-
+    
     /**
      * @var \DateTime
      *
@@ -89,7 +89,14 @@ class News
      * @ORM\JoinColumn(name="modified_by", referencedColumnName="id")
      */
     private $modifiedBy;
-
+    
+    /**
+     * @var string
+     * 
+     * @ORM\Column(name="modifynote", type="text", length=10000, nullable=true)
+     */
+    private $modifyNote;
+    
     public function __construct()
     {
         $this->collections = new \Doctrine\Common\Collections\ArrayCollection();
@@ -264,5 +271,29 @@ class News
     public function getCollections()
     {
         return $this->collections;
+    }
+
+    /**
+     * Set modifyNote
+     *
+     * @param string $modifyNote
+     *
+     * @return News
+     */
+    public function setModifyNote($modifyNote)
+    {
+        $this->modifyNote = $modifyNote;
+
+        return $this;
+    }
+
+    /**
+     * Get modifyNote
+     *
+     * @return string
+     */
+    public function getModifyNote()
+    {
+        return $this->modifyNote;
     }
 }

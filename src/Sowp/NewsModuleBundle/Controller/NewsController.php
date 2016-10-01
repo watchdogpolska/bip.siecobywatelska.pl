@@ -31,16 +31,5 @@ class NewsController extends Controller
         ));
     }
 
-    /**
-     * Finds and displays a News entity.
-     *
-     * @Route("/{id}", name="artykul_show")
-     * @Method("GET")
-     */
-    public function showAction(News $news)
-    {
-        return $this->render('news/show.html.twig', array(
-            'news' => $news,
-        ));
-    }
+
 }
