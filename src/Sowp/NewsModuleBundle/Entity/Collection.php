@@ -33,7 +33,21 @@ class Collection
      * @ORM\Column(name="public", type="boolean", nullable=false)
      */
     private $public;
-
+    
+    /**
+     * @var Sowp\NewsModuleBundle\Entity\Collection
+     * 
+     * @ORM\OneToMany(targetEntity="Sowp\NewsModuleBundle\Entity\Collection", mappedBy="childCollections")
+     */
+    private $parentCollection;
+    
+    /**
+     * @var Sowp\NewsModuleBundle\Entity\Collection
+     * 
+     * @ORM\ManyToOne(targetEntity="Sowp\NewsModuleBundle\Entity\Collection", inversedBy="parentCollection")
+     */
+    private $childCollections;
+    
     /**
      * @ORM\ManyToMany(targetEntity="Sowp\NewsModuleBundle\Entity\News", mappedBy="collections")
      */
@@ -76,6 +90,7 @@ class Collection
     public function __construct()
     {
         $this->news = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->childCollections = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
