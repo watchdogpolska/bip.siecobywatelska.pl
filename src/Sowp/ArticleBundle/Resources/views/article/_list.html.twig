@@ -5,7 +5,6 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Id</th>
             <th>Title</th>
             <th>Created</th>
             <th>Modifitedat</th>
@@ -16,8 +15,7 @@
         <tbody>
         {% for article in articles %}
             <tr>
-                <td><a href="{{ path('admin_article_show', { 'id': article.id }) }}">{{ article.id }}</a></td>
-                <td>{{ article.title }}</td>
+                <td><a href="{{ path('admin_article_show', { 'id': article.id }) }}">{{ article.title }}</a></td>
                 <td>{% if article.createdAt %}{{ article.createdAt|date('Y-m-d H:i:s') }} by {{ article.createdBy }}{% endif %}</td>
                 <td>{% if article.modifitedAt %}{{ article.modifitedAt|date('Y-m-d H:i:s') }} by {{ article.modifitedBy }}{% endif %}</td>
                 <td>{{ article.editNote }}</td>

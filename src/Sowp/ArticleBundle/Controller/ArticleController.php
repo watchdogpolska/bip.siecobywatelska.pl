@@ -130,7 +130,7 @@ class ArticleController extends Controller
             $em->persist($article);
             $em->flush();
 
-            return $this->redirectToRoute('admin_article_edit', array('id' => $article->getId()));
+            return $this->redirectToRoute('admin_article_show', array('id' => $article->getId()));
         }
 
         return $this->render('SowpArticleBundle:article:edit.html.twig', array(

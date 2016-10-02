@@ -50,6 +50,7 @@ class ArticleRepository extends EntityRepository
     {
         $qb = $this->findDeletedQueryBuilder();
         $this->filterById($qb, $id);
+
         return $qb->getQuery()->getOneOrNullResult();
     }
 
@@ -80,37 +81,46 @@ class ArticleRepository extends EntityRepository
     {
         $qb = $this->findPublishedQueryBuilder();
         $this->filterById($qb, $id);
+
         return $qb->getQuery()->getOneOrNullResult();
     }
 
     // With authors
-    public function findAllWithAuthorsQueryBuilder(){
+    public function findAllWithAuthorsQueryBuilder()
+    {
         $qb = $this->findAllQueryBuilder();
         $this->joinAuthorsData($qb);
+
         return $qb;
     }
 
-    public function findPublishedWithAuthorsQueryBuilder(){
+    public function findPublishedWithAuthorsQueryBuilder()
+    {
         $qb = $this->findPublishedQueryBuilder();
         $this->joinAuthorsData($qb);
+
         return $qb;
     }
 
-    public function findDeletedWithAuthorsQueryBuilder(){
+    public function findDeletedWithAuthorsQueryBuilder()
+    {
         $qb = $this->findDeletedQueryBuilder();
         $this->joinAuthorsData($qb);
+
         return $qb;
     }
 
     // Join/Filter functions
-    public function joinAuthorsData(QueryBuilder $qb){
+    public function joinAuthorsData(QueryBuilder $qb)
+    {
         $qb
             ->leftjoin('a.createdBy', 'cb')
             ->leftjoin('a.modifitedBy', 'mb')
             ->select(['a', 'cb', 'mb']);
     }
 
-    public function filterById(QueryBuilder $qb, $id){
+    public function filterById(QueryBuilder $qb, $id)
+    {
         $qb->andWhere($qb->expr()->eq('a.id', $id));
     }
 }
