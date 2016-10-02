@@ -3,6 +3,27 @@
 {% block body %}
     
     <h1>ADD COLLECTION</h1>
-
+    {{ form_start(form) }}
+        <div>
+            {{ form_label(form.title) }}
+            {{ form_errors(form.title) }}
+            {{ form_widget(form.title) }}
+        </div>
+        <div>
+            {{ form_label(form.public) }}
+            {{ form_errors(form.public) }}
+            {{ form_widget(form.public) }}
+        </div>
+        <div>
+            {{ form_label(form.parentCollection) }}
+            {{ form_errors(form.parentCollection) }}
+            {{ form_widget(form.parentCollection) }}
+        </div>
+        <div>
+            {{ form_label(form.childCollections) }}
+            {{ form_errors(form.childCollections) }}
+            {{ form_widget(form.childCollections) }}
+        </div>        
+    {{ form_end(form) }}
 
 {% endblock %}
