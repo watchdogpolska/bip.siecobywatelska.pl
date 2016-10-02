@@ -1,6 +1,6 @@
 <?php
 
-namespace NewsModuleBundle\Entity;
+namespace Sowp\NewsModuleBundle\Entity;
 
 /**
  * CollectionRepository.

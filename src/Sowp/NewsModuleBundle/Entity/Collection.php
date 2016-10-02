@@ -33,21 +33,21 @@ class Collection
      * @ORM\Column(name="public", type="boolean", nullable=false)
      */
     private $public;
-    
+
     /**
      * @var Sowp\NewsModuleBundle\Entity\Collection
-     * 
+     *
      * @ORM\OneToMany(targetEntity="Sowp\NewsModuleBundle\Entity\Collection", mappedBy="childCollections")
      */
     private $parentCollection;
-    
+
     /**
      * @var Sowp\NewsModuleBundle\Entity\Collection
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="Sowp\NewsModuleBundle\Entity\Collection", inversedBy="parentCollection")
      */
     private $childCollections;
-    
+
     /**
      * @ORM\ManyToMany(targetEntity="Sowp\NewsModuleBundle\Entity\News", mappedBy="collections")
      */
@@ -90,7 +90,12 @@ class Collection
     public function __construct()
     {
         $this->news = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->childCollections = new \Doctrine\Common\Collections\ArrayCollection();
+        //$this->childCollections = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getTitle();
     }
 
     /**
@@ -279,5 +284,63 @@ class Collection
     public function getNews()
     {
         return $this->news;
+    }
+
+    /**
+     * Add parentCollection
+     *
+     * @param \Sowp\NewsModuleBundle\Entity\Collection $parentCollection
+     *
+     * @return Collection
+     */
+    public function addParentCollection(\Sowp\NewsModuleBundle\Entity\Collection $parentCollection)
+    {
+        $this->parentCollection[] = $parentCollection;
+
+        return $this;
+    }
+
+    /**
+     * Remove parentCollection
+     *
+     * @param \Sowp\NewsModuleBundle\Entity\Collection $parentCollection
+     */
+    public function removeParentCollection(\Sowp\NewsModuleBundle\Entity\Collection $parentCollection)
+    {
+        $this->parentCollection->removeElement($parentCollection);
+    }
+
+    /**
+     * Get parentCollection
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getParentCollection()
+    {
+        return $this->parentCollection;
+    }
+
+    /**
+     * Set childCollections
+     *
+     * @param \Sowp\NewsModuleBundle\Entity\Collection $childCollections
+     *
+     * @return Collection
+     */
+    public function setChildCollections(\Sowp\NewsModuleBundle\Entity\Collection $childCollections = null)
+    {
+        $this->childCollections = $childCollections;
+
+        return $this;
+    }
+
+    /**
+     * Get childCollections
+     *
+     * @return \Sowp\NewsModuleBundle\Entity\Collection
+     */
+    public function getChildCollections()
+    {
+        return $this->childCollections;
     }
 }

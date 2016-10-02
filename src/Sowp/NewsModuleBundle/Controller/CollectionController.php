@@ -24,18 +24,17 @@ class CollectionController extends Controller
     public function addAction(Request $req)
     {
         $collection = new Collection();
-        $form = $this->create(addForm::class, $collection);
-        $form->handle($req);
+        $form = $this->createForm(addForm::class, $collection);
+        $form->handleRequest($req);
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $this->getDoctrine()
-                     ->getManager()
-                     ->persist($collection)
-                     ->flush();
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($collection);
+                $em->flush();
                 $this->container->get('session')->getFlashBag()->add('notice', 'Zapisano');
             } else {
-                $this->container->get('session')->getFlashBag()->add('notice', 'Wystąpił błąd');
+                $this->container->get('session')->getFlashBag()->add('error', 'Wystąpił błąd');
             }
         }
 
