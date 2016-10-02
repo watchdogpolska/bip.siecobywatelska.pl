@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Sowp\NewsModuleBundle\Entity\Collection;
 use Sowp\NewsModuleBundle\Form\addCollectionForm as addForm;
+
 /**
  * Collection controller.
  *
@@ -16,7 +17,7 @@ use Sowp\NewsModuleBundle\Form\addCollectionForm as addForm;
 class CollectionController extends Controller
 {
     /**
-     * add new collection entry
+     * add new collection entry.
      *
      * @Route("/dodaj", name="addCollection")
      * @Method({"GET","POST"})
@@ -44,14 +45,13 @@ class CollectionController extends Controller
     }
 
     /**
-     * add new collection entry
+     * add new collection entry.
      *
      * @Route("/edytuj/{id}", name="editCollection")
      * @Method({"GET","POST"})
      */
     public function editAction(Request $req, Collection $col)
     {
-
     }
 
     /**

@@ -287,7 +287,7 @@ class Collection
     }
 
     /**
-     * Add parentCollection
+     * Add parentCollection.
      *
      * @param \Sowp\NewsModuleBundle\Entity\Collection $parentCollection
      *
@@ -301,7 +301,7 @@ class Collection
     }
 
     /**
-     * Remove parentCollection
+     * Remove parentCollection.
      *
      * @param \Sowp\NewsModuleBundle\Entity\Collection $parentCollection
      */
@@ -311,7 +311,7 @@ class Collection
     }
 
     /**
-     * Get parentCollection
+     * Get parentCollection.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -321,7 +321,7 @@ class Collection
     }
 
     /**
-     * Set childCollections
+     * Set childCollections.
      *
      * @param \Sowp\NewsModuleBundle\Entity\Collection $childCollections
      *
@@ -335,7 +335,7 @@ class Collection
     }
 
     /**
-     * Get childCollections
+     * Get childCollections.
      *
      * @return \Sowp\NewsModuleBundle\Entity\Collection
      */
