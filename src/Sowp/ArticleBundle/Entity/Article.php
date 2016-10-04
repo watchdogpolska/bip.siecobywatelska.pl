@@ -16,8 +16,7 @@ use Gedmo\SoftDeleteable\SoftDeleteable;
  *         @ORM\UniqueConstraint(name="slug_UNIQUE", columns={"slug"})
  *     }, indexes={
  *         @ORM\Index(name="fk_article_user1_idx", columns={"modifited_by"}),
- *         @ORM\Index(name="fk_article_user2_idx", columns={"created_by"}),
- *         @ORM\Index(name="fk_article_collections1_idx", columns={"collections_id"})
+ *         @ORM\Index(name="fk_article_user2_idx", columns={"created_by"})
  *     }
  * )
  * @ORM\Entity(repositoryClass="Sowp\ArticleBundle\Entity\ArticleRepository")
@@ -116,11 +115,7 @@ class Article implements Loggable, SoftDeleteable
     /**
      * @var \Sowp\ArticleBundle\Entity\Collection
      *
-     * @Gedmo\Versioned
-     * @ORM\ManyToOne(targetEntity="Sowp\ArticleBundle\Entity\Collection", inversedBy="articles")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="collections_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToMany(targetEntity="Sowp\ArticleBundle\Entity\Collection", inversedBy="articles", fetch="EAGER", cascade={"persist"})
      */
     private $collection;
 
@@ -128,6 +123,14 @@ class Article implements Loggable, SoftDeleteable
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $deletedAt;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->collection = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -402,7 +405,6 @@ class Article implements Loggable, SoftDeleteable
 
         return $this;
     }
-
     /**
      * Get collections.
      *
@@ -411,5 +413,31 @@ class Article implements Loggable, SoftDeleteable
     public function getCollection()
     {
         return $this->collection;
+    }
+
+
+    /**
+     * Add collection
+     *
+     * @param \Sowp\ArticleBundle\Entity\Collection $collection
+     *
+     * @return Article
+     */
+    public function addCollection(\Sowp\ArticleBundle\Entity\Collection $collection)
+    {
+        $this->collection[] = $collection;
+        $collection->addArticle($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove collection
+     *
+     * @param \Sowp\ArticleBundle\Entity\Collection $collection
+     */
+    public function removeCollection(\Sowp\ArticleBundle\Entity\Collection $collection)
+    {
+        $this->collection->removeElement($collection);
     }
 }

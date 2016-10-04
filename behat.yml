@@ -18,10 +18,18 @@ default:
               - ArticleContext
               - ProjectContext
               - Behat\MinkExtension\Context\MinkContext
+              - nwcontext:select2
 
     extensions:
         Behat\Symfony2Extension: ~
         Behat\MinkExtension:
+            base_url: http://127.0.0.1:8000/
             sessions:
                 default:
                     symfony2: ~
+            selenium2:
+                browser: "chrome"
+                capabilities:
+                    browserName: "chrome"
+
+        Novaway\CommonContexts\Extension: ~

@@ -5,11 +5,13 @@ namespace Sowp\ArticleBundle\Controller;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sowp\ArticleBundle\Entity\Collection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sowp\ArticleBundle\Entity\Article;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Article controller.
@@ -183,6 +185,25 @@ class ArticleController extends Controller
         }
 
         return $this->redirectToRoute('admin_article_show', array('id' => $article->getId()));
+    }
+    /**
+     * Return a JSON Response contain, a array for select2
+     *
+     * @Route("/query/", name="admin_article_collection_query")
+     * @Method("GET")
+     */
+    public function collectionQueryAction(Request $request)
+    {
+        $q = $request->query->get('q');
+        $repo = $this->getDoctrine()->getRepository(Collection::class);
+        $collections = $repo->search($q);
+        $collections = array_map(function(Collection $c){
+            return [
+                'id' => $c->getId(),
+                'text' => $c->getName()
+            ];
+        }, $collections);
+        return new Response(json_encode($collections));
     }
 
     /**

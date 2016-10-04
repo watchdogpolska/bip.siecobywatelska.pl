@@ -138,8 +138,9 @@ class ArticleContext implements Context
         if (!isset($opts['modifited_by'])) {
             $opts['modifited_by'] = $this->faker->randomElement($users);
         }
-        if (!isset($opts['collection'])) {
-            $opts['collection'] = $this->faker->randomElement($collections);
+        if (!isset($opts['collections'])) {
+            $count = $this->faker->numberBetween(1, 10);
+            $opts['collections'] = $this->faker->randomElements($collections, $count);
         }
         if (!isset($opts['edit_note'])) {
             $opts['edit_note'] = $this->faker->text(200);
@@ -150,7 +151,9 @@ class ArticleContext implements Context
         $article->setCreatedBy($opts['created_by']);
         $article->setModifitedAt($opts['modifited_at']);
         $article->setModifitedBy($opts['modifited_by']);
-        $article->setCollection($opts['collection']);
+        foreach ($opts['collection'] as $collection){
+            $article->addCollection($opts['collection']);
+        }
         $article->setEditNote($opts['edit_note']);
         $em->persist($article);
         $em->flush();

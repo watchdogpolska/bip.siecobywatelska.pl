@@ -41,7 +41,7 @@ class Collection
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Sowp\ArticleBundle\Entity\Article", mappedBy="collection")
+     * @ORM\ManyToMany(targetEntity="Sowp\ArticleBundle\Entity\Article", mappedBy="collection")
      */
     private $articles;
 

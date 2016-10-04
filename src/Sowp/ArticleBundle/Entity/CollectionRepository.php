@@ -12,4 +12,9 @@ use Doctrine\ORM\EntityRepository;
  */
 class CollectionRepository extends EntityRepository
 {
+    public function search($q){
+        return $this->createQueryBuilder('node')
+            ->where('node.name LIKE :name')
+            ->setParameter('name', '%' . $q . '%')->getQuery()->getResult();
+    }
 }

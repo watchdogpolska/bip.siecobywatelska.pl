@@ -44,6 +44,17 @@
                     <td>{{ article.title }}</td>
                 </tr>
                 <tr>
+                    <th>Collection</th>
+                    <td>
+                        {% for collection in article.collection %}
+                            <a href="{{ path('admin_collection_show', { 'id': collection.id }) }}">{{ collection }}</a>
+                            {% if not loop.last %},{% endif %}
+                        {% else %}
+                            No collection
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
                     <th>Content</th>
                     <td>{{ article.content }}</td>
                 </tr>

@@ -16,6 +16,7 @@ Feature: Article admia panel
     And I follow "4"
     And I should see a table with 5 rows
 
+#  @javascript
   Scenario: Add article
     Given I am logged in
     And The collection "Prawo" exists
@@ -25,7 +26,7 @@ Feature: Article admia panel
       | Title     | Emancypacja pastafarian        |
       | Content   | Jest to bardzo drażliwa sprawa |
       | Edit note | Utworzenie podstrony           |
-    And I select "Prawo" from "Collection"
+#    And I fill in select2 input "Collection" with "Rzodkiewka" and select "Rzodkiewka (NEW)"
     And I press "Create"
     Then I should be on "/admin/article/1"
     And I should see "Emancypacja pastafarian"
