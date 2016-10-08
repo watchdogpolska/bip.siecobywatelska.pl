@@ -106,13 +106,38 @@ class ArticleController extends Controller
     {
         $deleteForm = $this->createDeleteForm($article);
         $restoreForm = $this->createRestoreForm($article);
+        $revisions = array_map(function($revision, $entity){
+            return compact('revision', 'entity');
+        },
+            $this->getAuditReader()->findRevisions(Article::class, $article->getId()),
+            $this->getAuditReader()->getEntityHistory(Article::class, $article->getId())
+        );
 
         return $this->render('SowpArticleBundle:article:show.html.twig', array(
             'article' => $article,
             'delete_form' => $deleteForm->createView(),
             'restore_form' => $restoreForm->createView(),
+            'revisions' => $revisions
         ));
     }
+    /**
+     * Finds and displays a Article historic entity.
+     *
+     * @Route("/{id}/rev/{rev}", name="admin_article_show_rev")
+     * @Method("GET")
+     */
+    public function showRevAction($id, $rev)
+    {
+        $audit = $this->getAuditReader();
+        $curr_rev = $audit->getCurrentRevision(Article::class, $id);
+        $article = $audit->find(Article::class, $id, $rev);
+
+        return $this->render('SowpArticleBundle:article:show_rev.html.twig', array(
+            'article' => $article,
+            'is_current' => $curr_rev == $rev
+        ));
+    }
+
 
     /**
      * Displays a form to edit an existing Article entity.
@@ -236,5 +261,21 @@ class ArticleController extends Controller
             ->setMethod('POST')
             ->getForm()
             ;
+    }
+
+    /**
+     * @return \SimpleThings\EntityAudit\AuditReader
+     */
+    protected function getAuditReader()
+    {
+        return $this->get('simplethings_entityaudit.reader');
+    }
+
+    /**
+     * @return \SimpleThings\EntityAudit\AuditManager
+     */
+    protected function getAuditManager()
+    {
+        return $this->get('simplethings_entityaudit.manager');
     }
 }

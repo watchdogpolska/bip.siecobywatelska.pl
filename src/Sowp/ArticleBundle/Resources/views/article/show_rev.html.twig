@@ -8,17 +8,18 @@
             Back to the list
         </a>
 
-        {% include '@SowpArticle/article/_edit_btn.html.twig' with {'obj': article } %}
-
-        {% if article.isDeleted() %}
-            {{ include('@SowpArticle/article/_restore_form.html.twig') }}
-        {% else %}
-            {{ include('@SowpArticle/article/_delete_form.html.twig') }}
-        {% endif %}
-
+        <a href="{{ path('admin_article_show', {'id': article.id}) }}" class="btn btn-default">
+            <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+            Back to the article
+        </a>
     </div>
 
     <h1>Article</h1>
+    {% if not is_current %}
+        <div class="alert alert-warning">
+            <strong>ARchived!</strong> This is a historical version of the article
+        </div>
+    {% endif %}
 
     {% if article.isDeleted() %}
     <div class="alert alert-warning">
@@ -28,6 +29,4 @@
 
     {% include 'SowpArticleBundle:article:_panel_info.html.twig' with {'obj': article}  %}
     {% include 'SowpArticleBundle:article:_panel_history.html.twig' with {'obj': article}  %}
-    {% include 'SowpArticleBundle:article:_panel_revisions.html.twig' with {'objs': revisions} %}
-
 {% endblock %}

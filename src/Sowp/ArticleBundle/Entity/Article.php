@@ -3,9 +3,9 @@
 namespace Sowp\ArticleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Loggable\Loggable;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\SoftDeleteable;
+use SimpleThings\EntityAudit\Mapping\Annotation as Audit;
 
 /**
  * Article.
@@ -21,9 +21,9 @@ use Gedmo\SoftDeleteable\SoftDeleteable;
  * )
  * @ORM\Entity(repositoryClass="Sowp\ArticleBundle\Entity\ArticleRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
+ * @Audit\Auditable()
  */
-class Article implements Loggable, SoftDeleteable
+class Article implements SoftDeleteable
 {
     /**
      * @var int
@@ -45,7 +45,6 @@ class Article implements Loggable, SoftDeleteable
     /**
      * @var string
      *
-     * @Gedmo\Versioned
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
      */
     private $title;
@@ -53,7 +52,6 @@ class Article implements Loggable, SoftDeleteable
     /**
      * @var string
      *
-     * @Gedmo\Versioned
      * @ORM\Column(name="content", type="text")
      */
     private $content;
@@ -99,7 +97,6 @@ class Article implements Loggable, SoftDeleteable
     /**
      * @var string
      *
-     * @Gedmo\Versioned
      * @ORM\Column(name="attachments", type="text", length=65535, nullable=true)
      */
     private $attachments;
@@ -107,7 +104,6 @@ class Article implements Loggable, SoftDeleteable
     /**
      * @var string
      *
-     * @Gedmo\Versioned
      * @ORM\Column(name="edit_note", type="string", length=255, nullable=false)
      */
     private $editNote;

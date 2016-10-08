@@ -1,0 +1,44 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2 class="panel-title">Info</h2>
+    </div>
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ obj.id }}</td>
+        </tr>
+        <tr>
+            <th>Slug</th>
+            <td>{{ obj.slug }}</td>
+        </tr>
+        <tr>
+            <th>Title</th>
+            <td>{{ obj.title }}</td>
+        </tr>
+        <tr>
+            <th>Collection</th>
+            <td>
+                {% for collection in obj.collection %}
+                    <a href="{{ path('admin_collection_show', { 'id': collection.id }) }}">{{ collection }}</a>
+                    {% if not loop.last %},{% endif %}
+                {% else %}
+                    No collection
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>Content</th>
+            <td>{{ obj.content }}</td>
+        </tr>
+        <tr>
+            <th>Attachments</th>
+            <td>{{ obj.attachments }}</td>
+        </tr>
+        <tr>
+            <th>Editnote</th>
+            <td>{{ obj.editNote }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
