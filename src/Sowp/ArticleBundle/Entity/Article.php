@@ -97,7 +97,7 @@ class Article implements SoftDeleteable
     /**
      * @var string
      *
-     * @ORM\Column(name="attachments", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="attachments", type="json_array", length=65535, nullable=true)
      */
     private $attachments;
 

@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+
+{% block collection_item_widget %}
+    <tr>
+        {% for col in prototype %}
+            <td>
+                {{ form_label(col, null, {"label_attr": {"class": "sr-only"}}) }}
+                {{ form_widget(col) }}
+            </td>
+        {% endfor %}
+
+        <td>
+            {% if form.vars['allow_delete'] %}
+            <a class="btn btn-default btn-remove" title="Remove" href="#">
+                <i class="fa fa-minus" aria-hidden="true"></i>
+                Delete
+            </a>
+            {% endif %}
+        </td>
+    </tr>
+{% endblock %}
+
+
+{% block collection_widget %}
+    {% if prototype is defined %}
+        {% set attr = attr|merge({'data-prototype': block('collection_item_widget') }) %}
+    {% endif %}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' table')|trim}) %}
+
+    <table {{ block('widget_container_attributes') }}>
+        {% if form.vars['allow_add'] %}
+            <thead>
+                <tr>
+                    {% for col in form.vars.prototype %}
+                        <th>
+                            {{ form_label(col) }}
+                        </th>
+                    {% endfor %}
+                    <th>
+                        Actions
+                        {% if form.vars['allow_add'] %}
+                        <a href="#" class="btn btn-default btn-add">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            Add
+                        </a>
+                        {% endif %}
+                    </th>
+                </tr>
+            </thead>
+        {% endif %}
+        <tbody>
+            {% for rows in form %}
+                <tr>
+                    {% for col in rows %}
+                        <td>
+                            {{ form_label(col, null, {"label_attr": {"class": "sr-only"}}) }}
+                            {{ form_widget(col) }}
+                        </td>
+                    {% endfor %}
+
+                    <td>
+                        {% if form.vars['allow_delete'] %}
+                            <a class="btn btn-default btn-remove" title="Remove" href="#">
+                                <i class="fa fa-minus" aria-hidden="true"></i>
+                                Delete
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css"
+            integrity="sha256-xqxV4FDj5tslOz6MV13pdnXgf63lJwViadn//ciKmIs="
+            crossorigin="anonymous" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.js"
+            integrity="sha256-L8glE3PzqSO1/nrEHYWoNyozn5i3ETucQoJGA7gp2mI="
+            crossorigin="anonymous"></script>
+    <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+    <script>
+        $('[data-prototype]').each(function(){
+            var $table = $(this);
+            var count = $table.find('tbody tr').length;
+            $table.on('click', '.btn-add', function(e){
+                e.preventDefault();
+
+                // grab the prototype template
+                var newWidget = $table.attr('data-prototype');
+                // replace the "__name__" used in the id and name of the prototype
+                // with a number that's unique to your emails
+                // end name attribute looks like name="contact[emails][2]"
+                newWidget = newWidget.replace(/__name__/g, count);
+                count++;
+
+                // append row
+                var newRow = jQuery(newWidget);
+                $table.find('tbody').append(newRow);
+            });
+
+            $table.on('click', '.btn-remove', function(e){
+                e.preventDefault();
+
+                var $row = $(this).closest('tr');
+                $row.remove();
+            })
+        });
+    </script>
+{% endblock %}

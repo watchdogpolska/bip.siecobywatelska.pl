@@ -33,7 +33,19 @@
         </tr>
         <tr>
             <th>Attachments</th>
-            <td>{{ obj.attachments }}</td>
+            <td>
+                {% if obj.attachments %}
+                    <ul>
+                        {% for attachment in obj.attachments %}
+                            <li>
+                                <a href="uploads/attachment/{{attachment.file.filename}}">{{attachment.name}}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    No attachments
+                {% endif %}
+            </td>
         </tr>
         <tr>
             <th>Editnote</th>

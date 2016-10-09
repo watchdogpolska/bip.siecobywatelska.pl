@@ -4,6 +4,7 @@ namespace Sowp\ArticleBundle\Form;
 
 use Sowp\ArticleBundle\Entity\Collection;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType as FormCollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
@@ -19,7 +20,14 @@ class ArticleType extends AbstractType
         $builder
             ->add('title')
             ->add('content')
-            ->add('attachments')
+            ->add('attachments', FormCollectionType::class, array(
+                'entry_type' => AttachmentType::class,
+                'allow_add'    => true,
+                'allow_delete' => true,
+                'prototype'    => true,
+                'required'     => false,
+//                'delete_empty' => true,
+            ))
             ->add('editNote')
             ->add('collection', Select2EntityType::class, [
                 'multiple' => true,
