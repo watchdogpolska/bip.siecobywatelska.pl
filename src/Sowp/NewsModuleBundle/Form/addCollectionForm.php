@@ -5,6 +5,7 @@ namespace Sowp\NewsModuleBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType as Select2;
 
 class addCollectionForm extends AbstractType
 {
@@ -12,7 +13,16 @@ class addCollectionForm extends AbstractType
     {
         $builder->add('title');
         $builder->add('public');
-        $builder->add('parent');
+        $builder->add('parent', Select2::class, [
+            'multiple' => false,
+            'class' => 'Sowp\NewsModuleBundle\Entity\Collection',
+            'remote_route' => "collection_query_select2",
+            'primary_key' => 'id',
+            'language' => 'en',
+            'placeholder' => 'Wybierz tag/kolekcję nadrzędną',
+            'cache' => true,
+            'cache_timeout' => 60000,
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

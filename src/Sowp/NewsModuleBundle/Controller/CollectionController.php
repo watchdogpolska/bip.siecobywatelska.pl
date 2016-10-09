@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Sowp\NewsModuleBundle\Entity\Collection;
 use Sowp\NewsModuleBundle\Form\addCollectionForm as addForm;
 
@@ -16,6 +17,28 @@ use Sowp\NewsModuleBundle\Form\addCollectionForm as addForm;
  */
 class CollectionController extends Controller
 {
+    /**
+     * query collections for Select2Entity
+     * @param Request $request
+     *
+     * @Route("/query", name="collection_query_select2")
+     * @Method("GET")
+     */
+    public function queryAction(Request $request)
+    {
+
+        $collections = [[
+                'id' => 1,
+                'text' => '$c->getTitle()'
+            ],
+[
+                'id' => 2,
+                'text' => '$c->getTitle2()'
+            ],
+            ];
+        return new Response(json_encode($collections));
+    }
+
     /**
      * add new collection entry.
      *
