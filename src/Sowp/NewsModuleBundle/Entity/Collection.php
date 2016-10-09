@@ -6,7 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Entity(repositoryClass="Sowp\NewsModuleBundle\Entity\CollectionRepository")
+ * @Gedmo\Tree(type="nested")
+ * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @ORM\Table(name="news_collection")
  */
 class Collection
@@ -35,18 +36,42 @@ class Collection
     private $public;
 
     /**
-     * @var Sowp\NewsModuleBundle\Entity\Collection
-     *
-     * @ORM\OneToMany(targetEntity="Sowp\NewsModuleBundle\Entity\Collection", mappedBy="childCollections")
+     * @Gedmo\TreeLeft
+     * @ORM\Column(type="integer")
      */
-    private $parentCollection;
+    private $lft;
 
     /**
-     * @var Sowp\NewsModuleBundle\Entity\Collection
-     *
-     * @ORM\ManyToOne(targetEntity="Sowp\NewsModuleBundle\Entity\Collection", inversedBy="parentCollection")
+     * @Gedmo\TreeLevel
+     * @ORM\Column(type="integer")
      */
-    private $childCollections;
+    private $lvl;
+
+    /**
+     * @Gedmo\TreeRight
+     * @ORM\Column(type="integer")
+     */
+    private $rgt;
+
+    /**
+     * @Gedmo\TreeRoot
+     * @ORM\ManyToOne(targetEntity="Sowp\NewsModuleBundle\Entity\Collection")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $root;
+
+    /**
+     * @Gedmo\TreeParent
+     * @ORM\ManyToOne(targetEntity="Sowp\NewsModuleBundle\Entity\Collection", inversedBy="children")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Sowp\NewsModuleBundle\Entity\Collection", mappedBy="parent")
+     * @ORM\OrderBy({"lft" = "ASC"})
+     */
+    private $children;
 
     /**
      * @ORM\ManyToMany(targetEntity="Sowp\NewsModuleBundle\Entity\News", mappedBy="collections")
@@ -287,60 +312,194 @@ class Collection
     }
 
     /**
-     * Add parentCollection.
+     * Set children
      *
-     * @param \Sowp\NewsModuleBundle\Entity\Collection $parentCollection
+     * @param array $children
      *
      * @return Collection
      */
-    public function addParentCollection(\Sowp\NewsModuleBundle\Entity\Collection $parentCollection)
+    public function setChildren($children)
     {
-        $this->parentCollection[] = $parentCollection;
+        $this->children = $children;
 
         return $this;
     }
 
     /**
-     * Remove parentCollection.
+     * Get children
      *
-     * @param \Sowp\NewsModuleBundle\Entity\Collection $parentCollection
+     * @return array
      */
-    public function removeParentCollection(\Sowp\NewsModuleBundle\Entity\Collection $parentCollection)
+    public function getChildren()
     {
-        $this->parentCollection->removeElement($parentCollection);
+        return $this->children;
     }
 
     /**
-     * Get parentCollection.
+     * Add parent
+     *
+     * @param \Sowp\NewsModuleBundle\Entity\Collection $parent
+     *
+     * @return Collection
+     */
+    public function addParent(\Sowp\NewsModuleBundle\Entity\Collection $parent)
+    {
+        $this->parent[] = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Remove parent
+     *
+     * @param \Sowp\NewsModuleBundle\Entity\Collection $parent
+     */
+    public function removeParent(\Sowp\NewsModuleBundle\Entity\Collection $parent)
+    {
+        $this->parent->removeElement($parent);
+    }
+
+    /**
+     * Get parent
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getParentCollection()
+    public function getParent()
     {
-        return $this->parentCollection;
+        return $this->parent;
     }
 
     /**
-     * Set childCollections.
+     * Set lft
      *
-     * @param \Sowp\NewsModuleBundle\Entity\Collection $childCollections
+     * @param integer $lft
      *
      * @return Collection
      */
-    public function setChildCollections(\Sowp\NewsModuleBundle\Entity\Collection $childCollections = null)
+    public function setLft($lft)
     {
-        $this->childCollections = $childCollections;
+        $this->lft = $lft;
 
         return $this;
     }
 
     /**
-     * Get childCollections.
+     * Get lft
+     *
+     * @return integer
+     */
+    public function getLft()
+    {
+        return $this->lft;
+    }
+
+    /**
+     * Set lvl
+     *
+     * @param integer $lvl
+     *
+     * @return Collection
+     */
+    public function setLvl($lvl)
+    {
+        $this->lvl = $lvl;
+
+        return $this;
+    }
+
+    /**
+     * Get lvl
+     *
+     * @return integer
+     */
+    public function getLvl()
+    {
+        return $this->lvl;
+    }
+
+    /**
+     * Set rgt
+     *
+     * @param integer $rgt
+     *
+     * @return Collection
+     */
+    public function setRgt($rgt)
+    {
+        $this->rgt = $rgt;
+
+        return $this;
+    }
+
+    /**
+     * Get rgt
+     *
+     * @return integer
+     */
+    public function getRgt()
+    {
+        return $this->rgt;
+    }
+
+    /**
+     * Set root
+     *
+     * @param \Sowp\NewsModuleBundle\Entity\Collection $root
+     *
+     * @return Collection
+     */
+    public function setRoot(\Sowp\NewsModuleBundle\Entity\Collection $root = null)
+    {
+        $this->root = $root;
+
+        return $this;
+    }
+
+    /**
+     * Get root
      *
      * @return \Sowp\NewsModuleBundle\Entity\Collection
      */
-    public function getChildCollections()
+    public function getRoot()
     {
-        return $this->childCollections;
+        return $this->root;
+    }
+
+    /**
+     * Set parent
+     *
+     * @param \Sowp\NewsModuleBundle\Entity\Collection $parent
+     *
+     * @return Collection
+     */
+    public function setParent(\Sowp\NewsModuleBundle\Entity\Collection $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Add child
+     *
+     * @param \Sowp\NewsModuleBundle\Entity\Collection $child
+     *
+     * @return Collection
+     */
+    public function addChild(\Sowp\NewsModuleBundle\Entity\Collection $child)
+    {
+        $this->children[] = $child;
+
+        return $this;
+    }
+
+    /**
+     * Remove child
+     *
+     * @param \Sowp\NewsModuleBundle\Entity\Collection $child
+     */
+    public function removeChild(\Sowp\NewsModuleBundle\Entity\Collection $child)
+    {
+        $this->children->removeElement($child);
     }
 }

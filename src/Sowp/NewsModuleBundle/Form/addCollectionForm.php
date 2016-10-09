@@ -12,7 +12,7 @@ class addCollectionForm extends AbstractType
     {
         $builder->add('title');
         $builder->add('public');
-        $builder->add('parentCollection');
+        $builder->add('parent');
     }
 
     public function configureOptions(OptionsResolver $resolver)

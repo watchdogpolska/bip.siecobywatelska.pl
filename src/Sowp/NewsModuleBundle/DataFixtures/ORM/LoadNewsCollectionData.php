@@ -6,7 +6,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture           as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface   as OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager              as ObjectManager;
 use AppBundle\Entity\User                                  as User;
-use Sowp\NewsModuleBundle\Entity\Collection                     as NewsCollection;
+use Sowp\NewsModuleBundle\Entity\Collection                as NewsCollection;
 
 class LoadNewsCollectionData extends AbstractFixture implements OrderedFixtureInterface
 {

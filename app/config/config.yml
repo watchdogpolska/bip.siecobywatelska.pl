@@ -71,6 +71,7 @@ doctrine:
                 class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
                 enabled: true
 
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"
@@ -94,3 +95,4 @@ stof_doctrine_extensions:
             sluggable: true
             loggable: true
             softdeleteable: true
+            tree: true
