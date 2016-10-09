@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c567073a7b990e233e244a9f252759c5",
-    "content-hash": "f5b17f317a2c98285ff7a6018d3d12da",
+    "hash": "4b572f39d4d6006c8c83dc84ca0994a5",
+    "content-hash": "cef2895f5f6b80f52a60857013056e16",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2142,6 +2142,54 @@
                 "framework"
             ],
             "time": "2016-09-03 15:28:43"
+        },
+        {
+            "name": "tetranz/select2entity-bundle",
+            "version": "v2.8",
+            "target-dir": "Tetranz/Select2EntityBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tetranz/select2entity-bundle.git",
+                "reference": "b1997ea79a19b5e9f0ee6e8fe4375a37d790d277"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tetranz/select2entity-bundle/zipball/b1997ea79a19b5e9f0ee6e8fe4375a37d790d277",
+                "reference": "b1997ea79a19b5e9f0ee6e8fe4375a37d790d277",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": ">=2.4",
+                "php": ">=5.4.0",
+                "symfony/symfony": ">=2.2"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": []
+            },
+            "autoload": {
+                "psr-0": {
+                    "Tetranz\\Select2EntityBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ross Keatinge",
+                    "email": "tetranz@gmail.com"
+                }
+            ],
+            "description": "A Symfony2 bundle that integrates Select2 as a drop-in replacement for a standard entity field on a Symfony form.",
+            "keywords": [
+                "autocomplete",
+                "select2",
+                "symfony",
+                "typeahead"
+            ],
+            "time": "2016-08-27 16:49:16"
         },
         {
             "name": "twig/twig",
