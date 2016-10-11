@@ -20,7 +20,6 @@
     </tr>
 {% endblock %}
 
-
 {% block collection_widget %}
     {% if prototype is defined %}
         {% set attr = attr|merge({'data-prototype': block('collection_item_widget') }) %}
@@ -94,6 +93,11 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.js"
             integrity="sha256-L8glE3PzqSO1/nrEHYWoNyozn5i3ETucQoJGA7gp2mI="
             crossorigin="anonymous"></script>
+    <script 
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.4.3/tinymce.min.js"
+            integrity="sha256-AuSdEJpOGFPsqPZKZf3Leo0EKuCOyAICY1fwp8jiwwc="
+            crossorigin="anonymous"></script>
     <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
     <script>
         $('[data-prototype]').each(function(){
@@ -123,4 +127,6 @@
             })
         });
     </script>
+    <script>tinymce.init({ selector:'[data-tinymce]' });</script>
+    <script src="/javascripts/application.js" type="text/javascript" charset="utf-8" async defer></script>
 {% endblock %}

@@ -12,3 +12,13 @@ services:
         arguments: ["@sowp_article.file_uploader"]
         tags:
             - { name: doctrine.event_subscriber }
+
+    sowp_article.form.transform.html_purifier:
+        class: Exercise\HTMLPurifierBundle\Form\HTMLPurifierTransformer
+        arguments: ["@exercise_html_purifier.default"]
+
+    sowp_article.form.type:
+        class: Sowp\ArticleBundle\Form\WysiwygType
+        arguments: ["@sowp_article.form.transform.html_purifier"]
+        tags:
+            - { name: form.type }

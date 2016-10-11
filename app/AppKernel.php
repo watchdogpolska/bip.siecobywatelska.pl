@@ -27,6 +27,9 @@ class AppKernel extends Kernel
             // Pagination
             new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
 
+            // TinyMCE depedencies
+            new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
+
             // SWOP Bundles
             new Sowp\ArticleBundle\SowpArticleBundle(),
             new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),

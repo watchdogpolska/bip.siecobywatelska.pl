@@ -19,7 +19,7 @@ class ArticleType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('content')
+            ->add('content', WysiwygType::class)
             ->add('attachments', FormCollectionType::class, array(
                 'entry_type' => AttachmentType::class,
                 'allow_add'    => true,

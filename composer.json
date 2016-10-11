@@ -32,7 +32,8 @@
         "stof/doctrine-extensions-bundle": "^1.2",
         "white-october/pagerfanta-bundle": "^1.0",
         "tetranz/select2entity-bundle": "2.*",
-        "simplethings/entity-audit-bundle": "dev-master"
+        "simplethings/entity-audit-bundle": "dev-master",
+        "exercise/htmlpurifier-bundle": "^0.2.3"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
