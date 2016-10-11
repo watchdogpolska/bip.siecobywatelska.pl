@@ -28,17 +28,17 @@
     {% set attr = attr|merge({class: (attr.class|default('') ~ ' table')|trim}) %}
 
     <table {{ block('widget_container_attributes') }}>
-        {% if form.vars['allow_add'] %}
+        {% if allow_add %}
             <thead>
                 <tr>
-                    {% for col in form.vars.prototype %}
+                    {% for col in prototype %}
                         <th>
                             {{ form_label(col) }}
                         </th>
                     {% endfor %}
                     <th>
                         Actions
-                        {% if form.vars['allow_add'] %}
+                        {% if allow_add %}
                         <a href="#" class="btn btn-default btn-add">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             Add
@@ -59,10 +59,16 @@
                     {% endfor %}
 
                     <td>
-                        {% if form.vars['allow_delete'] %}
+                        {% if allow_delete %}
                             <a class="btn btn-default btn-remove" title="Remove" href="#">
                                 <i class="fa fa-minus" aria-hidden="true"></i>
                                 Delete
+                            </a>
+                        {% endif %}
+                        {% if rows.vars['data'] and rows.vars['data'].file %}
+                            <a href="/uploads/attachments/{{rows.vars['data'].file.filename}}" class="btn btn-default" target="_blank">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                Show
                             </a>
                         {% endif %}
                     </td>

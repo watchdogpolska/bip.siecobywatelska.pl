@@ -38,7 +38,7 @@
                     <ul>
                         {% for attachment in obj.attachments %}
                             <li>
-                                <a href="uploads/attachment/{{attachment.file.filename}}">{{attachment.name}}</a>
+                                <a href="/uploads/attachments/{{attachment.file.filename}}">{{attachment.name}}</a>
                             </li>
                         {% endfor %}
                     </ul>
