@@ -26,16 +26,19 @@ class CollectionController extends Controller
      */
     public function queryAction(Request $request)
     {
+        $collections = [];
+        $query = $request->query->get('q');
+        $repo = $this->getDoctrine()
+                ->getRepository('Sowp\NewsModuleBundle\Entity\Collection');
+        $resTmp = $repo->searchTitle($query);
 
-        $collections = [[
-                'id' => 1,
-                'text' => '$c->getTitle()'
-            ],
-[
-                'id' => 2,
-                'text' => '$c->getTitle2()'
-            ],
+        foreach ($resTmp as $key => $val) {
+            $collections[]= [
+                'id' => $val->getId(),
+                'text' => $val->getTitle()
             ];
+        }
+
         return new Response(json_encode($collections));
     }
 
