@@ -1,11 +1,11 @@
-{% extends '@SowpRegistry/row/_layout_form.twig' %}
+{% extends '@SowpRegistry/admin/row/_layout_form.twig' %}
 
 {% form_theme edit_form _self %}
 
 {% block body %}
     <div class="pull-right">
-        {{ include('@SowpRegistry/row/buttons/_btn_list.html.twig') }}
-        {{ include('@SowpRegistry/row/_form_delete.html.twig') }}
+        {{ include('@SowpRegistry/admin/row/buttons/_btn_list.html.twig') }}
+        {{ include('@SowpRegistry/admin/row/_form_delete.html.twig') }}
     </div>
 
     <h1>Row edit</h1>

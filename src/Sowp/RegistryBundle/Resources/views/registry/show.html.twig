@@ -1,35 +1,39 @@
 {% extends 'base.html.twig' %}
+
 {% block body %}
     <div class="pull-right">
-        {{ include('@SowpRegistry/registry/buttons/_btn_list.html.twig') }}
-        {{ include('@SowpRegistry/registry/buttons/_btn_list_row.html.twig') }}
-        {{ include('@SowpRegistry/registry/buttons/_btn_edit.html.twig') }}
-        {{ include('@SowpRegistry/registry/_form_delete.html.twig') }}
+        {{ include('@SowpRegistry/registry/_btn_export_csv.html.twig') }}
     </div>
 
-    <h1>Registry</h1>
+    <h1>{{ registry }}</h1>
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h2 class="panel-title">Info</h2>
+            <h2 class="panel-title">List</h2>
         </div>
-        <table class="table table-bordered">
+        <table class="table">
+            <thead>
+                <tr>
+                    {#<th>Id</th>#}
+                    {% for attr in registry.attributes %}
+                        <th>
+                            {{ include('@SowpRegistry/registry/_attr_label.html.twig', { 'attr': attr }) }}
+                        </th>
+                    {% endfor %}
+                </tr>
+            </thead>
             <tbody>
+            {% for row in rows %}
                 <tr>
-                    <th>Id</th>
-                    <td>{{ registry.id }}</td>
+                    {#<td>#}
+                        {#<a href="{{ path('admin_row_show', { 'registry_id': registry.id, 'id': row.id }) }}">{{ row.id }}</a>#}
+                    {#</td>#}
+                    {% for value in row.values %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
                 </tr>
-                <tr>
-                    <th>Name</th>
-                    <td>{{ registry.name }}</td>
-                </tr>
-                <tr>
-                    <th>Description</th>
-                    <td>{{ registry.description }}</td>
-                </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>
-    {{ include('@SowpRegistry/registry/_panel_attributes.html.twig', {objects: registry.attributes}) }}
-
-{% endblock %}
+{% endblock body %}

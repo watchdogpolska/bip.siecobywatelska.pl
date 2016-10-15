@@ -2,24 +2,28 @@
 
 namespace Sowp\RegistryBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sowp\RegistryBundle\Entity\Attribute;
+use Sowp\RegistryBundle\Entity\Row;
+use Sowp\RegistryBundle\Entity\Value;
+use Sowp\RegistryBundle\Http\CsvResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sowp\RegistryBundle\Entity\Registry;
-use Sowp\RegistryBundle\Form\RegistryType;
 
 /**
  * Registry controller.
  *
- * @Route("/admin/registry")
+ * @Route("/registry")
  */
 class RegistryController extends Controller
 {
     /**
      * Lists all Registry entities.
      *
-     * @Route("/", name="admin_registry_index")
+     * @Route("/", name="registry_index")
      * @Method("GET")
      */
     public function indexAction()
@@ -34,107 +38,39 @@ class RegistryController extends Controller
     }
 
     /**
-     * Creates a new Registry entity.
+     * Lists all Row entities.
      *
-     * @Route("/new", name="admin_registry_new")
-     * @Method({"GET", "POST"})
-     */
-    public function newAction(Request $request)
-    {
-        $registry = new Registry();
-        $form = $this->createForm('Sowp\RegistryBundle\Form\RegistryType', $registry);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($registry);
-            $em->flush();
-
-            return $this->redirectToRoute('admin_registry_show', array('id' => $registry->getId()));
-        }
-
-        return $this->render('@SowpRegistry/registry/new.html.twig', array(
-            'registry' => $registry,
-            'form' => $form->createView(),
-        ));
-    }
-
-    /**
-     * Finds and displays a Registry entity.
-     *
-     * @Route("/{id}", name="admin_registry_show")
+     * @Route("/{registry_id}/", name="registry_show")
+     * @ParamConverter("registry", options={"id" = "registry_id"})
      * @Method("GET")
      */
     public function showAction(Registry $registry)
     {
-        $deleteForm = $this->createDeleteForm($registry);
+        $rows = $registry->getRows();
 
         return $this->render('@SowpRegistry/registry/show.html.twig', array(
             'registry' => $registry,
-            'delete_form' => $deleteForm->createView(),
+            'rows' => $rows,
         ));
     }
 
     /**
-     * Displays a form to edit an existing Registry entity.
+     * Download a Row entity as CSV.
      *
-     * @Route("/{id}/edit", name="admin_registry_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/csv", name="registry_export_csv")
      */
-    public function editAction(Request $request, Registry $registry)
+    public function downloadCsvAction(Request $request, Registry $registry)
     {
-        $deleteForm = $this->createDeleteForm($registry);
-        $editForm = $this->createForm('Sowp\RegistryBundle\Form\RegistryType', $registry);
-        $editForm->handleRequest($request);
+        $headers = array_map(function(Attribute $attr) {
+            return $attr->getName();
+        }, $registry->getAttributes()->toArray());
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($registry);
-            $em->flush();
+        $rows = array_map(function(Row $row) {
+            return array_map(function(Value $value){
+                return $value->getValue();
+            }, $row->getValues()->toArray());
+        }, $registry->getRows()->toArray());
 
-            return $this->redirectToRoute('admin_registry_show', array('id' => $registry->getId()));
-        }
-
-        return $this->render('@SowpRegistry/registry/edit.html.twig', array(
-            'registry' => $registry,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-     * Deletes a Registry entity.
-     *
-     * @Route("/{id}", name="admin_registry_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, Registry $registry)
-    {
-        $form = $this->createDeleteForm($registry);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($registry);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('admin_registry_index');
-    }
-
-    /**
-     * Creates a form to delete a Registry entity.
-     *
-     * @param Registry $registry The Registry entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(Registry $registry)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('admin_registry_delete', array('id' => $registry->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
+        return new CsvResponse(array_merge(array($headers), $rows));
     }
 }

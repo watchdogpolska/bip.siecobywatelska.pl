@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div class="pull-right">
-        {{ include('@SowpRegistry/row/buttons/_btn_add.html.twig') }}
-        {{ include('@SowpRegistry/row/buttons/_btn_edit.html.twig') }}
-        {{ include('@SowpRegistry/row/_form_delete.html.twig') }}
+        {{ include('@SowpRegistry/admin/row/buttons/_btn_add.html.twig') }}
+        {{ include('@SowpRegistry/admin/row/buttons/_btn_edit.html.twig') }}
+        {{ include('@SowpRegistry/admin/row/_form_delete.html.twig') }}
     </div>
 
     <h1>Row</h1>
@@ -29,6 +29,6 @@
             </tbody>
         </table>
     </div>
-    {{ include('@SowpRegistry/row/_panel_values.html.twig', { objects: row.values }) }}
+    {{ include('@SowpRegistry/admin/row/_panel_values.html.twig', { objects: row.values }) }}
 
 {% endblock %}

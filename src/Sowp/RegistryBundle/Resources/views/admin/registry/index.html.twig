@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="pull-right">
+        {{ include('@SowpRegistry/admin/registry/buttons/_btn_new.html.twig') }}
+    </div>
+    <h1>Registry list</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">List</h3>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for registry in registries %}
+                <tr>
+                    <td>
+                        <a href="{{ path('admin_registry_show', { 'id': registry.id }) }}">{{ registry.id }}</a>
+                    </td>
+                    <td>{{ registry.name }}</td>
+                    <td>
+                        <a href="{{ path('admin_registry_show', { 'id': registry.id }) }}" class="btn btn-default">
+                            <i class="fa fa-eye"></i>
+                            Show
+                        </a>
+                        <a href="{{ path('admin_registry_edit', { 'id': registry.id }) }}" class="btn btn-default">
+                            <i class="fa fa-pencil"></i>
+                            Edit
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

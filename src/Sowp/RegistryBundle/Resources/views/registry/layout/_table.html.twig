@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2 class="panel-title">List</h2>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for registry in registries %}
+            <tr>
+                <td>
+                    <a href="{{ path('registry_show', { 'registry_id': registry.id }) }}">
+                        {{ registry.name }}
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

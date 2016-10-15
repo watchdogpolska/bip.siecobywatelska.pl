@@ -8,7 +8,7 @@
                 {% for value in objects %}
                 <tr>
                     <th>
-                        {{ include('@SowpRegistry/row/_attr_label.html.twig', { 'attr': value.attribute }) }}
+                        {{ include('@SowpRegistry/registry/_attr_label.html.twig', { 'attr': value.attribute }) }}
                     </th>
                     <td>{{ value }}</td>
                 </tr>

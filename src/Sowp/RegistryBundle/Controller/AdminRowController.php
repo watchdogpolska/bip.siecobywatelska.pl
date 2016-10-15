@@ -3,10 +3,7 @@
 namespace Sowp\RegistryBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sowp\RegistryBundle\Entity\Attribute;
 use Sowp\RegistryBundle\Entity\Registry;
-use Sowp\RegistryBundle\Entity\Value;
-use Sowp\RegistryBundle\Http\CsvResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -18,7 +15,7 @@ use Sowp\RegistryBundle\Entity\Row;
  *
  * @Route("/admin/row")
  */
-class RowController extends Controller
+class AdminRowController extends Controller
 {
     /**
      * Lists all Row entities.
@@ -31,7 +28,7 @@ class RowController extends Controller
     {
         $rows = $registry->getRows();
 
-        return $this->render('@SowpRegistry/row/index.html.twig', array(
+        return $this->render('@SowpRegistry/admin/row/index.html.twig', array(
             'registry' => $registry,
             'rows' => $rows,
         ));
@@ -60,32 +57,11 @@ class RowController extends Controller
             return $this->redirectToRoute('admin_row_show', array('id' => $row->getId()));
         }
 
-        return $this->render('@SowpRegistry/row/new.html.twig', array(
+        return $this->render('@SowpRegistry/admin/row/new.html.twig', array(
             'registry' => $registry,
             'row' => $row,
             'form' => $form->createView(),
         ));
-    }
-
-    /**
-     * Download a Row entity as CSV.
-     *
-     * @Route("/{registry_id}/csv", name="admin_row_export_csv")
-     * @ParamConverter("registry", options={"id" = "registry_id"})
-     */
-    public function downloadCsvAction(Request $request, Registry $registry)
-    {
-        $headers = array_map(function(Attribute $attr) {
-            return $attr->getName();
-        }, $registry->getAttributes()->toArray());
-
-        $rows = array_map(function(Row $row) {
-            return array_map(function(Value $value){
-                return $value->getValue();
-            }, $row->getValues()->toArray());
-        }, $registry->getRows()->toArray());
-
-        return new CsvResponse(array_merge(array($headers), $rows));
     }
 
     /**
@@ -99,7 +75,7 @@ class RowController extends Controller
     {
         $deleteForm = $this->createDeleteForm($row);
 
-        return $this->render('@SowpRegistry/row/show.html.twig', array(
+        return $this->render('@SowpRegistry/admin/row/show.html.twig', array(
             'registry' => $registry,
             'row' => $row,
             'delete_form' => $deleteForm->createView(),
@@ -130,7 +106,7 @@ class RowController extends Controller
             ));
         }
 
-        return $this->render('@SowpRegistry/row/edit.html.twig', array(
+        return $this->render('@SowpRegistry/admin/row/edit.html.twig', array(
             'registry' => $registry,
             'row' => $row,
             'edit_form' => $editForm->createView(),
@@ -158,6 +134,7 @@ class RowController extends Controller
 
         return $this->redirectToRoute('admin_row_index');
     }
+
 
     /**
      * Creates a form to delete a Row entity.
