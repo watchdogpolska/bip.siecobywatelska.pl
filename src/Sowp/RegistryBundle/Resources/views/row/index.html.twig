@@ -2,8 +2,10 @@
 
 {% block body %}
     <div class="pull-right">
+        {{ include('@SowpRegistry/row/buttons/_btn_export_csv.html.twig') }}
         {{ include('@SowpRegistry/row/buttons/_btn_new.html.twig') }}
     </div>
+
     <h1>Row list</h1>
 
     <div class="panel panel-default">
