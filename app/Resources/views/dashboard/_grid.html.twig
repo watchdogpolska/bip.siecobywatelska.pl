@@ -1,0 +1,65 @@
+{% if elements|length > 0 %}
+    <ul class="dashboard-grid">
+        {% for element in elements %}
+        <li class="dashboard-grid__item">
+            {% block dashboard_element %}
+                <a href="{{ element.href }}" class="dashboard-card">
+                    {% block dashboard_element_icon %}
+                    <div class="dashboard-card__icon">
+                        {% if element.type == 'FONT_AWESOME' %}
+                            <i class="fa fa-{{ element.icon }}" aria-hidden="true"></i>
+                        {% elseif element.type == 'TYPE_IMAGE' %}
+                            <img src="{{ element.icon }}" alt="">
+                        {% else %}
+                            {{ element.icon }}
+                        {% endif %}
+                    </div>
+                    {% endblock dashboard_element_icon %}
+                    <div class="dashboard-card__name">{{ element.name }}</div>
+                </a>
+            {% endblock dashboard_element %}
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No elements</p>
+{% endif %}
+
+<style>
+    .dashboard-grid{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .dashboard-grid__item{
+        width: 20%;
+        margin: 1em;
+        display: block;
+    }
+
+    .dashboard-card{
+        display: block;
+        padding: 1em;
+        background-image: linear-gradient(#54b4eb, #2fa4e7 60%, #1d9ce5);
+        box-shadow: 0 1px 10px rgba(0,0,0,0.1);
+        color: white;
+        border-radius: 6px;
+    }
+
+    .dashboard-card:hover, .dashboard-card:focus {
+        color: white;
+        background: #178acc;
+        text-decoration: none;
+    }
+
+    .dashboard-card__icon{
+        font-size: 5em;
+        text-align: center;
+    }
+
+    .dashboard-card__name{
+        display: block;
+        text-align: center;
+    }
+</style>
