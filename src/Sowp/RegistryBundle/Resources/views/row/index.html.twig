@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="pull-right">
+        {{ include('@SowpRegistry/row/buttons/_btn_new.html.twig') }}
+    </div>
+    <h1>Row list</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">List</h3>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    {% for attr in registry.attributes %}
+                        <th>
+                            {{ include('@SowpRegistry/row/_attr_label.html.twig', { 'attr': attr }) }}
+                        </th>
+                    {% endfor %}
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for row in rows %}
+                <tr>
+                    <td>
+                        <a href="{{ path('admin_row_show', { 'registry_id': registry.id, 'id': row.id }) }}">{{ row.id }}</a>
+                    </td>
+                    {% for value in row.values %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                    <td>
+                        <a href="{{ path('admin_row_show', { 'registry_id': registry.id, 'id': row.id }) }}" class="btn btn-default">
+                            <i class="fa fa-eye"></i>
+                            Show
+                        </a>
+                        <a href="{{ path('admin_row_edit', { 'registry_id': registry.id, 'id': row.id }) }}" class="btn btn-default">
+                            <i class="fa fa-pencil"></i>
+                            Edit
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+{% endblock %}

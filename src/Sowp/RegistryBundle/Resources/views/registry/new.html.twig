@@ -1,0 +1,14 @@
+{% extends 'SowpRegistryBundle:registry:_form_layout.html.twig' %}
+
+{% block body %}
+    <div class="pull-right">
+        {{ include('@SowpRegistry/registry/buttons/_btn_list.html.twig') }}
+    </div>
+    <h1>Registry creation</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <input type="submit" value="Create" />
+    {{ form_end(form) }}
+
+{% endblock %}

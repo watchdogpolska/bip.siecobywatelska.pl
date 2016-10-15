@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2 class="panel-title">Values</h2>
+    </div>
+    {% if objects | length > 0 %}
+        <table class="table table-bordered">
+            <tbody>
+                {% for value in objects %}
+                <tr>
+                    <th>
+                        {{ include('@SowpRegistry/row/_attr_label.html.twig', { 'attr': value.attribute }) }}
+                    </th>
+                    <td>{{ value }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="panel-body">
+            No values
+        </div>
+    {% endif %}
+</div>

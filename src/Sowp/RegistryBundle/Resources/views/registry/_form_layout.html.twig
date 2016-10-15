@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block _registry_attributes_entry_label %}
+{% endblock %}
+{% block _registry_attributes_entry_row %}
+    <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+        <div class="col-sm-12">
+            {{- form_widget(form) -}}
+            {{- form_errors(form) -}}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+    <script>
+        jQuery('[data-prototype]').each(function(){
+
+            var group = $(this);
+            var btn = $('<button class="btn btn-default">Add</button>');
+            group.after(btn);
+            var count = group.children().length;
+
+            console.log({group, btn, count});
+            btn.on('click', function(){
+                var row = group.data('prototype');
+                row = row.replace(/__name__/g, count++);
+                group.append($(row));
+            });
+
+        });
+    </script>
+{% endblock %}

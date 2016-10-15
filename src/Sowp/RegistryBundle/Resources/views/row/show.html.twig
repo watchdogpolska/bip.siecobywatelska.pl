@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="pull-right">
+        {{ include('@SowpRegistry/row/buttons/_btn_add.html.twig') }}
+        {{ include('@SowpRegistry/row/buttons/_btn_edit.html.twig') }}
+        {{ include('@SowpRegistry/row/_form_delete.html.twig') }}
+    </div>
+
+    <h1>Row</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title">Info</h2>
+        </div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ row.id }}</td>
+                </tr>
+                <tr>
+                    <th>Registry</th>
+                    <td>
+                        <a href="{{ path('admin_registry_show', { 'id': row.registry.id }) }}">
+                            {{ row.registry }}
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    {{ include('@SowpRegistry/row/_panel_values.html.twig', { objects: row.values }) }}
+
+{% endblock %}

@@ -22,6 +22,9 @@ class AppKernel extends Kernel
 
             // Doctrine Extensions
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+
+            // SOWP Bundles
+            new Sowp\RegistryBundle\SowpRegistryBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
