@@ -70,6 +70,8 @@ class CollectionController extends Controller
         ]);
     }
 
+
+    //below are not done -----------------------------------------------
     /**
      * add new collection entry.
      *
