@@ -1,23 +1,24 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h2 class="panel-title">List</h2>
-    </div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for registry in registries %}
-            <tr>
-                <td>
-                    <a href="{{ path('registry_show', { 'registry_id': registry.id }) }}">
-                        {{ registry.name }}
-                    </a>
-                </td>
-            </tr>
+<table class="table table-striped table-hovered">
+    <thead>
+    <tr>
+        {#<th>Id</th>#}
+        {% for attr in registry.attributes %}
+            <th>
+                {{ include('@SowpRegistry/registry/_attr_label.html.twig', { 'attr': attr }) }}
+            </th>
         {% endfor %}
-        </tbody>
-    </table>
-</div>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in rows %}
+        <tr>
+            {#<td>#}
+            {#<a href="{{ path('admin_row_show', { 'registry_id': registry.id, 'id': row.id }) }}">{{ row.id }}</a>#}
+            {#</td>#}
+            {% for value in row.values %}
+                <td>{{ value }}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

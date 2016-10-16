@@ -1,0 +1,22 @@
+{% for row in rows %}
+  <div class="panel panel-default">
+      {#<div class="panel-heading">#}
+          {#<h2 class="panel-title">List</h2>#}
+      {#</div>#}
+      <table class="table">
+          <tbody>
+          {% for value in row.values %}
+            <tr>
+                <th>
+                    {{ include('@SowpRegistry/registry/_attr_label.html.twig', { 'attr': value.attribute }) }}
+                </th>
+                <td>
+                    {{ value }}
+                </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+  </div>
+{% endfor %}
+

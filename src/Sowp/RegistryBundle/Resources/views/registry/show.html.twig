@@ -7,33 +7,10 @@
 
     <h1>{{ registry }}</h1>
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h2 class="panel-title">List</h2>
-        </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    {#<th>Id</th>#}
-                    {% for attr in registry.attributes %}
-                        <th>
-                            {{ include('@SowpRegistry/registry/_attr_label.html.twig', { 'attr': attr }) }}
-                        </th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-            {% for row in rows %}
-                <tr>
-                    {#<td>#}
-                        {#<a href="{{ path('admin_row_show', { 'registry_id': registry.id, 'id': row.id }) }}">{{ row.id }}</a>#}
-                    {#</td>#}
-                    {% for value in row.values %}
-                        <td>{{ value }}</td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    {% if registry.type == constant('TYPE_TABLE', registry) %}
+        {{ include('@SowpRegistry/registry/layout/_table.html.twig') }}
+    {% else %}
+        {{ include('@SowpRegistry/registry/layout/_grid.html.twig') }}
+    {% endif %}
+
 {% endblock body %}

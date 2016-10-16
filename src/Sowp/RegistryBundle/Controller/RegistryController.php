@@ -40,7 +40,7 @@ class RegistryController extends Controller
     /**
      * Lists all Row entities.
      *
-     * @Route("/{registry_id}/", name="registry_show")
+     * @Route("/{registry_id}", name="registry_show")
      * @ParamConverter("registry", options={"id" = "registry_id"})
      * @Method("GET")
      */

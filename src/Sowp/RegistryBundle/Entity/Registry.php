@@ -10,6 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Registry
 {
+    const TYPE_TABLE = "table";
+    const TYPE_LIST = "list";
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -21,6 +24,11 @@ class Registry
      * @ORM\Column(type="string")
      */
     private $name;
+
+    /**
+     * @ORM\Column(type="string", nullable=false)
+     */
+    private $type = self::TYPE_TABLE;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -77,6 +85,30 @@ class Registry
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     *
+     * @return Registry
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**

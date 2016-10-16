@@ -4,7 +4,6 @@ namespace AppBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use AppBundle\Entity\User;
 use Sowp\RegistryBundle\Entity\Attribute;
 use Sowp\RegistryBundle\Entity\Registry;
 use Sowp\RegistryBundle\Entity\Row;
@@ -48,6 +47,9 @@ class LoadRegistryData implements FixtureInterface
     public function generateRegistry(){
         $registry = new Registry();
         $registry->setName($this->faker->text(100));
+        $type = $this->faker->randomElement(array(Registry::TYPE_TABLE, Registry::TYPE_LIST));
+        $registry->setType($type);
+
         if($this->faker->boolean(40)){
             $registry->setDescription($this->faker->text());
         }
