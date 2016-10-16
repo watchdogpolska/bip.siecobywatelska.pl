@@ -8,6 +8,8 @@ use Sowp\RegistryBundle\Entity\Attribute;
 use Sowp\RegistryBundle\Entity\Registry;
 use Sowp\RegistryBundle\Entity\Row;
 use Sowp\RegistryBundle\Entity\Value;
+use Sowp\RegistryBundle\Entity\ValueFile;
+use Sowp\RegistryBundle\Entity\ValueText;
 
 class LoadRegistryData implements FixtureInterface
 {
@@ -62,15 +64,29 @@ class LoadRegistryData implements FixtureInterface
         if($this->faker->boolean(30)){
             $attribute->setDescription($this->faker->text());
         }
+        if($this->faker->boolean(10)){
+            $attribute->setType(Attribute::TYPE_FILE);
+        }else{
+            $attribute->setType(Attribute::TYPE_TEXT);
+        }
+
         return $attribute;
     }
 
     public function generateRow(Registry $registry){
         $row = new Row();
+        /** @var Attribute $attr */
         foreach($registry->getAttributes() as $attr){
-            $value = new Value();
+            if($attr->getType() == Attribute::TYPE_FILE)
+            {
+                $value = new ValueFile();
+                $value->setFile('http://lorempixel.com/400/400/cats/' . $this->faker->numberBetween(1, 10));
+            } else {
+                $value = new ValueText();
+                $value->setText($this->faker->text());
+            }
+
             $value->setAttribute($attr);
-            $value->setValue($this->faker->text(30));
             $row->addValue($value);
         }
 

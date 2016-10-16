@@ -11,7 +11,7 @@
                     {{ include('@SowpRegistry/registry/_attr_label.html.twig', { 'attr': value.attribute }) }}
                 </th>
                 <td>
-                    {{ value }}
+                    {{ include('@SowpRegistry/registry/_item_value.html.twig') }}
                 </td>
             </tr>
           {% endfor %}

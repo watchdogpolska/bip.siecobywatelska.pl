@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Attribute
 {
+    const TYPE_TEXT = "text";
+    const TYPE_FILE = "file";
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -21,6 +23,11 @@ class Attribute
      * @ORM\Column(type="string")
      */
     private $name;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $type = self::TYPE_TEXT;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -41,30 +48,6 @@ class Attribute
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return Attribute
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
     }
 
     /**
@@ -89,6 +72,54 @@ class Attribute
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     *
+     * @return Attribute
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Attribute
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
@@ -118,5 +149,16 @@ class Attribute
     public function __toString()
     {
         return $this->getName();
+    }
+
+    public function createValue(){
+        if($this->type== self::TYPE_FILE) {
+            $value = new ValueFile();
+        } else {
+            $value = new ValueText();
+        }
+        $value->setAttribute($this);
+
+        return $value;
     }
 }

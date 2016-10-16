@@ -2,8 +2,11 @@
 
 namespace Sowp\RegistryBundle\Form;
 
+use Sowp\RegistryBundle\Entity\Attribute;
 use Sowp\RegistryBundle\Entity\Value;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -22,9 +25,17 @@ class ValueType extends AbstractType
                 $form = $event->getForm();
                 /** @var Value $data */
                 $data = $event->getData();
-                $form->add('value', null, array(
-                    'label' => $data->getLabel()
-                ));
+                $type = $data->getType();
+                if($type == Attribute::TYPE_FILE){
+                    $form->add('path', FileType::class, array(
+                        'label' => $data->getLabel(),
+                        'data_class' => null,
+                    ));
+                }else{
+                    $form->add('text', TextType::class, array(
+                        'label' => $data->getLabel()
+                    ));
+                }
             });
         ;
     }

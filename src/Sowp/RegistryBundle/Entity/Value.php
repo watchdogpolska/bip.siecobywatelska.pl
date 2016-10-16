@@ -5,10 +5,12 @@ namespace Sowp\RegistryBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="Sowp\RegistryBundle\Repository\ValueRepository")
- * @ORM\Table()
+ * @ORM\Entity()
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"text" = "ValueText", "file" = "ValueFile"})
  */
-class Value
+abstract class Value
 {
     /**
      * @ORM\Id
@@ -16,11 +18,6 @@ class Value
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    private $value;
 
     /**
      * @ORM\ManyToOne(targetEntity="Sowp\RegistryBundle\Entity\Row", inversedBy="values", fetch="EAGER")
@@ -53,29 +50,7 @@ class Value
     {
         return $this->getAttribute()->getName();
     }
-    /**
-     * Set value
-     *
-     * @param string $value
-     *
-     * @return Value
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
 
-        return $this;
-    }
-
-    /**
-     * Get value
-     *
-     * @return string
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
 
     /**
      * Set row
@@ -101,11 +76,6 @@ class Value
         return $this->row;
     }
 
-    public function __toString()
-    {
-        return $this->getValue();
-    }
-
     /**
      * Set attribute
      *
@@ -129,4 +99,6 @@ class Value
     {
         return $this->attribute;
     }
+
+    public abstract function getType();
 }

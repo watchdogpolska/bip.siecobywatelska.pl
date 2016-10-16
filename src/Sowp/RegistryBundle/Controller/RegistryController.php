@@ -67,7 +67,7 @@ class RegistryController extends Controller
 
         $rows = array_map(function(Row $row) {
             return array_map(function(Value $value){
-                return $value->getValue();
+                return (string) $value;
             }, $row->getValues()->toArray());
         }, $registry->getRows()->toArray());
 

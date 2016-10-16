@@ -3,7 +3,10 @@
 namespace Sowp\RegistryBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sowp\RegistryBundle\Entity\Attribute;
 use Sowp\RegistryBundle\Entity\Registry;
+use Sowp\RegistryBundle\Entity\Value;
+use Sowp\RegistryBundle\Entity\ValueFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -51,10 +54,16 @@ class AdminRowController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $this->handleFileUploads($row);
+
             $em->persist($row);
             $em->flush();
 
-            return $this->redirectToRoute('admin_row_show', array('id' => $row->getId()));
+            return $this->redirectToRoute('admin_row_show', array(
+                'registry_id' => $registry->getId(),
+                'id' => $row->getId()
+            ));
         }
 
         return $this->render('@SowpRegistry/admin/row/new.html.twig', array(
@@ -97,11 +106,14 @@ class AdminRowController extends Controller
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $this->handleFileUploads($row);
+
             $em->persist($row);
             $em->flush();
 
             return $this->redirectToRoute('admin_row_show', array(
-                'registry_id'=> $registry->getId(),
+                'registry_id' => $registry->getId(),
                 'id' => $row->getId()
             ));
         }
@@ -153,5 +165,22 @@ class AdminRowController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * Handle file upload in values
+     *
+     * @param $row
+     */
+    public function handleFileUploads(Row $row)
+    {
+        $uploadableManager = $this->get('stof_doctrine_extensions.uploadable.manager');
+
+        $row->getValues()->filter(function (Value $entry) {
+            return $entry->getType() == Attribute::TYPE_FILE;
+        })->forAll(function ($i, ValueFile $value) use ($uploadableManager) {
+            $uploadableManager->markEntityToUpload($value, $value->getPath());
+            return true;
+        });
     }
 }

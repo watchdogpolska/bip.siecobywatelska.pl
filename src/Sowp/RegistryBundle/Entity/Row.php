@@ -19,7 +19,7 @@ class Row
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="Sowp\RegistryBundle\Entity\Registry", inversedBy="rows")
+     * @ORM\ManyToOne(targetEntity="Sowp\RegistryBundle\Entity\Registry", inversedBy="rows", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $registry;

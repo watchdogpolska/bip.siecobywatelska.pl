@@ -31,7 +31,9 @@
                         <a href="{{ path('admin_row_show', { 'registry_id': registry.id, 'id': row.id }) }}">{{ row.id }}</a>
                     </td>
                     {% for value in row.values %}
-                        <td>{{ value }}</td>
+                        <td>
+                            {{ include('@SowpRegistry/registry/_item_value.html.twig') }}
+                        </td>
                     {% endfor %}
                     <td>
                         <a href="{{ path('admin_row_show', { 'registry_id': registry.id, 'id': row.id }) }}" class="btn btn-default">
@@ -48,7 +50,4 @@
             </tbody>
         </table>
     </div>
-
-
-
 {% endblock %}

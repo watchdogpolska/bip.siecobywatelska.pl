@@ -26,22 +26,17 @@ class RowType extends AbstractType
                 /** @var Row $row */
                 $row = $event->getData();
 
-                $allAttrs = $row->getRegistry()->getAttributes()->toArray();
-                $currentValues = $row->getValues()->toArray();
-                foreach($allAttrs as $attr){
-                    $found = false;
-                    /** @var Value $value */
-                    foreach($currentValues as $value)
-                    {
-                        if($value->getAttribute() == $attr){
-                            $found = true;
-                            break;
-                        }
+                $allAttrs = $row->getRegistry()->getAttributes();
+                $currentValues = $row->getValues();
+                $allAttrs->forAll(function($i, Attribute $attr) use ($row, $currentValues) {
+                    $exists = $currentValues->exists(function($i, Value $value) use ($attr){
+                        return $value->getAttribute() == $attr;
+                    });
+
+                    if(!$exists){
+                        $row->addValue($attr->createValue());
                     }
-                    if(!$found){
-                        $row->addValue((new Value())->setAttribute($attr));
-                    }
-                }
+                });
 
                 $form->add('values', CollectionType::class, array(
                     'entry_type' => ValueType::class,
