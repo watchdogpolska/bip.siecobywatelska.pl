@@ -6,7 +6,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sowp\RegistryBundle\Entity\Attribute;
 use Sowp\RegistryBundle\Entity\Row;
 use Sowp\RegistryBundle\Entity\Value;
-use Sowp\RegistryBundle\Http\CsvResponse;
+use Sowp\RegistryBundle\Http\FileDownloadResponse;
+use Sowp\RegistryBundle\Mapper\RegistryToCsvMapper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -61,16 +62,7 @@ class RegistryController extends Controller
      */
     public function downloadCsvAction(Request $request, Registry $registry)
     {
-        $headers = array_map(function(Attribute $attr) {
-            return $attr->getName();
-        }, $registry->getAttributes()->toArray());
-
-        $rows = array_map(function(Row $row) {
-            return array_map(function(Value $value){
-                return (string) $value;
-            }, $row->getValues()->toArray());
-        }, $registry->getRows()->toArray());
-
-        return new CsvResponse(array_merge(array($headers), $rows));
+        $mapper = new RegistryToCsvMapper($registry);
+        return $mapper->getResponse();
     }
 }

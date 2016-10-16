@@ -79,8 +79,10 @@ class LoadRegistryData implements FixtureInterface
         foreach($registry->getAttributes() as $attr){
             if($attr->getType() == Attribute::TYPE_FILE)
             {
+                $name = 'file' . $this->faker->numberBetween(1, 10) . '.pdf';
                 $value = new ValueFile();
-                $value->setFile('http://lorempixel.com/400/400/cats/' . $this->faker->numberBetween(1, 10));
+                $value->setPath($name);
+                $value->setName($name);
             } else {
                 $value = new ValueText();
                 $value->setText($this->faker->text());
