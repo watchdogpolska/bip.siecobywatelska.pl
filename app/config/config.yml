@@ -89,7 +89,7 @@ stof_doctrine_extensions:
     default_locale: en_US
     uploadable:
         # Default file path: This is one of the three ways you can configure the path for the Uploadable extension
-        default_file_path:       %kernel.root_dir%/../web/uploads
+        default_file_path:       "%kernel.root_dir%/../web/uploads"
     orm:
         default:
             timestampable: true
