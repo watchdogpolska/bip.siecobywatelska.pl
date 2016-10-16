@@ -63,10 +63,9 @@ class RegistryToCsvMapper
     public function getResponse()
     {
         $data = $this->getCsv();
-        // TODO: Set filename based on slug
-//        $response->setFilename($this->data->getSlug() . '.csv');
+
         return (new FileDownloadResponse($data))
-            ->setFilename('export.csv')
+            ->setFilename($this->registry->getSlug() . '.csv')
             ->setMimeType('text/csv');
     }
 }

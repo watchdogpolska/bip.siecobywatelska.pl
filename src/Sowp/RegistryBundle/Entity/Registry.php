@@ -3,6 +3,7 @@
 namespace Sowp\RegistryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="Sowp\RegistryBundle\Repository\RegistryRepository")
@@ -24,6 +25,12 @@ class Registry
      * @ORM\Column(type="string")
      */
     private $name;
+
+    /**
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(type="string", length=128, unique=true)
+     */
+    private $slug;
 
     /**
      * @ORM\Column(type="string", nullable=false)
@@ -210,5 +217,29 @@ class Registry
     public function __toString()
     {
         return $this->getName();
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return Registry
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

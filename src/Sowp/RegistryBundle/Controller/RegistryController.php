@@ -41,8 +41,7 @@ class RegistryController extends Controller
     /**
      * Lists all Row entities.
      *
-     * @Route("/{registry_id}", name="registry_show")
-     * @ParamConverter("registry", options={"id" = "registry_id"})
+     * @Route("/{slug}", name="registry_show")
      * @Method("GET")
      */
     public function showAction(Registry $registry)
@@ -58,7 +57,7 @@ class RegistryController extends Controller
     /**
      * Download a Row entity as CSV.
      *
-     * @Route("/{id}/csv", name="registry_export_csv")
+     * @Route("/{slug}/csv", name="registry_export_csv")
      */
     public function downloadCsvAction(Request $request, Registry $registry)
     {
