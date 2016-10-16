@@ -23,7 +23,7 @@ class CollectionController extends Controller
      * @param Request $request
      * @return string
      *
-     * @Route("/query", name="sowp_news_collection_query-select2")
+     * @Route("/query", name="sowp_news_collection_query_select2")
      * @Method("GET")
      */
     public function queryAction(Request $request)
@@ -78,12 +78,29 @@ class CollectionController extends Controller
      * @Route("/edytuj/{id}", name="sowp_news_collection_edit")
      * @Method({"GET","POST"})
      */
-    public function editAction(Request $req, Collection $col)
+    public function editAction(Request $req, Collection $collection)
     {
+        $form = $this->createForm(addForm::class, $collection);
+        $form->handleRequest($req);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($collection);
+                $em->flush();
+                $this->container->get('session')->getFlashBag()->add('notice', 'Zapisano');
+            } else {
+                $this->container->get('session')->getFlashBag()->add('error', 'Wystąpił błąd');
+            }
+        }
+
+        return $this->render('collection/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
 
-    
+
     /**
      * Lists all Collection entities.
      *
