@@ -21,6 +21,7 @@ class CollectionController extends Controller
      * query collections for Select2Entity.
      *
      * @param Request $request
+     *
      * @return string
      *
      * @Route("/query", name="sowp_news_collection_query_select2")
@@ -98,8 +99,6 @@ class CollectionController extends Controller
             'form' => $form->createView(),
         ]);
     }
-
-
 
     /**
      * Lists all Collection entities.

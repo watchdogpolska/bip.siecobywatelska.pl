@@ -41,7 +41,7 @@ class DataLoader extends AbstractFixture
         $user->setRoles(array('ROLE_SUPER_ADMIN'));
         $om->persist($user);
 
-        for ($x = 2; $x > 0; $x--) {
+        for ($x = 2; $x > 0; --$x) {
             $col = new Collection();
             $col->setTitle($faker->words(mt_rand(3, 8), true));
             $col->setPublic(true);
@@ -51,7 +51,7 @@ class DataLoader extends AbstractFixture
             $coll[] = $col;
         }
 
-        for ($x = 10; $x > 0; $x--) {
+        for ($x = 10; $x > 0; --$x) {
             $news = new News();
             $news->setTitle($faker->words(mt_rand(3, 8), true));
             $news->addCollection($coll[0]);
