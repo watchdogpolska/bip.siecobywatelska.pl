@@ -236,7 +236,7 @@ class Collection
      *
      * @return Collection
      */
-    public function setCreatedBy(\AppBundle\Entity\User $createdBy = null)
+    public function setCreatedBy(\AppBundle\Entity\User $createdBy)
     {
         $this->createdBy = $createdBy;
 
@@ -260,7 +260,7 @@ class Collection
      *
      * @return Collection
      */
-    public function setModifiedBy(\AppBundle\Entity\User $modifiedBy = null)
+    public function setModifiedBy(\AppBundle\Entity\User $modifiedBy)
     {
         $this->modifiedBy = $modifiedBy;
 
@@ -448,7 +448,7 @@ class Collection
      *
      * @return Collection
      */
-    public function setRoot(\Sowp\NewsModuleBundle\Entity\Collection $root = null)
+    public function setRoot(\Sowp\NewsModuleBundle\Entity\Collection $root)
     {
         $this->root = $root;
 
@@ -472,7 +472,7 @@ class Collection
      *
      * @return Collection
      */
-    public function setParent(\Sowp\NewsModuleBundle\Entity\Collection $parent = null)
+    public function setParent(\Sowp\NewsModuleBundle\Entity\Collection $parent)
     {
         $this->parent = $parent;
 

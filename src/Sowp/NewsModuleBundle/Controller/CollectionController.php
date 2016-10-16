@@ -21,8 +21,9 @@ class CollectionController extends Controller
      * query collections for Select2Entity.
      *
      * @param Request $request
+     * @return string
      *
-     * @Route("/query", name="collection_query_select2")
+     * @Route("/query", name="sowp_news_collection_query-select2")
      * @Method("GET")
      */
     public function queryAction(Request $request)
@@ -46,7 +47,7 @@ class CollectionController extends Controller
     /**
      * add new collection entry.
      *
-     * @Route("/dodaj", name="addCollection")
+     * @Route("/dodaj", name="sowp_news_collection_add")
      * @Method({"GET","POST"})
      */
     public function addAction(Request $req)
@@ -71,22 +72,22 @@ class CollectionController extends Controller
         ]);
     }
 
-    //below are not done -----------------------------------------------
-
     /**
-     * add new collection entry.
+     * edit collection entry.
      *
-     * @Route("/edytuj/{id}", name="editCollection")
+     * @Route("/edytuj/{id}", name="sowp_news_collection_edit")
      * @Method({"GET","POST"})
      */
     public function editAction(Request $req, Collection $col)
     {
     }
 
+
+    
     /**
      * Lists all Collection entities.
      *
-     * @Route("/", name="kolekcja_index")
+     * @Route("/", name="sowp_news_collection_index")
      * @Method("GET")
      */
     public function indexAction()
@@ -103,7 +104,7 @@ class CollectionController extends Controller
     /**
      * Finds and displays a Collection entity.
      *
-     * @Route("/{id}", name="kolekcja_show")
+     * @Route("/{id}", name="sowp_news_collection_show")
      * @Method("GET")
      */
     public function showAction(Collection $collection)
