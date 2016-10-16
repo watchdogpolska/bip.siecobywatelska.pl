@@ -312,7 +312,7 @@ class Collection
     }
 
     /**
-     * Set children
+     * Set children.
      *
      * @param array $children
      *
@@ -326,7 +326,7 @@ class Collection
     }
 
     /**
-     * Get children
+     * Get children.
      *
      * @return array
      */
@@ -336,7 +336,7 @@ class Collection
     }
 
     /**
-     * Add parent
+     * Add parent.
      *
      * @param \Sowp\NewsModuleBundle\Entity\Collection $parent
      *
@@ -350,7 +350,7 @@ class Collection
     }
 
     /**
-     * Remove parent
+     * Remove parent.
      *
      * @param \Sowp\NewsModuleBundle\Entity\Collection $parent
      */
@@ -360,7 +360,7 @@ class Collection
     }
 
     /**
-     * Get parent
+     * Get parent.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -370,9 +370,9 @@ class Collection
     }
 
     /**
-     * Set lft
+     * Set lft.
      *
-     * @param integer $lft
+     * @param int $lft
      *
      * @return Collection
      */
@@ -384,9 +384,9 @@ class Collection
     }
 
     /**
-     * Get lft
+     * Get lft.
      *
-     * @return integer
+     * @return int
      */
     public function getLft()
     {
@@ -394,9 +394,9 @@ class Collection
     }
 
     /**
-     * Set lvl
+     * Set lvl.
      *
-     * @param integer $lvl
+     * @param int $lvl
      *
      * @return Collection
      */
@@ -408,9 +408,9 @@ class Collection
     }
 
     /**
-     * Get lvl
+     * Get lvl.
      *
-     * @return integer
+     * @return int
      */
     public function getLvl()
     {
@@ -418,9 +418,9 @@ class Collection
     }
 
     /**
-     * Set rgt
+     * Set rgt.
      *
-     * @param integer $rgt
+     * @param int $rgt
      *
      * @return Collection
      */
@@ -432,9 +432,9 @@ class Collection
     }
 
     /**
-     * Get rgt
+     * Get rgt.
      *
-     * @return integer
+     * @return int
      */
     public function getRgt()
     {
@@ -442,7 +442,7 @@ class Collection
     }
 
     /**
-     * Set root
+     * Set root.
      *
      * @param \Sowp\NewsModuleBundle\Entity\Collection $root
      *
@@ -456,7 +456,7 @@ class Collection
     }
 
     /**
-     * Get root
+     * Get root.
      *
      * @return \Sowp\NewsModuleBundle\Entity\Collection
      */
@@ -466,7 +466,7 @@ class Collection
     }
 
     /**
-     * Set parent
+     * Set parent.
      *
      * @param \Sowp\NewsModuleBundle\Entity\Collection $parent
      *
@@ -480,7 +480,7 @@ class Collection
     }
 
     /**
-     * Add child
+     * Add child.
      *
      * @param \Sowp\NewsModuleBundle\Entity\Collection $child
      *
@@ -494,7 +494,7 @@ class Collection
     }
 
     /**
-     * Remove child
+     * Remove child.
      *
      * @param \Sowp\NewsModuleBundle\Entity\Collection $child
      */

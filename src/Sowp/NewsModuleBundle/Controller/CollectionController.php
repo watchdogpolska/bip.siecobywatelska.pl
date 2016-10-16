@@ -18,7 +18,8 @@ use Sowp\NewsModuleBundle\Form\addCollectionForm as addForm;
 class CollectionController extends Controller
 {
     /**
-     * query collections for Select2Entity
+     * query collections for Select2Entity.
+     *
      * @param Request $request
      *
      * @Route("/query", name="collection_query_select2")
@@ -33,9 +34,9 @@ class CollectionController extends Controller
         $resTmp = $repo->searchTitle($query);
 
         foreach ($resTmp as $key => $val) {
-            $collections[]= [
+            $collections[] = [
                 'id' => $val->getId(),
-                'text' => $val->getTitle()
+                'text' => $val->getTitle(),
             ];
         }
 
@@ -70,8 +71,8 @@ class CollectionController extends Controller
         ]);
     }
 
-
     //below are not done -----------------------------------------------
+
     /**
      * add new collection entry.
      *

@@ -10,8 +10,8 @@ class CollectionRepository extends NestedTreeRepository
     {
         $search = "%$q%";
         $query = $this->getEntityManager()
-                ->createQuery("SELECT c FROM NewsModuleBundle:Collection c WHERE c.title LIKE :search")
-                ->setParameter("search", $search);
+                ->createQuery('SELECT c FROM NewsModuleBundle:Collection c WHERE c.title LIKE :search')
+                ->setParameter('search', $search);
         $res = $query->getResult();
         foreach ($res as $k => $v) {
             yield $v;
