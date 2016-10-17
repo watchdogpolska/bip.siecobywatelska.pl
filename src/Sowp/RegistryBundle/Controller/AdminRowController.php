@@ -144,7 +144,9 @@ class AdminRowController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('admin_row_index');
+        return $this->redirectToRoute('admin_row_index', array(
+            'registry_id' => $registry->getId()
+        ));
     }
 
 
