@@ -1,15 +1,17 @@
-<div class="panel panel-default">
+<div class="panel panel-default" id="panel-attributes">
     <div class="panel-heading">
         <h2 class="panel-title">Attributes</h2>
     </div>
     {% if objects|length > 0 %}
         <table class="table table-bordered">
             <thead>
-                <th>Name</th>
-                <th>
-                    <i class="fa fa-question-circle" aria-hidden="true"></i>
-                    Description
-                </th>
+                <tr>
+                    <th>Name</th>
+                    <th>
+                        <i class="fa fa-question-circle" aria-hidden="true"></i>
+                        Description
+                    </th>
+                </tr>
             </thead>
             <tbody>
             {% for attr in objects %}

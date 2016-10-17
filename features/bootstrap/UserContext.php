@@ -72,4 +72,16 @@ class UserContext implements Context
 
         $this->minkContext->visit("resetting/reset/{$token}");
     }
+
+    /**
+     * @Given /^I am logged in$/
+     */
+    public function iAmLoggedIn()
+    {
+        $this->currentUser = $this->createUser('root', 'root', array('ROLE_SUPER_ADMIN'));
+        $this->minkContext->visit('/login');
+        $this->minkContext->fillField('username', 'root');
+        $this->minkContext->fillField('password', 'root');
+        $this->minkContext->pressButton('Log in');
+    }
 }
