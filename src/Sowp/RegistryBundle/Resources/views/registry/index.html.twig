@@ -17,7 +17,7 @@
             {% for registry in registries %}
                 <tr>
                     <td>
-                        <a href="{{ path('registry_show', { 'registry_id': registry.id }) }}">
+                        <a href="{{ path('registry_show', { 'slug': registry.slug }) }}">
                             {{ registry.name }}
                         </a>
                     </td>
