@@ -20,25 +20,12 @@
     {% endfor %}    
     
     <h1>Dodajesz Tag Wiadomości</h1>
+
+    {{ form_start(edit_form) }}
+    {{ form_widget(edit_form) }}
+    <input type="submit" value="Edit" />
+    {{ form_end(edit_form) }}
     
-    {{ form_start(form, {"attr" : { 'class' : 'form'} }) }}
-
-            <label for="add_collection_form[title]">Tytuł</label>
-            {{ form_errors(form.title) }}
-            {{ form_widget(form.title) }}
-
-            <br>
-            <label for="add_collection_form[public]">Czy publiczna?</label>
-            {{ form_errors(form.public) }}
-            {{ form_widget(form.public) }}
-
-            <br>
-            <label for="add_collection_form[parentCollection]">Kolekcja nadrzędna</label>
-            {{ form_errors(form.parent) }}
-            {{ form_widget(form.parent) }}
-            <br><br>
-            <input type="submit" value="Dodaj kolekcję" />
-    {{ form_end(form) }}
     <hr />
 {% endblock %}
 {% block messages %}
