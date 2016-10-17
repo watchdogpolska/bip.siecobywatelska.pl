@@ -36,6 +36,7 @@ class RowType extends AbstractType
                     if(!$exists){
                         $row->addValue($attr->createValue());
                     }
+                    return true;
                 });
 
                 $form->add('values', CollectionType::class, array(
