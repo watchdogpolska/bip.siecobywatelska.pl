@@ -25,7 +25,7 @@ class Row
     private $registry;
 
     /**
-     * @ORM\OneToMany(targetEntity="Sowp\RegistryBundle\Entity\Value", mappedBy="row", fetch="EAGER", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Sowp\RegistryBundle\Entity\Value", mappedBy="row", fetch="EAGER", cascade={"persist", "remove"})
      */
     private $values;
     /**

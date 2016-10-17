@@ -21,7 +21,7 @@ abstract class Value
 
     /**
      * @ORM\ManyToOne(targetEntity="Sowp\RegistryBundle\Entity\Row", inversedBy="values", fetch="EAGER")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $row;
 
