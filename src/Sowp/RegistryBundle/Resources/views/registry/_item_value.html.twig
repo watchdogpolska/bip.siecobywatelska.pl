@@ -1,6 +1,6 @@
 {% if value.type == constant('Sowp\\RegistryBundle\\Entity\\Attribute::TYPE_FILE') %}
     {% if value.name %}
-        <a href="/uploads/{{ value.name }}">{{ value }}</a>
+        <a href="{{ web_path(value.path) }}">{{ value }}</a>
     {% else %}
         No file
     {% endif %}

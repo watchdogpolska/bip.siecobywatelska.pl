@@ -2,3 +2,19 @@ services:
 #    sowp_registry.example:
 #        class: Sowp\RegistryBundle\Example
 #        arguments: ["@service_id", "plain_value", %parameter%]
+
+    sowp_registry.web_path_resolver:
+        class: Sowp\RegistryBundle\WebPathResolver
+        arguments:
+          - "%kernel.root_dir%/../web"
+          - "@filesystem"
+        public: false
+
+
+    sowp_registry.twig.web_path:
+        class: Sowp\RegistryBundle\Twig\WebPathExtension
+        arguments:
+          - "@sowp_registry.web_path_resolver"
+        public: false
+        tags:
+            - { name: twig.extension }

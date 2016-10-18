@@ -7,7 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="Sowp\RegistryBundle\Repository\ValueRepository")
- * @Gedmo\Uploadable
+ * @Gedmo\Uploadable(appendNumber=true)
  */
 class ValueFile extends Value
 {

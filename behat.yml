@@ -22,6 +22,8 @@ default:
     extensions:
         Behat\Symfony2Extension: ~
         Behat\MinkExtension:
+            files_path: ./features/stub/
+            show_cmd: firefox %s
             sessions:
                 default:
                     symfony2: ~

@@ -7,6 +7,8 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\WebAssert;
 use Behat\Symfony2Extension\Context\KernelDictionary;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 require_once __DIR__.'/../../vendor/phpunit/phpunit/src/Framework/Assert/Functions.php';
 
@@ -54,6 +56,19 @@ class ProjectContext implements Context
             $connection->query("TRUNCATE TABLE `${tableName}`");
         }
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
+    }
+
+    /**
+     * @Given /^the upload directory is clean$/
+     */
+    public function cleanUploadDirectory()
+    {
+        $path = dirname(__DIR__, 2).'/web/uploads/';
+
+        $finder = new Finder();
+        $fs = new Filesystem();
+        $files = $finder->files()->in($path);
+        $fs->remove($files);
     }
 
     /**

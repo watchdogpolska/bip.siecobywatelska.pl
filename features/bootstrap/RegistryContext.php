@@ -24,12 +24,13 @@ class RegistryContext implements Context
 
     /**
      * @Given /^The registry "([^"]*)" should exists$/
+     * @Given /^The registry "([^"]*)" with type "([^"]*)" should exists$/
+     * @Given /^The registry "([^"]*)" with type "([^"]*)" and description "([^"]*)" should exists$/
      */
-    public function theRegistryExists($name)
+    public function theRegistryExists($name, $type = null, $description = null)
     {
-        $this->lastRegistry = $this->createRegistry($name);
+        $this->lastRegistry = $this->createRegistry($name, $type, $description);
     }
-
 
     /**
      * @Given have attributes:
@@ -116,12 +117,15 @@ class RegistryContext implements Context
         $em->flush();
     }
 
-    private function createRegistry($name, $description = null)
+    private function createRegistry($name, $type = null, $description = null)
     {
         $register = new Registry();
         $register->setName($name);
         if($description){
             $register->setDescription($description);
+        }
+        if($type){
+            $register->setType($type);
         }
         $this->getManager()->persist($register);
         $this->getManager()->flush();
