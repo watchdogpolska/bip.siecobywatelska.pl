@@ -13,8 +13,6 @@ class CollectionRepository extends NestedTreeRepository
                 ->createQuery('SELECT c FROM NewsModuleBundle:Collection c WHERE c.title LIKE :search')
                 ->setParameter('search', $search);
         $res = $query->getResult();
-        foreach ($res as $k => $v) {
-            yield $v;
-        }
+        return $res;
     }
 }
