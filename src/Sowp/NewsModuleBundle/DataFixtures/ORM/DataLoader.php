@@ -34,9 +34,8 @@ class DataLoader extends AbstractFixture
             $news = new News();
             $news->setTitle($faker->words(mt_rand(3, 8), true));
             $r = mt_rand(1, 14);
-            for ($x = 0; $x < $r; $x++) {
+            while (($newsCol = $news->getCollections()) && $newsCol->count() < $r) {
                 $col = $coll[array_rand($coll)];
-                $newsCol = $news->getCollections();
                 if (!$newsCol->contains($col)) {
                     $news->addCollection($col);
                 }
