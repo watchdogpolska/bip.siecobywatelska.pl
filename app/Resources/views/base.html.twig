@@ -102,18 +102,6 @@
                 </div>
             {% endblock %}
         </div>
-        {% block messages %}
-        <div class="container wiadomosci-box">    
-            <ul class="nav nav-tabs nav-justified wiadomosci-bar">
-                <li role="presentation" class="active"><a href="#">Aktualności</a></li>
-                <li role="presentation"><a href="#">Ogłoszenia</a></li>
-                <li role="presentation"><a href="#">Obwieszczenia</a></li>
-                <li role="presentation"><a href="#">Inne</a></li>
-            </ul>
-            <div class="wiadomosci-content nav-justified">
-            </div>
-        </div>            
-        {% endblock %}
         {% block footer %}
             <footer>
                 <div class="container">
@@ -145,13 +133,6 @@
                 $(function () {
                     $('[data-toggle="tooltip"]').tooltip()
                 })
-            </script>
-            <script>
-                var menuElement = '.wiadomosci-bar li[role="presentation"]';
-                $(menuElement).on('click', function(){
-                    $(menuElement).removeClass("active");
-                    $(this).addClass("active");
-                });
             </script>
         {% endblock %}
     </body>

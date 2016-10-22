@@ -110,7 +110,7 @@ class CollectionController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $collections = $em->getRepository('Sowp:NewsModuleBundle:Collection')->findAll();
+        $collections = $em->getRepository('NewsModuleBundle:Collection')->findAll();
 
         return $this->render('collection/index.html.twig', array(
             'collections' => $collections,
