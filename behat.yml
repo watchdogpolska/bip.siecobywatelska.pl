@@ -10,14 +10,14 @@ default:
               - Behat\MinkExtension\Context\MinkContext
 
       registry:
-                bundle: SowpRegistryBundle
-                type: symfony_bundle
-                contexts:
-                    - FeatureContext
-                    - UserContext
-                    - ProjectContext
-                    - RegistryContext
-                    - Behat\MinkExtension\Context\MinkContext
+          bundle: SowpRegistryBundle
+          type: symfony_bundle
+          contexts:
+              - FeatureContext
+              - UserContext
+              - ProjectContext
+              - RegistryContext
+              - Behat\MinkExtension\Context\MinkContext
 
     extensions:
         Behat\Symfony2Extension: ~

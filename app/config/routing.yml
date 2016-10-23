@@ -1,7 +1,5 @@
 sowp_registry:
-    resource: "@SowpRegistryBundle/Controller/"
-    type:     annotation
-    prefix:   /
+    resource: "@SowpRegistryBundle/Resources/config/routing.yml"
 
 app:
     resource: "@AppBundle/Controller/"

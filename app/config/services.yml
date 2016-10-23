@@ -14,3 +14,8 @@ services:
 #        - { name: doctrine.event_subscriber, connection: default }
 #    calls:
 #        - [ setAnnotationReader, [ @annotation_reader ] ]
+
+  sowp_registry.api.exception_listener:
+    class: AppBundle\EventListener\ApiExceptionListener
+    tags:
+        - { name: kernel.event_subscriber }

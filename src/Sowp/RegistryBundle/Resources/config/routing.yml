@@ -1,0 +1,13 @@
+sowp_registry:
+    resource: "@SowpRegistryBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+sowp_registry_api:
+    resource: "@SowpRegistryBundle/Controller/Api"
+    type:     annotation
+    prefix:   /
+    defaults:
+      _format: json
+
+
