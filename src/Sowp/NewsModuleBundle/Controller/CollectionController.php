@@ -62,7 +62,7 @@ class CollectionController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($collection);
                 $em->flush();
-                $this->addFlash('notice', 'Zapisano');
+                $this->redirectToRoute('sowp_news_collection_show',['id' => $collection->getId()]);
             } else {
                 $this->addFlash('error', 'Wystąpił błąd');
             }
@@ -130,7 +130,7 @@ class CollectionController extends Controller
         ));
     }
 
-    private function addFlash($type, $content)
+    protected function addFlash($type, $content)
     {
         $this->container->get('session')->getFlashBag()->add($type, $content);
     }

@@ -40,15 +40,18 @@ class NewsController extends Controller
     public function newAction(Request $request)
     {
         $news = new News();
-        $form = $this->createForm(NewsType::class, $news);
+        $form = $this->createForm('Sowp\NewsModuleBundle\Form\NewsType', $news);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($news);
-            $em->flush($news);
-
-            return $this->redirectToRoute('sowp_newsmodule_news_show', array('id' => $news->getId()));
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($news);
+                $em->flush($news);
+                return $this->redirectToRoute('sowp_newsmodule_news_show', ['id' => $news->getId()]);
+            } else {
+                $this->addFlash('error', 'Wprowadzone dane są niepoprawne, nie udało się zapisać wiadomości');
+            }
         }
 
         return $this->render('news/new.html.twig', array(
@@ -134,7 +137,7 @@ class NewsController extends Controller
         ;
     }
 
-    private function addFlash($type, $content)
+    protected function addFlash($type, $content)
     {
         $this->container->get('session')->getFlashBag()->add($type, $content);
     }

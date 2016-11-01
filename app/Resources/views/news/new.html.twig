@@ -1,18 +1,38 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css"
+            integrity="sha256-xqxV4FDj5tslOz6MV13pdnXgf63lJwViadn//ciKmIs="
+            crossorigin="anonymous" />
+{% endblock %}
+
 {% block body %}
     <div class="pull-right">
     
-        <a href="{{ path('news_index') }}" class="btn btn-default">
+        <a href="{{ path('sowp_newsmodule_news_index') }}" class="btn btn-default">
             <i class="fa fa-list" aria-hidden="true"></i>
             Back to the list
         </a>
     </div>
-<h1>News creation</h1>
+<h1>Utwórz wiadomość</h1>
 
     {{ form_start(form) }}
     {{ form_widget(form) }}
-    <input type="submit" value="Create" />
+    <br>
+    <input class="pull-right" type="submit" value="Utwórz" />
     {{ form_end(form) }}
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.js"
+            integrity="sha256-L8glE3PzqSO1/nrEHYWoNyozn5i3ETucQoJGA7gp2mI="
+            crossorigin="anonymous"></script>
+    <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
 {% endblock %}
