@@ -26,7 +26,7 @@ class NewsController extends Controller
 
         $news = $em->getRepository('NewsModuleBundle:News')->findAll();
 
-        return $this->render('news/index.html.twig', array(
+        return $this->render('NewsModuleBundle:news:index.html.twig', array(
             'news' => $news,
         ));
     }
@@ -54,7 +54,7 @@ class NewsController extends Controller
             }
         }
 
-        return $this->render('news/new.html.twig', array(
+        return $this->render('NewsModuleBundle:news:new.html.twig', array(
             'news' => $news,
             'form' => $form->createView(),
         ));
@@ -70,7 +70,7 @@ class NewsController extends Controller
     {
         $deleteForm = $this->createDeleteForm($news);
 
-        return $this->render('news/show.html.twig', array(
+        return $this->render('NewsModuleBundle:news:show.html.twig', array(
             'news' => $news,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -94,7 +94,7 @@ class NewsController extends Controller
             return $this->redirectToRoute('sowp_newsmodule_news_edit', array('id' => $news->getId()));
         }
 
-        return $this->render('news/edit.html.twig', array(
+        return $this->render('NewsModuleBundle:news:edit.html.twig', array(
             'news' => $news,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
