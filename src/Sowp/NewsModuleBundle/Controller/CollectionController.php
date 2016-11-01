@@ -62,9 +62,9 @@ class CollectionController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($collection);
                 $em->flush();
-                $this->container->get('session')->getFlashBag()->add('notice', 'Zapisano');
+                $this->addFlash('notice', 'Zapisano');
             } else {
-                $this->container->get('session')->getFlashBag()->add('error', 'Wystąpił błąd');
+                $this->addFlash('error', 'Wystąpił błąd');
             }
         }
 
@@ -89,9 +89,9 @@ class CollectionController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($collection);
                 $em->flush();
-                $this->container->get('session')->getFlashBag()->add('notice', 'Zapisano');
+                $this->addFlash('notice', 'Zapisano');
             } else {
-                $this->container->get('session')->getFlashBag()->add('error', 'Wystąpił błąd');
+                $this->addFlash('error', 'Wystąpił błąd');
             }
         }
 
@@ -128,5 +128,10 @@ class CollectionController extends Controller
         return $this->render('collection/show.html.twig', array(
             'collection' => $collection,
         ));
+    }
+
+    private function addFlash($type, $content)
+    {
+        $this->container->get('session')->getFlashBag()->add($type, $content);
     }
 }

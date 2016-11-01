@@ -3,10 +3,20 @@
     {% block body %}
     <div class="pull-right">
     
-        <a href="{{ path('artykul_index') }}" class="btn btn-default">
+        <a href="{{ path('news_index') }}" class="btn btn-default">
             <i class="fa fa-list" aria-hidden="true"></i>
             Back to the list
         </a>
+        <a href="{{ path('news_edit', { 'id': news.id }) }}" class="btn btn-default">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            Edit
+        </a>
+        {{ form_start(delete_form, {"attr": {"style": "display: inline-block"}}) }}
+            <button type="submit" class="btn btn-danger">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                Delete
+            </button>
+        {{ form_end(delete_form) }}
     </div>
 <h1>News</h1>
 
@@ -43,6 +53,10 @@
                 <tr>
                     <th>Modifiedat</th>
                     <td>{% if news.modifiedAt %}{{ news.modifiedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Modifynote</th>
+                    <td>{{ news.modifyNote }}</td>
                 </tr>
             </tbody>
         </table>
