@@ -19,7 +19,6 @@ class NewsType extends AbstractType
             ->add('content', null, ['label' => 'Treść'])
             ->add('attachments', null, ['label' => 'Załączniki'])
             ->add('pinned', null, ['label' => 'Przypięty'])
-            ->add('modifyNote', null, ['label' => 'Komentarz edytora'])
             ->add('collections', Select2::class, [
                 'multiple' => true,
                 'class' => 'Sowp\NewsModuleBundle\Entity\Collection',
