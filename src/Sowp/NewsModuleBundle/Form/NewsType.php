@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType as Select2;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+
 
 class NewsType extends AbstractType
 {
@@ -17,7 +19,14 @@ class NewsType extends AbstractType
         $builder
             ->add('title', null, ['label' => 'Tytuł'])
             ->add('content', null, ['label' => 'Treść'])
-            ->add('attachments', null, ['label' => 'Załączniki'])
+            ->add('attachments', CollectionType::class, [
+                'label' => 'Załączniki',
+                'entry_type' => AttachmentType::class,
+                'allow_add'    => true,
+                'allow_delete' => true,
+                'prototype'    => true,
+                'required'     => false
+            ])
             ->add('pinned', null, ['label' => 'Przypięty'])
             ->add('collections', Select2::class, [
                 'multiple' => true,

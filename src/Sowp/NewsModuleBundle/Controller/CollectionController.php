@@ -68,7 +68,7 @@ class CollectionController extends Controller
             }
         }
 
-        return $this->render('collection/add.html.twig', [
+        return $this->render('NewsModuleBundle:collection:add.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -95,7 +95,7 @@ class CollectionController extends Controller
             }
         }
 
-        return $this->render('collection/edit.html.twig', [
+        return $this->render('NewsModuleBundle:collection:edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -112,7 +112,7 @@ class CollectionController extends Controller
 
         $collections = $em->getRepository('NewsModuleBundle:Collection')->findAll();
 
-        return $this->render('collection/index.html.twig', array(
+        return $this->render('NewsModuleBundle:collection:index.html.twig', array(
             'collections' => $collections,
         ));
     }
@@ -125,7 +125,7 @@ class CollectionController extends Controller
      */
     public function showAction(Collection $collection)
     {
-        return $this->render('collection/show.html.twig', array(
+        return $this->render('NewsModuleBundle:collection:show.html.twig', array(
             'collection' => $collection,
         ));
     }

@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
 /**
  * News controller.
  *
- * @Route("/news")
+ * @Route("/wiadomosci")
  */
 class NewsController extends Controller
 {
@@ -46,8 +46,8 @@ class NewsController extends Controller
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($news);
                 $em->flush($news);
+                $em->persist($news);
                 return $this->redirectToRoute('sowp_newsmodule_news_show', ['id' => $news->getId()]);
             } else {
                 $this->addFlash('error', 'Wprowadzone dane są niepoprawne, nie udało się zapisać wiadomości');
@@ -79,7 +79,7 @@ class NewsController extends Controller
     /**
      * Displays a form to edit an existing news entity.
      *
-     * @Route("/edit/{id}", name="news_edit")
+     * @Route("/edytuj/{id}", name="sowp_newsmodule_news_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, News $news)

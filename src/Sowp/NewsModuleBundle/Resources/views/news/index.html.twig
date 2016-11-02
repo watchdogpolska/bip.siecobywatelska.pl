@@ -2,7 +2,7 @@
 
 {% block body %}
     <div class="pull-right">
-            <a href="{{ path('news_new') }}" class="btn btn-primary">
+            <a href="{{ path('sowp_newsmodule_news_new') }}" class="btn btn-primary">
                 <i class="fa fa-plus" aria-hidden="true"></i>
                 Create a new entry
             </a>
@@ -30,7 +30,7 @@
             <tbody>
             {% for news in news %}
                 <tr>
-                    <td><a href="{{ path('news_show', { 'id': news.id }) }}">{{ news.id }}</a></td>
+                    <td><a href="{{ path('sowp_newsmodule_news_show', { 'id': news.id }) }}">{{ news.id }}</a></td>
                     <td>{{ news.title }}</td>
                     <td>{{ news.content }}</td>
                     <td>{% if news.attachments %}{{ news.attachments|join(', ') }}{% endif %}</td>
@@ -38,11 +38,11 @@
                     <td>{% if news.createdAt %}{{ news.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
                     <td>{% if news.modifiedAt %}{{ news.modifiedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
                     <td>{{ news.modifyNote }}</td>                    <td>
-                        <a href="{{ path('news_show', { 'id': news.id }) }}" class="btn btn-default">
+                        <a href="{{ path('sowp_newsmodule_news_show', { 'id': news.id }) }}" class="btn btn-default">
                             <i class="fa fa-eye"></i>
                             Show
                         </a>
-                        <a href="{{ path('news_edit', { 'id': news.id }) }}" class="btn btn-default">
+                        <a href="{{ path('sowp_newsmodule_news_edit', { 'id': news.id }) }}" class="btn btn-default">
                             <i class="fa fa-pencil"></i>
                             Edit
                         </a>                    </td>
