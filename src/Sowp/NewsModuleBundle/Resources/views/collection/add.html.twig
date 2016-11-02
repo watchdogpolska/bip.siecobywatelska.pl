@@ -1,14 +1,14 @@
-{% extends '_form_new_layout.html.twig' %}
+{% extends 'NewsModuleBundle:news:_form_new_layout.html.twig' %}
 
 {% block body %}
  
     
     <h1>Dodajesz Tag Wiadomości</h1>
 
-    {{ form_start(edit_form) }}
-    {{ form_widget(edit_form) }}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
     <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+    {{ form_end(form) }}
     
     <hr />
 {% endblock %}

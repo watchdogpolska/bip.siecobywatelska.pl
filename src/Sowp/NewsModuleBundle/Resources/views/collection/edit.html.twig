@@ -1,54 +1,13 @@
-{% extends 'base.html.twig' %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css"
-            integrity="sha256-xqxV4FDj5tslOz6MV13pdnXgf63lJwViadn//ciKmIs="
-            crossorigin="anonymous" />
-{% endblock %}
+{% extends 'NewsModuleBundle:news:_form_new_layout.html.twig' %}
 
 {% block body %}
 
-    {% for label, flashes in app.session.flashbag.all %}
-        {% for flash in flashes %}
-            <div class="alert alert-{{ label }}">
-                {{ flash }}
-            </div>
-        {% endfor %}
-    {% endfor %}
-
     <h1>Edytujesz Tag Wiadomości</h1>
 
-    {{ form_start(form, {"attr" : { 'class' : 'form'} }) }}
-
-    <label for="add_collection_form[title]">Tytuł</label>
-    {{ form_errors(form.title) }}
-    {{ form_widget(form.title) }}
-
-    <br>
-    <label for="add_collection_form[public]">Czy publiczna?</label>
-    {{ form_errors(form.public) }}
-    {{ form_widget(form.public) }}
-
-    <br>
-    <label for="add_collection_form[parentCollection]">Kolekcja nadrzędna</label>
-    {{ form_errors(form.parent) }}
-    {{ form_widget(form.parent) }}
-    <br><br>
-    <input type="submit" value="Zapisz kolekcję" />
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <input type="submit" value="Edit" />
     {{ form_end(form) }}
+    
     <hr />
-{% endblock %}
-
-
-{% block javascripts %}
-    {{ parent() }}
-    <script
-            type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.js"
-            integrity="sha256-L8glE3PzqSO1/nrEHYWoNyozn5i3ETucQoJGA7gp2mI="
-            crossorigin="anonymous"></script>
-    <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
 {% endblock %}
