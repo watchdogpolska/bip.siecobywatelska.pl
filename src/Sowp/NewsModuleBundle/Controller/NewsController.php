@@ -55,7 +55,6 @@ class NewsController extends Controller
         }
 
         return $this->render('NewsModuleBundle:news:new.html.twig', array(
-            'news' => $news,
             'form' => $form->createView(),
         ));
     }

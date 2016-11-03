@@ -15,6 +15,12 @@
     {{ form_widget(form) }}
     <br>
     <input class="pull-right" type="submit" value="Utwórz" />
+    <a class="btn btn-default btn-add" title="Dodaj załącznik" href="#">
+        <i class="fa fa-minus" aria-hidden="true"></i>
+            Dodaj załącznik
+    </a>
     {{ form_end(form) }}
 
+    {{ dump(form) }}
 {% endblock %}
+
