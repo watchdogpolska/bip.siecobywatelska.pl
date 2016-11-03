@@ -1,5 +1,47 @@
 {% extends 'base.html.twig' %}
 
+{% form_theme form _self %}
+    {% block _news_attachments_item_widget %}
+        <tr>
+            {% for column in prototype %}
+                <td>
+                    {{ form_widget(column) }}
+                </td>
+            {% endfor %}
+            
+            <td>
+                <a href="#" class="attachment-remove">X</a>
+            </td>
+        </tr>
+    {% endblock %}
+
+    {% block _news_attachments_widget %}
+        {% if prototype is defined %}
+            {% set attr = attr|merge({'data-prototype' : block('_news_attachments_item_widget')|trim}) %}
+        {% endif %}
+        <table {{ block('widget_container_attributes') }}>
+            <thead>
+                {% for column in prototype %}
+                <th>
+                    {{ form_label(column) }}
+                </th>
+                {% endfor %}
+                <th>
+                    <label class="col-sm-2 control-label" for="">Usuń</label>
+                </th>
+                <th>
+                    <a class="btn btn-default btn-add" id="add_attachment" title="Dodaj załącznik" href="#">
+                        <i class="fa fa-minus" aria-hidden="true"></i>
+                        Dodaj Załącznik
+                    </a>
+                </th>
+            </thead>
+            
+            <tbody id="appendable"></tbody>
+        </table>
+    {% endblock %}
+
+
 {% block stylesheets %}
     {{ parent() }}
     <link
@@ -19,8 +61,7 @@
     {% endfor %} 
 {% endblock %}
 
-{% block body %}
-    
+{% block body %} 
 {% endblock %}
 
 {% block javascripts %}
@@ -31,4 +72,24 @@
             integrity="sha256-L8glE3PzqSO1/nrEHYWoNyozn5i3ETucQoJGA7gp2mI="
             crossorigin="anonymous"></script>
     <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+    {% if form.attachments is defined %}
+        <script>
+            $(document).ready(function(){
+                var attCount = '{{ form.attachments|length }}';
+                $("#add_attachment").click(function(e){
+                    e.preventDefault();
+
+                    var pattern = $("#news_attachments").attr("data-prototype"),
+                    elem = $.parseHTML(pattern.replace('__name__', attCount));
+                    $("#appendable").append(elem);
+                    attCount++;
+                });
+
+                $(document).on('click', ".attachment-remove", function(e){
+                    e.preventDefault();
+                    $(this).parent().parent().remove();
+                });
+            });
+        </script>
+    {% endif %}
 {% endblock %}
