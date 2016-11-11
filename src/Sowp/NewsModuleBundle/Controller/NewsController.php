@@ -46,8 +46,8 @@ class NewsController extends Controller
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
-                $em->flush($news);
                 $em->persist($news);
+                $em->flush();
                 return $this->redirectToRoute('sowp_newsmodule_news_show', ['id' => $news->getId()]);
             } else {
                 $this->addFlash('error', 'Wprowadzone dane są niepoprawne, nie udało się zapisać wiadomości');
@@ -88,14 +88,16 @@ class NewsController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($news);
+            $em->flush();
 
             return $this->redirectToRoute('sowp_newsmodule_news_edit', array('id' => $news->getId()));
         }
 
         return $this->render('NewsModuleBundle:news:edit.html.twig', array(
             'news' => $news,
-            'edit_form' => $editForm->createView(),
+            'form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }

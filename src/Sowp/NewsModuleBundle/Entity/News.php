@@ -44,7 +44,7 @@ class News
     private $content;
 
     /**
-     * @ORM\Column(name="attachments", type="array", nullable=true)
+     * @ORM\Column(name="attachments", type="json_array", nullable=true)
      * @Gedmo\Versioned
      */
     private $attachments;

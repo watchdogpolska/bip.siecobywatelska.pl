@@ -40,7 +40,13 @@
                 </tr>
                 <tr>
                     <th>Attachments</th>
-                    <td>{% if news.attachments %}{{ news.attachments|join(', ') }}{% endif %}</td>
+                    <td>
+                        {% if news.attachments %}
+                            {% for attachment in news.attachments %}
+                                {{ attachment.name }}, {{ attachment.file }}
+                            {% endfor %}
+                        {% endif %}
+                    </td>
                 </tr>
                 <tr>
                     <th>Pinned</th>
