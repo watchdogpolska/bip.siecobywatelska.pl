@@ -41,6 +41,9 @@ class AttachmentSubscriber implements EventSubscriber
 
         $oldValue = $args->getOldValue('attachments');
         $newValue = $args->getNewValue('attachments');
+        if(empty($newValue)){
+            $newValue = array();
+        }
         $this->handleAttachments($oldValue, $newValue, $entity);
     }
 
@@ -50,10 +53,14 @@ class AttachmentSubscriber implements EventSubscriber
         if(!$entity instanceof Article){
             return;
         }
-        $this->handleAttachments([], $entity->getAttachments(), $entity);
+        $newValue = $entity->getAttachments();
+        if(empty($newValue)){
+            $newValue = array();
+        }
+        $this->handleAttachments([], $newValue , $entity);
     }
 
-    private function handleAttachments(array $oldValue, array $newValue, Article $entity){
+    private function handleAttachments(array $oldValue = array(), array $newValue = array(), Article $entity){
         $new_attachment = array_filter($newValue, function($var) {
             return $var['file'] instanceof UploadedFile;
         });
