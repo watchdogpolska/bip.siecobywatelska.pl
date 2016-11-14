@@ -5,3 +5,7 @@
     border-top: none;
     border-radius: 0px 0px 4px 4px;
 }
+
+.txt-center {
+    text-align: center;
+}

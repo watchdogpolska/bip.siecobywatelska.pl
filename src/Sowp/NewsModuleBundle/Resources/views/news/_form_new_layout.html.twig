@@ -3,14 +3,20 @@
 {% form_theme form _self %}
     {% block _news_attachments_item_widget %}
         <tr>
-            {% for column in prototype %}
-                <td>
-                    {{ form_widget(column) }}
-                </td>
-            {% endfor %}
-            
             <td>
-                <a href="#" class="attachment-remove">X</a>
+                {{ form_label(prototype.name, null, {label_attr: {class: 'sr-only'}}) }}
+                {{ form_widget(prototype.name) }}
+            </td>
+            <td>
+                {{ form_label(prototype.file, null, {label_attr: {class: 'sr-only'}}) }}
+                {{ form_widget(prototype.file) }}
+            </td>
+            <td>
+                <a href="#" class="btn btn-xs btn-danger js-row-remove">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                        Remove
+                    </i>
+                </a>
             </td>
         </tr>
     {% endblock %}
@@ -36,15 +42,29 @@
                     </a>
                 </th>
             </thead>
-            
+
             <tbody id="appendable">
+                {% for row in form %}
+                <tr>
+                    <td>
+                        {{ form_label(row.name, null, {label_attr: {class: 'sr-only'}}) }}
+                        {{ form_widget(row.name) }}
+                    </td>
+                    <td>
+                        {{ form_label(row.file, null, {label_attr: {class: 'sr-only'}}) }}
+                        {{ form_widget(row.file) }}
+                    </td>
+                    <td>
+                        <a href="#" class="btn btn-xs btn-danger js-row-remove">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                Remove
+                            </i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
-        {% if form.vars.data %}
-            <script>
-                var json_attachments = '{{ form.vars.data|json_encode()|raw }}';
-            </script>
-        {% endif %}
     {% endblock %}
 
 
@@ -64,10 +84,10 @@
                 {{ flash }}
             </div>
         {% endfor %}
-    {% endfor %} 
+    {% endfor %}
 {% endblock %}
 
-{% block body %} 
+{% block body %}
 {% endblock %}
 
 {% block javascripts %}
@@ -78,40 +98,15 @@
             integrity="sha256-L8glE3PzqSO1/nrEHYWoNyozn5i3ETucQoJGA7gp2mI="
             crossorigin="anonymous"></script>
     <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
-    {% if form.attachments is defined %}
-    <script type="x-newsmodule-template" id="_news_attachments_item_widget">
-        <tr>
-            <td>
-                <input type="text" id="news_attachments___name___name" name="news[attachments][__name__][name]" value="_|NAME|_" class="form-control" />
-            </td>
-            <td>
-                <input type="text" id="news_attachments___name___file" name="news[attachments][__name__][file]" value="_|FILE|_" />
-            </td>
+    <script src='https://cdn.tinymce.com/4/tinymce.min.js'></script>
 
-            <td>
-                <a href="#" class="attachment-remove">X</a>
-            </td>
-        </tr>
-    </script>
+    {% if form.attachments is defined %}
+
     <script>
         $(document).ready(function(){
             var attCount = '{{ form.attachments|length }}',
             pattern = $("#news_attachments").attr("data-prototype"),
             appendable = $("#appendable");
-
-            if (typeof json_attachments !== 'undefined') {
-                var attachments = $.parseJSON(json_attachments),
-                    template = $("#_news_attachments_item_widget").html();
-                for (i in attachments) {
-                    var elem = template.replace(/__name__/g, i);
-                    elem = elem.replace(/_\|NAME\|_/g, attachments[i]['name']);
-                    elem = elem.replace(/_\|FILE\|_/g, attachments[i]['file']);
-                    elem = $.parseHTML(elem);
-                    appendable.append(elem);
-                    console.log(elem);
-                    attCount++;
-                }
-            }
 
             $("#add_attachment").click(function(e){
                 e.preventDefault();
@@ -120,11 +115,16 @@
                 attCount++;
             });
 
-            $(document).on('click', ".attachment-remove", function(e){
+            $(document).on('click', ".js-row-remove", function(e){
                 e.preventDefault();
-                $(this).parent().parent().remove();
+                $(this).closest('tr').remove();
             });
 
+
+            tinymce.init({
+                selector: '#news_content',
+                menubar: false
+            });
 
         });
     </script>

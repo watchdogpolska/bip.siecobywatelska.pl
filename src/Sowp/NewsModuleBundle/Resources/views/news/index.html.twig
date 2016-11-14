@@ -32,7 +32,7 @@
                 <tr>
                     <td><a href="{{ path('sowp_newsmodule_news_show', { 'id': news.id }) }}">{{ news.id }}</a></td>
                     <td>{{ news.title }}</td>
-                    <td>{{ news.content }}</td>
+                    <td>{{ news.content|purify }}</td>
                     <td>{% if news.attachments %}
                             {% for attachment in news.attachments %}
                                 {{ attachment.name }}, {{ attachment.file }}

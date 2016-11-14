@@ -123,34 +123,14 @@ class AttachmentUploadListener
                         }
                     }
 
-                    /*
-                        if ($logEntry) {
-                     *      $this->uploadedFiles[$uplFilePatnname] = $uplFileName;
-                     *  }
-                     *  if (isset($this->uploadedFiles[$uplFilePatnname])) {
-                            $uplFileName = $this->uploadedFiles[$uplFilePatnname];
-                        } else {
-                            $uplFile->move($this->uploadPath, $uplFileName);
-                        }
-                     */
                     $attachmentsArray[] = [
                         'name' => $file['name'],
                         'file' => $uplFileName
                     ];
-
                     break;
                 //its probably file uploaded before
-                case is_string($uplFile):
-                    if (file_exists($this->uploadPath . '/' . $uplFile)) {
-                        //user probably left text name of attachment unchanged
-                        $attachmentsArray[] = $file;
-                    } else {
-                        throw new \Exception("file '{$this->uploadPath}/{$uplFile}' does not exist");
-                    }
-                    break;
-                //if file is neithger string nor UploadedFile
                 default:
-                    throw new Exception("invalid file data");
+                    $attachmentsArray[] = $file;
                     break;
             }
 

@@ -18,7 +18,7 @@ class NewsType extends AbstractType
     {
         $builder
             ->add('title', null, ['label' => 'Tytuł'])
-            ->add('content', null, ['label' => 'Treść'])
+            ->add('content', TinyMceType::class, ['label' => 'Treść'])
             ->add('attachments', CollectionType::class, [
                 'label' => 'Załączniki',
                 'entry_type' => AttachmentType::class,

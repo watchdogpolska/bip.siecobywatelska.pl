@@ -2,7 +2,7 @@
 
     {% block body %}
     <div class="pull-right">
-    
+
         <a href="{{ path('sowp_newsmodule_news_index') }}" class="btn btn-default">
             <i class="fa fa-list" aria-hidden="true"></i>
             Back to the list
@@ -36,7 +36,7 @@
                 </tr>
                 <tr>
                     <th>Content</th>
-                    <td>{{ news.content }}</td>
+                    <td>{{ news.content|purify }}</td>
                 </tr>
                 <tr>
                     <th>Attachments</th>
