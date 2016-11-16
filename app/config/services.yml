@@ -13,17 +13,3 @@ services:
 #        - { name: doctrine.event_subscriber, connection: default }
 #    calls:
 #        - [ setAnnotationReader, [ @annotation_reader ] ]
-    news_module.attachment_upload:
-        class: Sowp\NewsModuleBundle\EventListener\Doctrine\AttachmentUploadListener
-        arguments: ['%sowp_news_module_upload_path%']
-        tags:
-            - { name: doctrine.event_listener, event: prePersist }
-            - { name: doctrine.event_listener, event: preUpdate }
-    news_module.form.transformer.html_purifier:
-        class: Exercise\HTMLPurifierBundle\Form\HTMLPurifierTransformer
-        arguments: ['@exercise_html_purifier.default']
-    news_module.form.type.purified_textarea:
-        class: Sowp\NewsModuleBundle\Form\TinyMceType
-        arguments: ['@news_module.form.transformer.html_purifier']
-        tags:
-            - { name: form.type }
