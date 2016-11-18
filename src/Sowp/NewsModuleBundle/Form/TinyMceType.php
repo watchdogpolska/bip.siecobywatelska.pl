@@ -36,7 +36,8 @@ class TinyMceType extends AbstractType
             'compound' => false,
             'attr' => [
                 'rows' => 25,
-                'id' => 'news_content'
+                'id' => 'news_content',
+                'data-wysiwyg' => ''
             ]
         ));
     }

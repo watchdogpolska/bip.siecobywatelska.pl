@@ -8,7 +8,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Entity(repositoryClass="Sowp\NewsModuleBundle\Entity\NewsRepository")
  * @ORM\Table(name="news")
- * @Gedmo\Loggable
  */
 class News
 {
@@ -25,7 +24,6 @@ class News
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255, unique=true, nullable=false)
-     * @Gedmo\Versioned
      */
     private $title;
 
@@ -39,13 +37,11 @@ class News
      * @var string
      *
      * @ORM\Column(name="content", type="text", length=65535, nullable=false)
-     * @Gedmo\Versioned
      */
     private $content;
 
     /**
      * @ORM\Column(name="attachments", type="json_array", nullable=true)
-     * @Gedmo\Versioned
      */
     private $attachments;
 

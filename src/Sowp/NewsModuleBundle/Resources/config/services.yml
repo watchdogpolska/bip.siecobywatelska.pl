@@ -15,7 +15,7 @@ services:
 #        - [ setAnnotationReader, [ @annotation_reader ] ]
     news_module.attachment_upload:
         class: Sowp\NewsModuleBundle\EventListener\Doctrine\AttachmentUploadListener
-        arguments: ['%sowp_news_module_upload_path%']
+        arguments: [ '%sowp_news_module_upload_path%' ]
         tags:
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: preUpdate }

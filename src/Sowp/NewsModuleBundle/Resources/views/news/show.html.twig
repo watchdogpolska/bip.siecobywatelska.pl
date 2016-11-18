@@ -43,7 +43,7 @@
                     <td>
                         {% if news.attachments %}
                             {% for attachment in news.attachments %}
-                                {{ attachment.name }}, {{ attachment.file }}
+                                {{ attachment.name }},
                             {% endfor %}
                         {% endif %}
                     </td>
@@ -67,5 +67,5 @@
             </tbody>
         </table>
     </div>
-
+{{ dump(news.attachments) }}
 {% endblock %}

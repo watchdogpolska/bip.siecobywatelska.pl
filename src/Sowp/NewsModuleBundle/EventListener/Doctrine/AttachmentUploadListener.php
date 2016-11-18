@@ -15,11 +15,10 @@ use Gedmo\Loggable\Entity\LogEntry;
 class AttachmentUploadListener
 {
     private $uploadPath;
-    private $uploadedFiles = [];
 
-    public function __construct($targetDir)
+    public function __construct($params)
     {
-        $this->uploadPath = $targetDir;
+        $this->uploadPath = $params;
     }
 
     /**
@@ -28,10 +27,9 @@ class AttachmentUploadListener
      * @return boolean
      * @param LifecycleEventArgs $arg
      */
-    public function prePersist(LifecycleEventArgs $arg)
+    /*public function prePersist(LifecycleEventArgs $arg)
     {
-        $entity = $arg->getEntity();
-
+        /*$entity = $arg->getEntity();
         switch (true) {
             case ($entity instanceof News):
                 $att = $entity->getAttachments();
@@ -39,9 +37,10 @@ class AttachmentUploadListener
                 return true;
             case ($entity instanceof LogEntry):
                 $logData = $entity->getData();
-
+                $origEntityId = $entity->getObjectId();
                 if (array_key_exists('attachments', $logData)) {
                     $logDataAttachments = $logData['attachments'];
+                    var_dump($entity);die;
                     $uploadedAttachments = $this->uploadArray($logDataAttachments, true);
                     $logData['attachments'] = $uploadedAttachments;
                     $entity->setData($logData);
@@ -53,10 +52,7 @@ class AttachmentUploadListener
             default:
                 return false;
         }
-
-
-
-    }
+    }*/
 
     /**
      * triggered at updating ($em->fulsh() on already existing item)
@@ -64,21 +60,32 @@ class AttachmentUploadListener
      * @return boolean
      * @param PreUpdateEventArgs $arg
      */
-    public function preUpdate(PreUpdateEventArgs $arg)
+    /*public function preUpdate(PreUpdateEventArgs $arg)
     {
-        $entity = $arg->getEntity(); /** @var $entity Sowp\NewsModuleBundle\Entity\News */
-
+        /*$entity = $arg->getEntity(); /** @var $entity Sowp\NewsModuleBundle\Entity\News
         if (!($entity instanceof News)) {
             return false;
         }
 
         if ($arg->hasChangedField('attachments')) {
             $att = $this->uploadArray($arg->getNewValue('attachments'));
+            $attOld = $arg->getOldValue('attachments');
+            //var_dump($attOld, $att);
+            foreach ($att as $k => $v) {
+                if (array_key_exists($k, $attOld)) {
+                    $oldAttEnt = $attOld[$k];
+                    if ($v['file'] === null){
+                        $att[$k]['file'] = $oldAttEnt['file'];
+                        //print_r(array_keys($oldAttEnt));
+                    }
+                }
+            }
+
             $entity->setAttachments($att);
         }
 
         return true;
-    }
+    }*/
 
     /**
      * process $attachments comming from request
@@ -86,7 +93,7 @@ class AttachmentUploadListener
      * @param boolean $logEntry set to true in prePersist on moving files
      * @return array
      */
-    private function uploadArray(array $files, $logEntry = false)
+    /*private function uploadArray(array $files, $logEntry = false)
     {
         $attachmentsArray = [];
         if (!$this->uploadPath ||
@@ -129,13 +136,12 @@ class AttachmentUploadListener
                     ];
                     break;
                 //its probably file uploaded before
-                default:
+                case ($uplFile === null):
                     $attachmentsArray[] = $file;
                     break;
             }
 
         }
-
         return $attachmentsArray;
-    }
+    }*/
 }
