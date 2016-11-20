@@ -43,8 +43,7 @@
                     <td>
                         {% if news.attachments %}
                             {% for attachment in news.attachments %}
-                                {# href below must be adjusted during deploy - its temporarly pointing like in my local conf #}
-                                <a href="/bip.watchdog/web/upload/news_attachments/{{ attachment.file }}" target="_blank">{{ attachment.name }}</a>,
+                                <a href="{{ asset('upload/news_attachments/' ~ attachment.file) }}" target="_blank">{{ attachment.name }}</a>,
                             {% endfor %}
                         {% endif %}
                     </td>
@@ -54,8 +53,24 @@
                     <td>{% if news.pinned %}Yes{% else %}No{% endif %}</td>
                 </tr>
                 <tr>
+                    <th>Collections</th>
+                    <td>
+                        {% for collection in news.collections %}
+                            <a href="{{ url('sowp_news_collection_show', { 'id' : collection.id }) }}">{{ collection.title }}</a>
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Createdby</th>
+                    <td>{% if news.createdBy %}{{ news.createdBy}}{% endif %}</td>
+                </tr>
+                <tr>
                     <th>Createdat</th>
                     <td>{% if news.createdAt %}{{ news.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Modifiedby</th>
+                    <td>{% if news.modifiedBy %}{{ news.modifiedBy}}{% endif %}</td>
                 </tr>
                 <tr>
                     <th>Modifiedat</th>
@@ -68,5 +83,6 @@
             </tbody>
         </table>
     </div>
+    <a href="{{ url('sowp_newsmodule_news_revisions_list', { 'id' : news.id }) }}">Historia Zmian</a>
 {{ dump(news.attachments) }}
 {% endblock %}

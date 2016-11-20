@@ -129,6 +129,16 @@ class NewsController extends Controller
     }
 
     /**
+     * Shows list of revisions for selected news
+     *
+     * @Route("/lista-zmian/{id}", name="sowp_newsmodule_news_revisions_list")
+     */
+    public function revisionlistAction($id)
+    {
+        die($id);
+    }
+
+    /**
      * Creates a form to delete a news entity.
      *
      * @param News $news The news entity
