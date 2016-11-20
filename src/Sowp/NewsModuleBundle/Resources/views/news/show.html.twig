@@ -43,7 +43,8 @@
                     <td>
                         {% if news.attachments %}
                             {% for attachment in news.attachments %}
-                                {{ attachment.name }},
+                                {# href below must be adjusted during deploy - its temporarly pointing like in my local conf #}
+                                <a href="/bip.watchdog/web/upload/news_attachments/{{ attachment.file }}" target="_blank">{{ attachment.name }}</a>,
                             {% endfor %}
                         {% endif %}
                     </td>

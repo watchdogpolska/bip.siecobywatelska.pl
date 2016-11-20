@@ -4,10 +4,12 @@ namespace Sowp\NewsModuleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use SimpleThings\EntityAudit\Mapping\Annotation as Audit;
 
 /**
  * @ORM\Entity(repositoryClass="Sowp\NewsModuleBundle\Entity\NewsRepository")
  * @ORM\Table(name="news")
+ * @Audit\Auditable()
  */
 class News
 {

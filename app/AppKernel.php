@@ -24,7 +24,8 @@ class AppKernel extends Kernel
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Sowp\NewsModuleBundle\NewsModuleBundle(),
             new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
-            new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle()
+            new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
+            new SimpleThings\EntityAudit\SimpleThingsEntityAuditBundle()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

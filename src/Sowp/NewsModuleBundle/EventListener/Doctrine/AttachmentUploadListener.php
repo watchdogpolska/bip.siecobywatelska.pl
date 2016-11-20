@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Sowp\NewsModuleBundle\Entity\News;
-use Gedmo\Loggable\Entity\LogEntry;
 
 /**
  * @class AttachmentUploadListener
@@ -16,9 +15,16 @@ class AttachmentUploadListener
 {
     private $uploadPath;
 
-    public function __construct($params)
+    public function __construct($path)
     {
-        $this->uploadPath = $params;
+        $this->uploadPath = $path;
+
+        if (!$this->uploadPath ||
+            !is_dir($this->uploadPath) ||
+            !is_writeable($this->uploadPath)
+        ) {
+            throw new \Exception("parameter 'sowp_news_module_upload_path' need adjustment");
+        }
     }
 
     /**
@@ -27,32 +33,20 @@ class AttachmentUploadListener
      * @return boolean
      * @param LifecycleEventArgs $arg
      */
-    /*public function prePersist(LifecycleEventArgs $arg)
+    public function prePersist(LifecycleEventArgs $arg)
     {
-        /*$entity = $arg->getEntity();
-        switch (true) {
-            case ($entity instanceof News):
-                $att = $entity->getAttachments();
-                $entity->setAttachments($this->uploadArray($att));
-                return true;
-            case ($entity instanceof LogEntry):
-                $logData = $entity->getData();
-                $origEntityId = $entity->getObjectId();
-                if (array_key_exists('attachments', $logData)) {
-                    $logDataAttachments = $logData['attachments'];
-                    var_dump($entity);die;
-                    $uploadedAttachments = $this->uploadArray($logDataAttachments, true);
-                    $logData['attachments'] = $uploadedAttachments;
-                    $entity->setData($logData);
-                    return true;
-                } else {
-                    return false;
-                }
+        $entity = $arg->getEntity();
 
-            default:
-                return false;
+        if (!($entity instanceof News)) {
+            return false;
         }
-    }*/
+
+        $preUploadAttachments = $entity->getAttachments();
+        $postUploadAttachments = $this->upload($preUploadAttachments);
+
+        $entity->setAttachments($postUploadAttachments);
+        return true;
+    }
 
     /**
      * triggered at updating ($em->fulsh() on already existing item)
@@ -60,88 +54,70 @@ class AttachmentUploadListener
      * @return boolean
      * @param PreUpdateEventArgs $arg
      */
-    /*public function preUpdate(PreUpdateEventArgs $arg)
+    public function preUpdate(PreUpdateEventArgs $arg)
     {
-        /*$entity = $arg->getEntity(); /** @var $entity Sowp\NewsModuleBundle\Entity\News
+        $entity = $arg->getEntity();
+
         if (!($entity instanceof News)) {
             return false;
         }
 
-        if ($arg->hasChangedField('attachments')) {
-            $att = $this->uploadArray($arg->getNewValue('attachments'));
-            $attOld = $arg->getOldValue('attachments');
-            //var_dump($attOld, $att);
-            foreach ($att as $k => $v) {
-                if (array_key_exists($k, $attOld)) {
-                    $oldAttEnt = $attOld[$k];
-                    if ($v['file'] === null){
-                        $att[$k]['file'] = $oldAttEnt['file'];
-                        //print_r(array_keys($oldAttEnt));
-                    }
-                }
-            }
+        $oldAttachmentsValue = $arg->getOldValue('attachments');
+        $preUploadAttachments = $entity->getAttachments();
+        $postUploadAttachments = $this->upload($preUploadAttachments, $oldAttachmentsValue);
 
-            $entity->setAttachments($att);
-        }
-
+        $entity->setAttachments($postUploadAttachments);
         return true;
-    }*/
+    }
 
     /**
      * process $attachments comming from request
      * @param array $files
-     * @param boolean $logEntry set to true in prePersist on moving files
      * @return array
      */
-    /*private function uploadArray(array $files, $logEntry = false)
+    private function upload(array $files, array $oldAttachments = null)
     {
-        $attachmentsArray = [];
-        if (!$this->uploadPath ||
-            !is_dir($this->uploadPath) ||
-            !is_writeable($this->uploadPath)
-        ) {
-            throw new \Exception("parameter 'sowp_news_module_upload_path' need adjustment");
-        }
+        $attachments = [];
 
         foreach ($files as $file) {
+            $uf = $file['file'];
+            $un = $file['name'];
 
-            $uplFile = $file['file'];
+            switch (true) {
+                case ($uf instanceof UploadedFile):
 
-            switch(true) {
-                //its freshly uploaded file
-                case ($uplFile instanceof UploadedFile):
-                    $uplFilePatnname = $uplFile->getPathname();
+                    do {
+                        $uploadedFileName = md5(uniqid()) . ".{$uf->guessClientExtension()}";
+                    } while (file_exists($this->uploadPath . '/' . $uploadedFileName));
 
-                    if (!isset($this->uploadedFiles[$uplFilePatnname])) {
-                        $ext = $uplFile->guessClientExtension();
-                        do {
-                            $uplFileName = md5(uniqid()) . '.' . $ext;
-                        } while (file_exists($this->uploadPath . '/' . $uplFileName));
-                    }
+                    $uf->move($this->uploadPath, $uploadedFileName);
+                    $attachments[] = [
+                        'name' => $file['name'],
+                        'file' => $uploadedFileName
+                    ];
+                    break;
 
-                    if ($logEntry) {
-                        $uplFile->move($this->uploadPath, $uplFileName);
-                        $this->uploadedFiles[$uplFilePatnname] = $uplFileName;
-                    } else {
-                        if (isset($this->uploadedFiles[$uplFilePatnname])) {
-                            $uplFileName = $this->uploadedFiles[$uplFilePatnname];
-                        } else {
-                            $uplFile->move($this->uploadPath, $uplFileName);
+                case ($uf === null):
+
+                    foreach ($oldAttachments as $oldEnt) {
+                        if ($oldEnt['name'] === $un) {
+                            $found = $oldEnt;
                         }
                     }
 
-                    $attachmentsArray[] = [
-                        'name' => $file['name'],
-                        'file' => $uplFileName
-                    ];
-                    break;
-                //its probably file uploaded before
-                case ($uplFile === null):
-                    $attachmentsArray[] = $file;
-                    break;
-            }
+                    if (!isset($found)) {
+                        throw new \Exception("Are You attempting to add empty attachment?");
+                    }
 
+                    $attachments[] = $found;
+                    break;
+
+                default :
+                    throw new \Exception("Invalid uploaded field type");
+            }
         }
-        return $attachmentsArray;
-    }*/
+
+        return $attachments;
+    }
+
 }

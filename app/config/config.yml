@@ -7,7 +7,6 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-    sowp_news_module_upload_path: "%kernel.root_dir%/../web/upload/news_attachments"
 
 framework:
     #esi:             ~
@@ -95,6 +94,5 @@ stof_doctrine_extensions:
             timestampable: true
             blameable: true
             sluggable: true
-            loggable: true
             softdeleteable: true
             tree: true

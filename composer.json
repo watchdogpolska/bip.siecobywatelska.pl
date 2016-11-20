@@ -32,7 +32,8 @@
         "stof/doctrine-extensions-bundle": "^1.2",
         "tetranz/select2entity-bundle": "2.*",
         "fzaninotto/faker": "^1.6",
-        "exercise/htmlpurifier-bundle": "^0.2.3"
+        "exercise/htmlpurifier-bundle": "^0.2.3",
+        "simplethings/entity-audit-bundle": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
@@ -70,5 +71,11 @@
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/mik-laj/EntityAudit"
+        }
+    ]
 }

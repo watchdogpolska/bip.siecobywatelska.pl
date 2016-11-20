@@ -71,7 +71,7 @@ class NewsController extends Controller
 
         return $this->render('NewsModuleBundle:news:show.html.twig', array(
             'news' => $news,
-            'delete_form' => $deleteForm->createView(),
+            'delete_form' => $deleteForm->createView()
         ));
     }
 
@@ -87,12 +87,18 @@ class NewsController extends Controller
         $editForm = $this->createForm('Sowp\NewsModuleBundle\Form\NewsType', $news);
         $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($news);
-            $em->flush();
+        if ($editForm->isSubmitted()) {
+            if ($editForm->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($news);
+                $em->flush();
 
-            return $this->redirectToRoute('sowp_newsmodule_news_edit', array('id' => $news->getId()));
+                $this->addFlash('notice', "Zapisano zmiany");
+                return $this->redirectToRoute('sowp_newsmodule_news_show', ['id' => $news->getId()]);
+            } else {
+                $this->addFlash('error', "Nie zapisano zmian - formularz został niepoprawnie wypełniony");
+                return $this->redirectToRoute('sowp_newsmodule_news_show', ['id' => $news->getId()]);
+            }
         }
 
         return $this->render('NewsModuleBundle:news:edit.html.twig', array(
