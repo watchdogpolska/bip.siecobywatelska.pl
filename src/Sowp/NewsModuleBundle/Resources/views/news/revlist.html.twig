@@ -1,8 +1,27 @@
-<?php
+{% extends 'base.html.twig' %}
 
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
-
+{% block body %}
+    <h1>"{{ news.title }}" revisions</h1>
+    <hr>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title">
+                <a href="{{ path('sowp_newsmodule_news_show', { 'id': news.id }) }}" class="btn btn-default">
+                    <i class="fa fa-eye" aria-hidden="true"></i>
+                    Back to {{ news.title }}
+                </a>
+            </h2>
+        </div>
+        <div class="panel-body">
+            <ul>
+            {% for revision in revisions %}
+                <li>
+                    <a href="{{ url('sowp_newsmodule_news_revisions_detail', {'newsId' : news.id, 'revId' : revision.rev})}}">
+                        {{ revision.timestamp|date('Y-m-d H:i') }}, by {{ revision.username }}
+                    </a>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

@@ -5,7 +5,8 @@ namespace Sowp\NewsModuleBundle\Controller;
 use Sowp\NewsModuleBundle\Entity\News;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * News controller.
@@ -132,10 +133,32 @@ class NewsController extends Controller
      * Shows list of revisions for selected news
      *
      * @Route("/lista-zmian/{id}", name="sowp_newsmodule_news_revisions_list")
+     * @Method({"GET"})
      */
-    public function revisionlistAction($id)
+    public function revisionlistAction(News $news)
     {
-        die($id);
+        $newsId = $news->getId();
+        $auditReader = $this->container->get('simplethings_entityaudit.reader');
+        $revisions = $auditReader->findRevisions(
+            News::class,
+            $newsId
+        );
+
+        return $this->render('NewsModuleBundle:news:revlist.html.twig', [
+            'news' => $news,
+            'revisions' => $revisions
+        ]);
+    }
+
+    /**
+     * Shows detail of selected revision for selected news
+     *
+     * @Route("/rewizja/{newsId},{revId}", name="sowp_newsmodule_news_revisions_detail")
+     * @Method({"GET"})
+     */
+    public function revisiondetailAction($newsId, $revId)
+    {
+        die($newsId);
     }
 
     /**
