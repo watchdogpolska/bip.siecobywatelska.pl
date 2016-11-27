@@ -17,7 +17,7 @@
             {% for revision in revisions %}
                 <li>
                     <a href="{{ url('sowp_newsmodule_news_revisions_detail', {'newsId' : news.id, 'revId' : revision.rev})}}">
-                        {{ revision.timestamp|date('Y-m-d H:i') }}, by {{ revision.username }}
+                        {{ revision.timestamp|date('Y-m-d H:i') }}
                     </a>
                 </li>
             {% endfor %}

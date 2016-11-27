@@ -2,23 +2,35 @@
 
     {% block body %}
     <div class="pull-right">
+        {% if revision is defined and revision %}
+            <a href="{{ path('sowp_newsmodule_news_revisions_list', {'id' : news.id}) }}" class="btn btn-default">
+                <i class="fa fa-list" aria-hidden="true"></i>
+                Back to the revisions list
+            </a>
+        {% endif %}
+        {% if delete_form is defined %}
+            <a href="{{ path('sowp_newsmodule_news_index') }}" class="btn btn-default">
+                <i class="fa fa-list" aria-hidden="true"></i>
+                Back to the list
+            </a>
+            <a href="{{ path('sowp_newsmodule_news_edit', { 'id': news.id }) }}" class="btn btn-default">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+                Edit
+            </a>
 
-        <a href="{{ path('sowp_newsmodule_news_index') }}" class="btn btn-default">
-            <i class="fa fa-list" aria-hidden="true"></i>
-            Back to the list
-        </a>
-        <a href="{{ path('sowp_newsmodule_news_edit', { 'id': news.id }) }}" class="btn btn-default">
-            <i class="fa fa-pencil" aria-hidden="true"></i>
-            Edit
-        </a>
-        {{ form_start(delete_form, {"attr": {"style": "display: inline-block"}}) }}
-            <button type="submit" class="btn btn-danger">
-                <i class="fa fa-trash" aria-hidden="true"></i>
-                Delete
-            </button>
-        {{ form_end(delete_form) }}
+            {{ form_start(delete_form, {"attr": {"style": "display: inline-block"}}) }}
+                <button type="submit" class="btn btn-danger">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    Delete
+                </button>
+            {{ form_end(delete_form) }}
+        {% endif %}
     </div>
-<h1>News</h1>
+    {% if revision is defined and revision %}
+        <h1>News revision</h1>
+    {% else %}
+        <h1>News</h1>
+    {% endif %}
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -60,29 +72,34 @@
                         {% endfor %}
                     </td>
                 </tr>
-                <tr>
-                    <th>Createdby</th>
-                    <td>{% if news.createdBy %}{{ news.createdBy}}{% endif %}</td>
-                </tr>
-                <tr>
-                    <th>Createdat</th>
-                    <td>{% if news.createdAt %}{{ news.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                </tr>
-                <tr>
-                    <th>Modifiedby</th>
-                    <td>{% if news.modifiedBy %}{{ news.modifiedBy}}{% endif %}</td>
-                </tr>
-                <tr>
-                    <th>Modifiedat</th>
-                    <td>{% if news.modifiedAt %}{{ news.modifiedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                </tr>
-                <tr>
-                    <th>Modifynote</th>
-                    <td>{{ news.modifyNote }}</td>
-                </tr>
+                    <tr>
+                        <th>Createdby</th>
+                        <td>{% if news.createdBy %}{{ news.createdBy}}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>Createdat</th>
+                        <td>{% if news.createdAt %}{{ news.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    </tr>
+                    {% if (news.modifiedAt and not(news.modifiedAt == news.createdAt)) %}
+                        <tr>
+                            <th>Modifiedby</th>
+                            <td>{% if news.modifiedBy %}{{ news.modifiedBy }}{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>Modifiedat</th>
+                            <td>{% if news.modifiedAt %}{{ news.modifiedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>Modifynote</th>
+                            <td>{{ news.modifyNote }}</td>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <td>
+                            <a href="{{ url('sowp_newsmodule_news_revisions_list', { 'id' : news.id }) }}">Historia Zmian</a>
+                        </td>
+                    </tr>
             </tbody>
         </table>
     </div>
-    <a href="{{ url('sowp_newsmodule_news_revisions_list', { 'id' : news.id }) }}">Historia Zmian</a>
-{{ dump(news.attachments) }}
 {% endblock %}

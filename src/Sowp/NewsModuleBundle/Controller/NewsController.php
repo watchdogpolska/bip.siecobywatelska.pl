@@ -158,7 +158,17 @@ class NewsController extends Controller
      */
     public function revisiondetailAction($newsId, $revId)
     {
-        die($newsId);
+        $auditReader = $this->container->get('simplethings_entityaudit.reader');
+        $newsRevision = $auditReader->find(
+            News::class,
+            $newsId,
+            $revId
+        );
+
+        return $this->render('NewsModuleBundle:news:show.html.twig', [
+            'news' => $newsRevision,
+            'revision' => true
+        ]);
     }
 
     /**
