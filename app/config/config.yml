@@ -96,3 +96,5 @@ stof_doctrine_extensions:
             sluggable: true
             softdeleteable: true
             tree: true
+white_october_pagerfanta:
+    default_view: 'twitter_bootstrap3'

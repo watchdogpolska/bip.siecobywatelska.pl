@@ -13,33 +13,126 @@
         <div class="panel-heading">
             <h3 class="panel-title">List</h3>
         </div>
-        <table class="table">
-            <thead>
+            {% for news_entry in news %}
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ news_entry.title }}</h3>
+                    </div>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>Id</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="{{ path('sowp_newsmodule_news_show', { 'id': news_entry.id }) }}">{{ news_entry.id }}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Content</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ news_entry.content|purify }}
+                                </td>
+                            </tr>
+                            {% if news_entry.attachments %}
+                            <tr>
+                                <th>
+                                    Attachments
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {% for attachment in news_entry.attachments %}
+                                    <a href="{{ asset('upload/news_attachments/' ~attachment.file) }}" target="_blank">
+                                        {{ attachment.name }}
+                                    </a>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                                <th>Pinned</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {% if news_entry.pinned %}Yes{% else %}No{% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Created At
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {% if news_entry.createdAt %}{{ news_entry.createdAt|date('Y-m-d H:i:s') }}{% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Created By
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ news_entry.createdBy }}
+                                </td>
+                            </tr>
+                            {% if news_entry.modifiedAt %}
+                                <tr>
+                                    <th>
+                                        Last Modified At
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {{ news_entry.modifiedAt|date('Y-m-d H:i:s') }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Last Modified By
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {{ news_entry.modifiedAt|date('Y-m-d H:i:s') }}
+                                    </td>
+                                </tr>
+                                {% if news_entry.modifyNote is defined and news_entry.modifyNote|length %}
+                                    <tr>
+                                        <th>
+                                            Modify Note
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ news_entry.modifyNote }}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endif %}
+                            <tr>
+                                <td>
+                                    <a href="{{ path('sowp_newsmodule_news_edit', { 'id': news_entry.id }) }}" class="btn btn-default">
+                                        <i class="fa fa-pencil"></i>
+                                        Edit
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            {% endfor %}
+        <div class="panel-footer">
+            {{ pagerfanta(news) }}
+        </div>
+    </div>
+{% endblock %}
+{#
                 <tr>
-                    <th>Id</th>
-                    <th>Title</th>
-                    <th>Content</th>
-                    <th>Attachments</th>
-                    <th>Pinned</th>
-                    <th>Createdat</th>
-                    <th>Modifiedat</th>
-                    <th>Modifynote</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for news in news %}
-                <tr>
-                    <td><a href="{{ path('sowp_newsmodule_news_show', { 'id': news.id }) }}">{{ news.id }}</a></td>
-                    <td>{{ news.title }}</td>
-                    <td>{{ news.content|purify }}</td>
-                    <td>{% if news.attachments %}
-                            {% for attachment in news.attachments %}
-                                {{ attachment.name }}, {{ attachment.file }}
-                            {% endfor %}
-                        {% endif %}</td>
-                    <td>{% if news.pinned %}Yes{% else %}No{% endif %}</td>
-                    <td>{% if news.createdAt %}{{ news.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
                     <td>{% if news.modifiedAt %}{{ news.modifiedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
                     <td>{{ news.modifyNote }}</td>                    <td>
                         <a href="{{ path('sowp_newsmodule_news_show', { 'id': news.id }) }}" class="btn btn-default">
@@ -51,9 +144,4 @@
                             Edit
                         </a>                    </td>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-{% endblock %}
+#}

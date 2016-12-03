@@ -7,6 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\DBAL\Query\QueryBuilder;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
+use Symfony\Component\Process\Exception\LogicException;
 
 /**
  * News controller.
@@ -21,11 +25,15 @@ class NewsController extends Controller
      * @Route("/", name="sowp_newsmodule_news_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $news = $em->getRepository('NewsModuleBundle:News')->findAll();
+        $repo = $em->getRepository('NewsModuleBundle:News');
+        $page = $request->query->get('page', 1);
+        $pagerAdapter = new DoctrineORMAdapter($repo->getQueryBuilderAll(), false);
+        $news = new Pagerfanta($pagerAdapter);
+        $news->setMaxPerPage(4);
+        $news->setCurrentPage($page);
 
         return $this->render('NewsModuleBundle:news:index.html.twig', array(
             'news' => $news,
