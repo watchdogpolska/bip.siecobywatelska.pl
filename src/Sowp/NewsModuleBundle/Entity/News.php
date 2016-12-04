@@ -10,6 +10,7 @@ use SimpleThings\EntityAudit\Mapping\Annotation as Audit;
  * @ORM\Entity(repositoryClass="Sowp\NewsModuleBundle\Entity\NewsRepository")
  * @ORM\Table(name="news")
  * @Audit\Auditable()
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class News
 {
@@ -34,6 +35,14 @@ class News
      * @ORM\JoinTable(name="collection_news")
      */
     private $collections;
+
+    /**
+     * @var string
+     *
+     * @Gedmo\Slug(fields={"title"})
+     * @ORM\Column(length=255, unique=true)
+     */
+    private $slug;
 
     /**
      * @var string
@@ -94,6 +103,28 @@ class News
      * @ORM\Column(name="modifynote", type="text", length=10000, nullable=true)
      */
     private $modifyNote;
+
+    /**
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     */
+    private $deletedAt;
+
+    /**
+     * @return mixed
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param mixed $deletedAt
+     */
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deletedAt = $deletedAt;
+        return $this;
+    }
 
     public function __construct()
     {
@@ -293,5 +324,22 @@ class News
     public function getModifyNote()
     {
         return $this->modifyNote;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+        return $this;
     }
 }

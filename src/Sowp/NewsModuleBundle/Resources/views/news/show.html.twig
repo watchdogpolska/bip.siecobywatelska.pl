@@ -1,105 +1,105 @@
     {% extends 'base.html.twig' %}
 
     {% block body %}
-    <div class="pull-right">
-        {% if revision is defined and revision %}
-            <a href="{{ path('sowp_newsmodule_news_revisions_list', {'id' : news.id}) }}" class="btn btn-default">
-                <i class="fa fa-list" aria-hidden="true"></i>
-                Back to the revisions list
-            </a>
+        {% if news.deletedAt %}
+            <div class="alert alert-warning" role="alert">
+                Ta wiadomość została usunięta!
+            </div>
         {% endif %}
-        {% if delete_form is defined %}
-            <a href="{{ path('sowp_newsmodule_news_index') }}" class="btn btn-default">
-                <i class="fa fa-list" aria-hidden="true"></i>
-                Back to the list
-            </a>
-            <a href="{{ path('sowp_newsmodule_news_edit', { 'id': news.id }) }}" class="btn btn-default">
-                <i class="fa fa-pencil" aria-hidden="true"></i>
-                Edit
-            </a>
+        {% include 'NewsModuleBundle::flash.html.twig' %}
+        <div class="pull-right">
+            {% if revision is defined and revision %}
+                <a href="{{ path('sowp_newsmodule_news_revisions_list', {'slug' : news.slug}) }}" class="btn btn-default">
+                    <i class="fa fa-list" aria-hidden="true"></i>
+                    Back to the revisions list
+                </a>
+            {% endif %}
+            {% if delete_form is defined %}
+                <a href="{{ path('sowp_newsmodule_news_index') }}" class="btn btn-default">
+                    <i class="fa fa-list" aria-hidden="true"></i>
+                    Back to the list
+                </a>
+                <a href="{{ path('sowp_newsmodule_news_edit', { 'slug': news.slug }) }}" class="btn btn-default">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                    Edit
+                </a>
 
-            {{ form_start(delete_form, {"attr": {"style": "display: inline-block"}}) }}
-                <button type="submit" class="btn btn-danger">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                    Delete
-                </button>
-            {{ form_end(delete_form) }}
-        {% endif %}
-    </div>
-    {% if revision is defined and revision %}
-        <h1>News revision</h1>
-    {% else %}
-        <h1>News</h1>
-    {% endif %}
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h2 class="panel-title">Info</h2>
+                {{ form_start(delete_form, {"attr": {"style": "display: inline-block"}}) }}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                        Delete
+                    </button>
+                {{ form_end(delete_form) }}
+            {% endif %}
         </div>
-        <table class="table table-bordered">
-            <tbody>
-                <tr>
-                    <th>Id</th>
-                    <td>{{ news.id }}</td>
-                </tr>
-                <tr>
-                    <th>Title</th>
-                    <td>{{ news.title }}</td>
-                </tr>
-                <tr>
-                    <th>Content</th>
-                    <td>{{ news.content|purify }}</td>
-                </tr>
-                <tr>
-                    <th>Attachments</th>
-                    <td>
-                        {% if news.attachments %}
-                            {% for attachment in news.attachments %}
-                                <a href="{{ asset('upload/news_attachments/' ~ attachment.file) }}" target="_blank">{{ attachment.name }}</a>,
-                            {% endfor %}
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th>Pinned</th>
-                    <td>{% if news.pinned %}Yes{% else %}No{% endif %}</td>
-                </tr>
-                <tr>
-                    <th>Collections</th>
-                    <td>
-                        {% for collection in news.collections %}
-                            <a href="{{ url('sowp_news_collection_show', { 'id' : collection.id }) }}">{{ collection.title }}</a>
-                        {% endfor %}
-                    </td>
-                </tr>
+        {% if revision is defined and revision %}
+            <h1>{{ news.title }} (revision {{ revision }})</h1>
+        {% else %}
+            <h1>{{ news.title }}</h1>
+        {% endif %}
+        <div class="panel panel-default" style="word-wrap: break-word">
+            {{ news.content|purify }}
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">Info</h2>
+            </div>
+            <table class="table table-bordered">
+                <tbody>
                     <tr>
-                        <th>Createdby</th>
-                        <td>{% if news.createdBy %}{{ news.createdBy}}{% endif %}</td>
+                        <th>Id</th>
+                        <td>{{ news.id }}</td>
                     </tr>
                     <tr>
-                        <th>Createdat</th>
-                        <td>{% if news.createdAt %}{{ news.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    </tr>
-                    {% if (news.modifiedAt and not(news.modifiedAt == news.createdAt)) %}
-                        <tr>
-                            <th>Modifiedby</th>
-                            <td>{% if news.modifiedBy %}{{ news.modifiedBy }}{% endif %}</td>
-                        </tr>
-                        <tr>
-                            <th>Modifiedat</th>
-                            <td>{% if news.modifiedAt %}{{ news.modifiedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                        </tr>
-                        <tr>
-                            <th>Modifynote</th>
-                            <td>{{ news.modifyNote }}</td>
-                        </tr>
-                    {% endif %}
-                    <tr>
+                        <th>Attachments</th>
                         <td>
-                            <a href="{{ url('sowp_newsmodule_news_revisions_list', { 'id' : news.id }) }}">Historia Zmian</a>
+                            {% if news.attachments %}
+                                {% for attachment in news.attachments %}
+                                    <a href="{{ asset('upload/news_attachments/' ~ attachment.file) }}" target="_blank">{{ attachment.name }}</a>,
+                                {% endfor %}
+                            {% endif %}
                         </td>
                     </tr>
-            </tbody>
-        </table>
-    </div>
-{% endblock %}
+                    <tr>
+                        <th>Pinned</th>
+                        <td>{% if news.pinned %}Yes{% else %}No{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>Collections</th>
+                        <td>
+                            {% for collection in news.collections %}
+                                <a href="{{ url('sowp_news_collection_show', { 'slug' : collection.slug }) }}">{{ collection.title }}</a>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                        <tr>
+                            <th>Createdby</th>
+                            <td>{% if news.createdBy %}{{ news.createdBy}}{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>Createdat</th>
+                            <td>{% if news.createdAt %}{{ news.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        </tr>
+                        {% if (news.modifiedAt and not(news.modifiedAt == news.createdAt)) %}
+                            <tr>
+                                <th>Modifiedby</th>
+                                <td>{% if news.modifiedBy %}{{ news.modifiedBy }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>Modifiedat</th>
+                                <td>{% if news.modifiedAt %}{{ news.modifiedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>Modifynote</th>
+                                <td>{{ news.modifyNote }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td>
+                                <a href="{{ url('sowp_newsmodule_news_revisions_list', { 'slug' : news.slug }) }}">Historia Zmian</a>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endblock %}

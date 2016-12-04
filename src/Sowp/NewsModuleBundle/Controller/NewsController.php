@@ -6,6 +6,7 @@ use Sowp\NewsModuleBundle\Entity\News;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -57,7 +58,8 @@ class NewsController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($news);
                 $em->flush();
-                return $this->redirectToRoute('sowp_newsmodule_news_show', ['id' => $news->getId()]);
+                $this->addFlash('notice', 'Dodano wiadomość');
+                return $this->redirectToRoute('sowp_newsmodule_news_show', ['slug' => $news->getSlug()]);
             } else {
                 $this->addFlash('error', 'Wprowadzone dane są niepoprawne, nie udało się zapisać wiadomości');
             }
@@ -71,7 +73,7 @@ class NewsController extends Controller
     /**
      * Finds and displays a news entity.
      *
-     * @Route("/{id}", name="sowp_newsmodule_news_show")
+     * @Route("/{slug}", name="sowp_newsmodule_news_show")
      * @Method("GET")
      */
     public function showAction(News $news)
@@ -87,7 +89,7 @@ class NewsController extends Controller
     /**
      * Displays a form to edit an existing news entity.
      *
-     * @Route("/edytuj/{id}", name="sowp_newsmodule_news_edit")
+     * @Route("/edytuj/{slug}", name="sowp_newsmodule_news_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, News $news)
@@ -101,12 +103,11 @@ class NewsController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($news);
                 $em->flush();
-
                 $this->addFlash('notice', "Zapisano zmiany");
-                return $this->redirectToRoute('sowp_newsmodule_news_show', ['id' => $news->getId()]);
+                return $this->redirectToRoute('sowp_newsmodule_news_show', ['slug' => $news->getSlug()]);
             } else {
                 $this->addFlash('error', "Nie zapisano zmian - formularz został niepoprawnie wypełniony");
-                return $this->redirectToRoute('sowp_newsmodule_news_show', ['id' => $news->getId()]);
+                return $this->redirectToRoute('sowp_newsmodule_news_edit', ['slug' => $news->getSlug()]);
             }
         }
 
@@ -120,27 +121,54 @@ class NewsController extends Controller
     /**
      * Deletes a news entity.
      *
-     * @Route("/wykasuj", name="sowp_newsmodule_news_delete")
-     * @Method({"GET", "POST"})
+     * @Route("/wykasuj/{slug}", name="sowp_newsmodule_news_delete")
+     * @Method({"DELETE"})
      */
     public function deleteAction(Request $request, News $news)
     {
         $form = $this->createDeleteForm($news);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($news);
-            $em->flush($news);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($news);
+                $em->flush($news);
+                $this->addFlash('notice', 'Usunięto artykuł');
+            } else {
+                $this->addFlash('error', 'Nie usunięto artykułu');
+            }
         }
 
-        return $this->redirectToRoute('news_index');
+        return $this->redirectToRoute('sowp_newsmodule_news_show', ['slug' => $news->getSlug()]);
+    }
+
+    /**
+     * Shows deleted entry
+     *
+     * @Route(/skasowany/{slug}, name="sowp_newsmodule_news_deleted_entry")
+     * @Method({"GET"})
+     */
+    public function showDeletedEntryAction()
+    {
+
+    }
+
+    /**
+     * Shows deleted entries list
+     *
+     * @Route(/skasowane, name="sowp_newsmodule_news_deleted_entries_list")
+     * @Method({"GET"})
+     */
+    public function showDeletedEntriesListAction()
+    {
+
     }
 
     /**
      * Shows list of revisions for selected news
      *
-     * @Route("/lista-zmian/{id}", name="sowp_newsmodule_news_revisions_list")
+     * @Route("/lista-zmian/{slug}", name="sowp_newsmodule_news_revisions_list")
      * @Method({"GET"})
      */
     public function revisionlistAction(News $news)
@@ -175,7 +203,7 @@ class NewsController extends Controller
 
         return $this->render('NewsModuleBundle:news:show.html.twig', [
             'news' => $newsRevision,
-            'revision' => true
+            'revision' => $revId
         ]);
     }
 
@@ -189,10 +217,9 @@ class NewsController extends Controller
     private function createDeleteForm(News $news)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('sowp_newsmodule_news_delete', array('id' => $news->getId())))
+            ->setAction($this->generateUrl('sowp_newsmodule_news_delete', array('slug' => $news->getSlug())))
             ->setMethod('DELETE')
-            ->getForm()
-        ;
+            ->getForm();
     }
 
     protected function addFlash($type, $content)

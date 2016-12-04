@@ -3,7 +3,6 @@
 namespace Sowp\NewsModuleBundle\Entity;
 
 use \Doctrine\ORM\EntityRepository;
-use Doctrine\DBAL\Query\QueryBuilder;
 
 class NewsRepository extends EntityRepository
 {

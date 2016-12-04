@@ -1,6 +1,7 @@
 {% extends 'NewsModuleBundle:news:_form_new_layout.html.twig' %}
 
 {% block body %}
+    {% include 'NewsModuleBundle::flash.html.twig' %}
     <div class="pull-right">
     
         <a href="{{ path('sowp_newsmodule_news_index') }}" class="btn btn-default">
@@ -16,7 +17,5 @@
     <br>
     <input class="pull-right" type="submit" value="Utwórz" />
     {{ form_end(form) }}
-
-    {{ dump(form) }}
 {% endblock %}
 

@@ -36,6 +36,14 @@ class Collection
     private $public;
 
     /**
+     * @var string
+     *
+     * @Gedmo\Slug(fields={"title"})
+     * @ORM\Column(length=255, unique=true)
+     */
+    private $slug;
+
+    /**
      * @Gedmo\TreeLeft
      * @ORM\Column(type="integer")
      */
@@ -501,5 +509,22 @@ class Collection
     public function removeChild(\Sowp\NewsModuleBundle\Entity\Collection $child)
     {
         $this->children->removeElement($child);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+        return $this;
     }
 }

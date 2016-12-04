@@ -62,7 +62,8 @@ class CollectionController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($collection);
                 $em->flush();
-                $this->redirectToRoute('sowp_news_collection_show',['id' => $collection->getId()]);
+                $this->addFlash('notice', 'Dodano kolekcję');
+                return $this->redirectToRoute('sowp_news_collection_show',['slug' => $collection->getSlug()]);
             } else {
                 $this->addFlash('error', 'Wystąpił błąd');
             }
@@ -76,7 +77,7 @@ class CollectionController extends Controller
     /**
      * edit collection entry.
      *
-     * @Route("/edytuj/{id}", name="sowp_news_collection_edit")
+     * @Route("/edytuj/{slug}", name="sowp_news_collection_edit")
      * @Method({"GET","POST"})
      */
     public function editAction(Request $req, Collection $collection)
@@ -90,6 +91,7 @@ class CollectionController extends Controller
                 $em->persist($collection);
                 $em->flush();
                 $this->addFlash('notice', 'Zapisano');
+                return $this->redirectToRoute('sowp_news_collection_show',['slug' => $collection->getSlug()]);
             } else {
                 $this->addFlash('error', 'Wystąpił błąd');
             }
@@ -120,7 +122,7 @@ class CollectionController extends Controller
     /**
      * Finds and displays a Collection entity.
      *
-     * @Route("/{id}", name="sowp_news_collection_show")
+     * @Route("/{slug}", name="sowp_news_collection_show")
      * @Method("GET")
      */
     public function showAction(Collection $collection)

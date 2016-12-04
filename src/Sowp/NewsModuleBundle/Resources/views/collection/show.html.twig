@@ -1,11 +1,16 @@
     {% extends 'base.html.twig' %}
 
     {% block body %}
+        {% include 'NewsModuleBundle::flash.html.twig' %}
     <div class="pull-right">
     
         <a href="{{ path('sowp_news_collection_index') }}" class="btn btn-default">
             <i class="fa fa-list" aria-hidden="true"></i>
             Back to the list
+        </a>
+        <a href="{{ path('sowp_news_collection_edit', {'slug' : collection.slug}) }}" class="btn btn-default">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            Edit
         </a>
     </div>
 <h1>Collection</h1>
@@ -25,6 +30,10 @@
                     <td>{{ collection.title }}</td>
                 </tr>
                 <tr>
+                    <th>Slug</th>
+                    <td>{{ collection.slug }}</td>
+                </tr>
+                <tr>
                     <th>Public</th>
                     <td>{% if collection.public %}Yes{% else %}No{% endif %}</td>
                 </tr>
@@ -32,10 +41,12 @@
                     <th>Createdat</th>
                     <td>{% if collection.createdAt %}{{ collection.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
                 </tr>
+                {% if collection.modifiedAt and not(collection.modifiedAt == collection.createdAt) %}
                 <tr>
                     <th>Modifiedat</th>
-                    <td>{% if collection.modifiedAt %}{{ collection.modifiedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{{ collection.modifiedAt|date('Y-m-d H:i:s') }}</td>
                 </tr>
+                {% endif %}
             </tbody>
         </table>
     </div>

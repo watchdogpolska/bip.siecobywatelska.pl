@@ -9,14 +9,20 @@
     </div>
     <h1>News list</h1>
 
-    <div class="panel panel-default">
+    <!--<div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">List</h3>
-        </div>
+        </div>-->
             {% for news_entry in news %}
-                <div class="panel panel-info">
+                <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">{{ news_entry.title }}</h3>
+                        <h3 class="panel-title">
+                            {{ news_entry.title }}
+                            <a href="{{ path('sowp_newsmodule_news_edit', { 'slug': news_entry.slug }) }}" class="btn btn-default">
+                                <i class="fa fa-pencil"></i>
+                                Edit
+                            </a>
+                        </h3>
                     </div>
                     <table class="table">
                         <tbody>
@@ -25,15 +31,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <a href="{{ path('sowp_newsmodule_news_show', { 'id': news_entry.id }) }}">{{ news_entry.id }}</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Content</th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    {{ news_entry.content|purify }}
+                                    <a href="{{ path('sowp_newsmodule_news_show', { 'slug': news_entry.slug }) }}">{{ news_entry.id }}</a>
                                 </td>
                             </tr>
                             {% if news_entry.attachments %}
@@ -113,35 +111,29 @@
                                         </td>
                                     </tr>
                                 {% endif %}
+                                {% if news_entry.deletedAt %}
+                                    <tr>
+                                        <th>
+                                            Deleted At
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ news_entry.deletedAt }}
+                                        </td>
+                                    </tr>
+                                {% endif %}
                             {% endif %}
-                            <tr>
-                                <td>
-                                    <a href="{{ path('sowp_newsmodule_news_edit', { 'id': news_entry.id }) }}" class="btn btn-default">
-                                        <i class="fa fa-pencil"></i>
-                                        Edit
-                                    </a>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
+                    <hr>
+                    <div class="container-liquid" style="word-wrap: break-word">
+                        {{ news_entry.content|purify }}
+                    </div>
                 </div>
             {% endfor %}
-        <div class="panel-footer">
-            {{ pagerfanta(news) }}
-        </div>
-    </div>
+            <div class="panel panel-default">
+                {{ pagerfanta(news) }}
+            </div>
+    <!--</div>-->
 {% endblock %}
-{#
-                <tr>
-                    <td>{% if news.modifiedAt %}{{ news.modifiedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{{ news.modifyNote }}</td>                    <td>
-                        <a href="{{ path('sowp_newsmodule_news_show', { 'id': news.id }) }}" class="btn btn-default">
-                            <i class="fa fa-eye"></i>
-                            Show
-                        </a>
-                        <a href="{{ path('sowp_newsmodule_news_edit', { 'id': news.id }) }}" class="btn btn-default">
-                            <i class="fa fa-pencil"></i>
-                            Edit
-                        </a>                    </td>
-                </tr>
-#}
