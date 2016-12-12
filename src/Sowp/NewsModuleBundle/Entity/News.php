@@ -5,6 +5,7 @@ namespace Sowp\NewsModuleBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use SimpleThings\EntityAudit\Mapping\Annotation as Audit;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="Sowp\NewsModuleBundle\Entity\NewsRepository")
@@ -26,6 +27,7 @@ class News
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="title", type="string", length=255, unique=true, nullable=false)
      */
     private $title;

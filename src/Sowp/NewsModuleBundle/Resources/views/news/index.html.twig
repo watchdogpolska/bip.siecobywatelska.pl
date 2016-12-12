@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% include 'NewsModuleBundle::flash.html.twig' %}
     <div class="pull-right">
             <a href="{{ path('sowp_newsmodule_news_new') }}" class="btn btn-primary">
                 <i class="fa fa-plus" aria-hidden="true"></i>
@@ -9,10 +10,6 @@
     </div>
     <h1>News list</h1>
 
-    <!--<div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">List</h3>
-        </div>-->
             {% for news_entry in news %}
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -119,7 +116,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            {{ news_entry.deletedAt }}
+                                            {{ news_entry.deletedAt|date('Y-m-d H:i:s') }}
                                         </td>
                                     </tr>
                                 {% endif %}

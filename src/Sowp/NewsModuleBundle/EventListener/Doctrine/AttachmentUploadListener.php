@@ -112,6 +112,14 @@ class AttachmentUploadListener
                     $attachments[] = $found;
                     break;
 
+                case (is_string($uf)):
+
+                    if (file_exists($this->uploadPath . '/' . $uf)) {
+                        $attachments[] = $file;
+                    }
+
+                    break;
+
                 default :
                     throw new \Exception("Invalid uploaded field type");
             }

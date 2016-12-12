@@ -2,6 +2,7 @@
 
 namespace Sowp\NewsModuleBundle\Controller;
 
+use Doctrine\ORM\Query\FilterCollection;
 use Sowp\NewsModuleBundle\Entity\News;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -78,11 +79,16 @@ class NewsController extends Controller
      */
     public function showAction(News $news)
     {
-        $deleteForm = $this->createDeleteForm($news);
+        if ($news->getDeletedAt() instanceof \DateTime) {
+            $restoreForm = $this->createRestoreForm($news);
+        } else {
+            $deleteForm = $this->createDeleteForm($news);
+        }
 
         return $this->render('NewsModuleBundle:news:show.html.twig', array(
             'news' => $news,
-            'delete_form' => $deleteForm->createView()
+            'delete_form' => isset($deleteForm) ? $deleteForm->createView() : null,
+            'restore_form' => isset($restoreForm) ? $restoreForm->createView() : null
         ));
     }
 
@@ -140,29 +146,39 @@ class NewsController extends Controller
             }
         }
 
-        return $this->redirectToRoute('sowp_newsmodule_news_show', ['slug' => $news->getSlug()]);
+        return $this->redirectToRoute('sowp_newsmodule_news_index');
     }
 
     /**
-     * Shows deleted entry
+     * Restores a soft deleted entity.
      *
-     * @Route(/skasowany/{slug}, name="sowp_newsmodule_news_deleted_entry")
-     * @Method({"GET"})
+     * @Route("/przywroc/{slug}", name="sowp_newsmodule_news_restore")
+     * @Method({"POST"})
      */
-    public function showDeletedEntryAction()
+    public function restoreAction(Request $request, News $news)
     {
+        $form = $this->createRestoreForm($news);
+        $form->handleRequest($request);
 
-    }
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $attachments = $news->getAttachments();
+                $news->setAttachments([]);
+                $news->setDeletedAt(null);
+                $em->persist($news);
+                $em->flush();
+                $news->setAttachments($attachments);
+                $em->persist($news);
+                $em->flush();
+                $this->addFlash('notice', 'Przywrócono artykuł');
+                return $this->redirectToRoute('sowp_newsmodule_news_show', ['slug' => $news->getSlug()]);
+            } else {
+                $this->addFlash('error', 'Nie przywrócono artykułu');
+            }
+        }
 
-    /**
-     * Shows deleted entries list
-     *
-     * @Route(/skasowane, name="sowp_newsmodule_news_deleted_entries_list")
-     * @Method({"GET"})
-     */
-    public function showDeletedEntriesListAction()
-    {
-
+        return $this->redirectToRoute('sowp_newsmodule_news_index');
     }
 
     /**
@@ -219,6 +235,21 @@ class NewsController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('sowp_newsmodule_news_delete', array('slug' => $news->getSlug())))
             ->setMethod('DELETE')
+            ->getForm();
+    }
+
+    /**
+     * Creates a form to restore softdeleted news entity.
+     *
+     * @param News $news The news entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createRestoreForm(News $news)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('sowp_newsmodule_news_restore', array('slug' => $news->getSlug())))
+            ->setMethod('POST')
             ->getForm();
     }
 
