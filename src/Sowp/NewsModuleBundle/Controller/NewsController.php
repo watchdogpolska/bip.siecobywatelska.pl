@@ -3,6 +3,7 @@
 namespace Sowp\NewsModuleBundle\Controller;
 
 use Doctrine\ORM\Query\FilterCollection;
+use Sowp\NewsModuleBundle\Entity\Collection;
 use Sowp\NewsModuleBundle\Entity\News;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Process\Exception\LogicException;
 
 /**
@@ -23,6 +25,7 @@ class NewsController extends Controller
 {
     /** constant int pagerfanta*/
     const NEWS_PER_PAGE = 4;
+
     /**
      * Lists all news entities.
      *
