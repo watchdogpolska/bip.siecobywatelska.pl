@@ -3,6 +3,12 @@
 namespace Sowp\NewsModuleBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Sowp\NewsModuleBundle\Entity\News;
+use Sowp\NewsModuleBundle\Entity\NewsRepository;
+use Sowp\NewsModuleBundle\Entity\Collection;
+use Sowp\NewsModuleBundle\Entity\CollectionRepository;
 
 class NewsControllerTest extends WebTestCase
 {
@@ -52,4 +58,55 @@ class NewsControllerTest extends WebTestCase
     }
 
     */
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $em;
+
+    /** @var  Sowp\NewsmoduleBunlde\Entity\NewsRepository */
+    private $news_R;
+
+    /** @var  Sowp\NewsmoduleBunlde\Entity\CategoryRepository */
+    private $cat_R;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function setUp()
+    {
+        self::bootKernel();
+
+        $this->em = static::$kernel->getContainer()
+            ->get('doctrine')
+            ->getManager();
+
+        $this->news_R = $this->em->getRepository('NewsModuleBundle:News');
+        $this->cat_R = $this->em->getRepository('NewsModuleBundle:Collection');
+    }
+
+    public function testIndexHeader()
+    {
+        $client = $this->createClient();
+        $crawler = $client->request('GET', '/wiadomosci/');
+
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('html:contains("News list")')->count(),
+            'HTML doesn\'t contain proper heading'
+        );
+    }
+
+    public function testIndexMessageStructure()
+    {
+        $client = $this->createClient();
+        $crawler = $client->request('GET', '/wiadomosci/');
+
+
+            /*->getMockBuilder(NewsRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();*/
+
+        //var_dump($crawler);
+
+    }
 }

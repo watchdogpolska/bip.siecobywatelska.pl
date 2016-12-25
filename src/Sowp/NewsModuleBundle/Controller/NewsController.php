@@ -21,6 +21,8 @@ use Symfony\Component\Process\Exception\LogicException;
  */
 class NewsController extends Controller
 {
+    /** constant int pagerfanta*/
+    const NEWS_PER_PAGE = 4;
     /**
      * Lists all news entities.
      *
@@ -34,7 +36,7 @@ class NewsController extends Controller
         $page = $request->query->get('page', 1);
         $pagerAdapter = new DoctrineORMAdapter($repo->getQueryBuilderAll(), false);
         $news = new Pagerfanta($pagerAdapter);
-        $news->setMaxPerPage(4);
+        $news->setMaxPerPage(self::NEWS_PER_PAGE);
         $news->setCurrentPage($page);
 
         return $this->render('NewsModuleBundle:news:index.html.twig', array(

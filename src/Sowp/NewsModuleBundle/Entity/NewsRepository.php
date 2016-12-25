@@ -13,4 +13,29 @@ class NewsRepository extends EntityRepository
             ->addOrderBy('n.pinned', 'DESC')
             ->addOrderBy('n.createdAt', 'DESC');
     }
+
+    public function getTotalNewsCount()
+    {
+
+    }
+
+    public function getDeletedNewsCount()
+    {
+
+    }
+
+    public function getNotDeletedNewsCount()
+    {
+
+    }
+
+    public function getNewsByCategory(\Sowp\NewsModuleBundle\Entity\Collection $collection)
+    {
+
+    }
+
+    public function getNewsCountByCategory(\Sowp\NewsModuleBundle\Entity\Collection $collection)
+    {
+
+    }
 }
