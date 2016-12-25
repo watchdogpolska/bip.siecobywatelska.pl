@@ -12,51 +12,6 @@ use Sowp\NewsModuleBundle\Entity\CollectionRepository;
 
 class NewsControllerTest extends WebTestCase
 {
-    /*
-    public function testCompleteScenario()
-    {
-        // Create a new client to browse the application
-        $client = static::createClient();
-
-        // Create a new entry in the database
-        $crawler = $client->request('GET', '/news/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /news/");
-        $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
-
-        // Fill in the form and submit it
-        $form = $crawler->selectButton('Create')->form(array(
-            'sowp_newsmodulebundle_news[field_name]'  => 'Test',
-            // ... other fields to fill
-        ));
-
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-
-        // Check data in the show view
-        $this->assertGreaterThan(0, $crawler->filter('td:contains("Test")')->count(), 'Missing element td:contains("Test")');
-
-        // Edit the entity
-        $crawler = $client->click($crawler->selectLink('Edit')->link());
-
-        $form = $crawler->selectButton('Update')->form(array(
-            'sowp_newsmodulebundle_news[field_name]'  => 'Foo',
-            // ... other fields to fill
-        ));
-
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-
-        // Check the element contains an attribute with value equals "Foo"
-        $this->assertGreaterThan(0, $crawler->filter('[value="Foo"]')->count(), 'Missing element [value="Foo"]');
-
-        // Delete the entity
-        $client->submit($crawler->selectButton('Delete')->form());
-        $crawler = $client->followRedirect();
-
-        // Check the entity has been delete on the list
-        $this->assertNotRegExp('/Foo/', $client->getResponse()->getContent());
-    }
-
     */
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -84,11 +39,16 @@ class NewsControllerTest extends WebTestCase
         $this->cat_R = $this->em->getRepository('NewsModuleBundle:Collection');
     }
 
+    /**
+     *  response and page header
+     */
     public function testIndexHeader()
     {
+        print __FUNCTION__ . "\n";
         $client = $this->createClient();
         $crawler = $client->request('GET', '/wiadomosci/');
 
+        $this>self::assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertGreaterThan(
             0,
             $crawler->filter('html:contains("News list")')->count(),
@@ -96,17 +56,44 @@ class NewsControllerTest extends WebTestCase
         );
     }
 
+    /**
+     * structure of news index
+     */
     public function testIndexMessageStructure()
     {
+        print __FUNCTION__ . "\n";
         $client = $this->createClient();
         $crawler = $client->request('GET', '/wiadomosci/');
+        $count = (int)$this->news_R->getTotalNewsCount();
+        $divs = $crawler->filter('div.news-entry');
+        $divs_c = $divs->count();
 
+        if ($count > 0) {
+            $this->assertGreaterThan(0, $divs->count(), "Count of News objects is greater than 0,
+                                                         but there are no corresponding DOM elements");
 
-            /*->getMockBuilder(NewsRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();*/
+            foreach ($divs as $child) {
 
-        //var_dump($crawler);
+                /** @var $child \DOMElement */
+                $this->assertEquals(
+                    1, $child->getElementsByTagName('table')->length,
+                    "No '<table>' element found in iteration throug div.art-entry"
+                );
+
+            }
+
+            $id_c = $divs->filter('td.id')->count();
+            $attachments_c = $divs->filter("td.attachments")->count();
+
+            $this->assertEquals($divs_c, $id_c, "Inapropriate structure - lacking td.id");
+            $this->assertEquals($divs_c, $attachments_c, "Inapropriate structure - lacking td.attachments");
+        } else {
+            $this->assertEquals(0, $divs->count());
+        }
+    }
+
+    public function testAddNews()
+    {
 
     }
 }
