@@ -96,4 +96,16 @@ class NewsControllerTest extends WebTestCase
     {
 
     }
+
+    public function testCollectionRepository()
+    {
+        $reflection = new \ReflectionObject($this->cat_R);
+        $methods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
+    }
+
+    public function testNewsRepository()
+    {
+        $reflection = new \ReflectionObject($this->news_R);
+        $methods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
+    }
 }
