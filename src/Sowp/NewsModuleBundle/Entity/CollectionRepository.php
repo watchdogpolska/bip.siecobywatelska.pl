@@ -2,6 +2,7 @@
 
 namespace Sowp\NewsModuleBundle\Entity;
 
+use Doctrine\ORM\Query;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 
 class CollectionRepository extends NestedTreeRepository
@@ -15,4 +16,15 @@ class CollectionRepository extends NestedTreeRepository
         $res = $query->getResult();
         return $res;
     }
+
+    public function getCollectionsIds()
+    {
+        return $this->getEntityManager()
+            ->createQueryBuilder('c')
+            ->select('c.id')
+            ->from('NewsModuleBundle:Collection', 'c')
+            ->getQuery()
+            ->getArrayResult();
+    }
+
 }

@@ -12,7 +12,6 @@ use Sowp\NewsModuleBundle\Entity\CollectionRepository;
 
 class NewsControllerTest extends WebTestCase
 {
-    */
     /**
      * @var \Doctrine\ORM\EntityManager
      */
@@ -48,7 +47,7 @@ class NewsControllerTest extends WebTestCase
         $client = $this->createClient();
         $crawler = $client->request('GET', '/wiadomosci/');
 
-        $this>self::assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertGreaterThan(
             0,
             $crawler->filter('html:contains("News list")')->count(),
@@ -83,10 +82,10 @@ class NewsControllerTest extends WebTestCase
             }
 
             $id_c = $divs->filter('td.id')->count();
-            $attachments_c = $divs->filter("td.attachments")->count();
+            $title_c = $divs->filter("h3.panel-title")->count();
 
             $this->assertEquals($divs_c, $id_c, "Inapropriate structure - lacking td.id");
-            $this->assertEquals($divs_c, $attachments_c, "Inapropriate structure - lacking td.attachments");
+            $this->assertEquals($divs_c, $title_c, "Inapropriate structure - lacking h3.panel-title");
         } else {
             $this->assertEquals(0, $divs->count());
         }
@@ -94,18 +93,58 @@ class NewsControllerTest extends WebTestCase
 
     public function testAddNews()
     {
+        print __FUNCTION__ . "\n";
+        $client = $this->createClient();
+        $client->followRedirects();
+        $crawler = $client->request('GET', '/wiadomosci/dodaj');
+        $form = $crawler->selectButton('send_new_message')->form();
+        $coll_ids = [];
+        $faker = \Faker\Factory::create();
 
+        foreach ($this->cat_R->getCollectionsIds() as $id) {
+            $coll_ids[] = $id['id'];
+        }
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(),
+                            "Route '/wiadomosci/dodaj' should return HTTP 200");
+
+        foreach ($form->all() as $input) {
+            $field_name = $input->getName();
+            switch ($field_name) {
+                case \preg_match('#title#', $field_name) === 1:
+                    $form[$field_name] = 'Testing title at ' . \time();
+                    break;
+                case preg_match('#content#', $field_name) === 1:
+                    $str = '';
+                    $x1 = \rand(10,500);
+                    for($x = $x1; $x >= 0; $x--) {
+                        $str .= $faker->text(mt_rand(10,150));
+                    }
+                    $form[$field_name] = $str;
+                    break;
+                case preg_match('#pinned#', $field_name) === 1:
+                    $form[$field_name] = 1;
+                    break;
+                case preg_match('#collections#', $field_name) === 1:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $crawler = $client->submit($form);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(),
+            "Route should return HTTP 200");
+
+        $x = false;
+        if (
+            ($crawler->filter('html:contains("Dodano")')->count() > 0) ||
+            ($crawler->filter('html:contains("niepoprawne,")')->count() > 0)
+        ) {
+            $x = true;
+        }
+
+        $this->assertTrue($x, "Client submited form properly, response code OK, but response HTML structure");
     }
 
-    public function testCollectionRepository()
-    {
-        $reflection = new \ReflectionObject($this->cat_R);
-        $methods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
-    }
-
-    public function testNewsRepository()
-    {
-        $reflection = new \ReflectionObject($this->news_R);
-        $methods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
-    }
 }
