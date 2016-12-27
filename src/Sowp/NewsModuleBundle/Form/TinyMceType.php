@@ -7,8 +7,9 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+
 /**
- * html purify field type
+ * html purify field type.
  */
 class TinyMceType extends AbstractType
 {
@@ -37,8 +38,8 @@ class TinyMceType extends AbstractType
             'attr' => [
                 'rows' => 25,
                 'id' => 'news_content',
-                'data-wysiwyg' => ''
-            ]
+                'data-wysiwyg' => '',
+            ],
         ));
     }
 

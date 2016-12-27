@@ -4,7 +4,6 @@ namespace Sowp\NewsModuleBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use AppBundle\Entity\User;
 use Sowp\NewsModuleBundle\Entity\Collection;
 use Sowp\NewsModuleBundle\Entity\News;
 

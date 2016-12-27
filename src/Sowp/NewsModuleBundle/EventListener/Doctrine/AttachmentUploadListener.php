@@ -21,16 +21,17 @@ class AttachmentUploadListener
 
         if (!$this->uploadPath ||
             !is_dir($this->uploadPath) ||
-            !is_writeable($this->uploadPath)
+            !is_writable($this->uploadPath)
         ) {
             throw new \Exception("parameter 'sowp_news_module_upload_path' need adjustment");
         }
     }
 
     /**
-     * aiming at initial persist
+     * aiming at initial persist.
      *
-     * @return boolean
+     * @return bool
+     *
      * @param LifecycleEventArgs $arg
      */
     public function prePersist(LifecycleEventArgs $arg)
@@ -45,13 +46,15 @@ class AttachmentUploadListener
         $postUploadAttachments = $this->upload($preUploadAttachments);
 
         $entity->setAttachments($postUploadAttachments);
+
         return true;
     }
 
     /**
-     * triggered at updating ($em->fulsh() on already existing item)
+     * triggered at updating ($em->fulsh() on already existing item).
      *
-     * @return boolean
+     * @return bool
+     *
      * @param PreUpdateEventArgs $arg
      */
     public function preUpdate(PreUpdateEventArgs $arg)
@@ -67,12 +70,15 @@ class AttachmentUploadListener
         $postUploadAttachments = $this->upload($preUploadAttachments, $oldAttachmentsValue);
 
         $entity->setAttachments($postUploadAttachments);
+
         return true;
     }
 
     /**
-     * process $attachments comming from request
+     * process $attachments comming from request.
+     *
      * @param array $files
+     *
      * @return array
      */
     private function upload(array $files, array $oldAttachments = null)
@@ -84,20 +90,20 @@ class AttachmentUploadListener
             $un = $file['name'];
 
             switch (true) {
-                case ($uf instanceof UploadedFile):
+                case $uf instanceof UploadedFile:
 
                     do {
-                        $uploadedFileName = md5(uniqid()) . ".{$uf->guessClientExtension()}";
-                    } while (file_exists($this->uploadPath . '/' . $uploadedFileName));
+                        $uploadedFileName = md5(uniqid()).".{$uf->guessClientExtension()}";
+                    } while (file_exists($this->uploadPath.'/'.$uploadedFileName));
 
                     $uf->move($this->uploadPath, $uploadedFileName);
                     $attachments[] = [
                         'name' => $file['name'],
-                        'file' => $uploadedFileName
+                        'file' => $uploadedFileName,
                     ];
                     break;
 
-                case ($uf === null):
+                case $uf === null:
 
                     foreach ($oldAttachments as $oldEnt) {
                         if ($oldEnt['name'] === $un) {
@@ -106,26 +112,25 @@ class AttachmentUploadListener
                     }
 
                     if (!isset($found)) {
-                        throw new \Exception("Are You attempting to add empty attachment?");
+                        throw new \Exception('Are You attempting to add empty attachment?');
                     }
 
                     $attachments[] = $found;
                     break;
 
-                case (is_string($uf)):
+                case is_string($uf):
 
-                    if (file_exists($this->uploadPath . '/' . $uf)) {
+                    if (file_exists($this->uploadPath.'/'.$uf)) {
                         $attachments[] = $file;
                     }
 
                     break;
 
-                default :
-                    throw new \Exception("Invalid uploaded field type");
+                default:
+                    throw new \Exception('Invalid uploaded field type');
             }
         }
 
         return $attachments;
     }
-
 }

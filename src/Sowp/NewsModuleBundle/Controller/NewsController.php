@@ -2,19 +2,13 @@
 
 namespace Sowp\NewsModuleBundle\Controller;
 
-use Doctrine\ORM\Query\FilterCollection;
-use Sowp\NewsModuleBundle\Entity\Collection;
 use Sowp\NewsModuleBundle\Entity\News;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\DBAL\Query\QueryBuilder;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Process\Exception\LogicException;
 
 /**
  * News controller.
@@ -65,6 +59,7 @@ class NewsController extends Controller
                 $em->persist($news);
                 $em->flush();
                 $this->addFlash('notice', 'Dodano wiadomość');
+
                 return $this->redirectToRoute('sowp_newsmodule_news_show', ['slug' => $news->getSlug()]);
             } else {
                 $this->addFlash('error', 'Wprowadzone dane są niepoprawne, nie udało się zapisać wiadomości');
@@ -93,7 +88,7 @@ class NewsController extends Controller
         return $this->render('NewsModuleBundle:news:show.html.twig', array(
             'news' => $news,
             'delete_form' => isset($deleteForm) ? $deleteForm->createView() : null,
-            'restore_form' => isset($restoreForm) ? $restoreForm->createView() : null
+            'restore_form' => isset($restoreForm) ? $restoreForm->createView() : null,
         ));
     }
 
@@ -114,10 +109,12 @@ class NewsController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($news);
                 $em->flush();
-                $this->addFlash('notice', "Zapisano zmiany");
+                $this->addFlash('notice', 'Zapisano zmiany');
+
                 return $this->redirectToRoute('sowp_newsmodule_news_show', ['slug' => $news->getSlug()]);
             } else {
-                $this->addFlash('error', "Nie zapisano zmian - formularz został niepoprawnie wypełniony");
+                $this->addFlash('error', 'Nie zapisano zmian - formularz został niepoprawnie wypełniony');
+
                 return $this->redirectToRoute('sowp_newsmodule_news_edit', ['slug' => $news->getSlug()]);
             }
         }
@@ -177,6 +174,7 @@ class NewsController extends Controller
                 $em->persist($news);
                 $em->flush();
                 $this->addFlash('notice', 'Przywrócono artykuł');
+
                 return $this->redirectToRoute('sowp_newsmodule_news_show', ['slug' => $news->getSlug()]);
             } else {
                 $this->addFlash('error', 'Nie przywrócono artykułu');
@@ -187,7 +185,7 @@ class NewsController extends Controller
     }
 
     /**
-     * Shows list of revisions for selected news
+     * Shows list of revisions for selected news.
      *
      * @Route("/lista-zmian/{slug}", name="sowp_newsmodule_news_revisions_list")
      * @Method({"GET"})
@@ -203,12 +201,12 @@ class NewsController extends Controller
 
         return $this->render('NewsModuleBundle:news:revlist.html.twig', [
             'news' => $news,
-            'revisions' => $revisions
+            'revisions' => $revisions,
         ]);
     }
 
     /**
-     * Shows detail of selected revision for selected news
+     * Shows detail of selected revision for selected news.
      *
      * @Route("/rewizja/{newsId},{revId}", name="sowp_newsmodule_news_revisions_detail")
      * @Method({"GET"})
@@ -224,7 +222,7 @@ class NewsController extends Controller
 
         return $this->render('NewsModuleBundle:news:show.html.twig', [
             'news' => $newsRevision,
-            'revision' => $revId
+            'revision' => $revId,
         ]);
     }
 

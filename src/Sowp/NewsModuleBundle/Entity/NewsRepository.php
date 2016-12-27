@@ -2,7 +2,7 @@
 
 namespace Sowp\NewsModuleBundle\Entity;
 
-use \Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityRepository;
 
 class NewsRepository extends EntityRepository
 {
@@ -46,6 +46,7 @@ class NewsRepository extends EntityRepository
         $stmt = $conn->prepare('SELECT COUNT(*) AS count FROM collection_news WHERE collection_id = ? ');
         $stmt->bindValue(1, $collection->getId());
         $stmt->execute();
+
         return $stmt->fetch(\PDO::FETCH_OBJ);
     }
 }

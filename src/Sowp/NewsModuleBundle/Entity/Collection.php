@@ -527,6 +527,7 @@ class Collection
     public function setSlug($slug)
     {
         $this->slug = $slug;
+
         return $this;
     }
 }

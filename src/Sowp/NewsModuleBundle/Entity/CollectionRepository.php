@@ -2,7 +2,6 @@
 
 namespace Sowp\NewsModuleBundle\Entity;
 
-use Doctrine\ORM\Query;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 
 class CollectionRepository extends NestedTreeRepository
@@ -14,6 +13,7 @@ class CollectionRepository extends NestedTreeRepository
                 ->createQuery('SELECT c FROM NewsModuleBundle:Collection c WHERE c.title LIKE :search')
                 ->setParameter('search', $search);
         $res = $query->getResult();
+
         return $res;
     }
 

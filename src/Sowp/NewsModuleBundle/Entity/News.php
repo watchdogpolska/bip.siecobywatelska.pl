@@ -125,6 +125,7 @@ class News
     public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
+
         return $this;
     }
 
@@ -342,6 +343,7 @@ class News
     public function setSlug($slug)
     {
         $this->slug = $slug;
+
         return $this;
     }
 }

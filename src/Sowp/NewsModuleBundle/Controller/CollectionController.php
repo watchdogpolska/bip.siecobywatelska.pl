@@ -63,7 +63,8 @@ class CollectionController extends Controller
                 $em->persist($collection);
                 $em->flush();
                 $this->addFlash('notice', 'Dodano kolekcję');
-                return $this->redirectToRoute('sowp_news_collection_show',['slug' => $collection->getSlug()]);
+
+                return $this->redirectToRoute('sowp_news_collection_show', ['slug' => $collection->getSlug()]);
             } else {
                 $this->addFlash('error', 'Wystąpił błąd');
             }
@@ -91,7 +92,8 @@ class CollectionController extends Controller
                 $em->persist($collection);
                 $em->flush();
                 $this->addFlash('notice', 'Zapisano');
-                return $this->redirectToRoute('sowp_news_collection_show',['slug' => $collection->getSlug()]);
+
+                return $this->redirectToRoute('sowp_news_collection_show', ['slug' => $collection->getSlug()]);
             } else {
                 $this->addFlash('error', 'Wystąpił błąd');
             }
