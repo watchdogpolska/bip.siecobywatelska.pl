@@ -147,4 +147,13 @@ class NewsControllerTest extends WebTestCase
         $this->assertTrue($x, "Client submited form properly, response code OK, but response HTML structure");
     }
 
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        $this->news_R = null;
+        $this->cat_R = null;
+        $this->em->close();
+        $this->em = null;
+    }
 }

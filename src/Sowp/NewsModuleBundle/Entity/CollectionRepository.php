@@ -27,4 +27,13 @@ class CollectionRepository extends NestedTreeRepository
             ->getArrayResult();
     }
 
+    public function getCollectionsSlugs()
+    {
+        return $this->getEntityManager()
+            ->createQueryBuilder('c')
+            ->select('c.slug')
+            ->from('NewsModuleBundle:Collection', 'c')
+            ->getQuery()
+            ->getArrayResult();
+    }
 }
