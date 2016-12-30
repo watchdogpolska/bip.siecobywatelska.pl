@@ -1,3 +1,8 @@
+sowp_article:
+    resource: "@SowpArticleBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

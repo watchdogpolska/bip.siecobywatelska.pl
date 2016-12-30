@@ -22,6 +22,17 @@ class AppKernel extends Kernel
 
             // Doctrine Extensions
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new SimpleThings\EntityAudit\SimpleThingsEntityAuditBundle(),
+
+            // Pagination
+            new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+
+            // TinyMCE depedencies
+            new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
+
+            // SWOP Bundles
+            new Sowp\ArticleBundle\SowpArticleBundle(),
+            new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="pull-right">
+
+        <a href="{{ path('admin_article_index') }}" class="btn btn-default">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            Back to the list
+        </a>
+
+        <a href="{{ path('admin_article_show', {'id': article.id}) }}" class="btn btn-default">
+            <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+            Back to the article
+        </a>
+    </div>
+
+    <h1>Article</h1>
+    {% if not is_current %}
+        <div class="alert alert-warning">
+            <strong>ARchived!</strong> This is a historical version of the article
+        </div>
+    {% endif %}
+
+    {% if article.isDeleted() %}
+    <div class="alert alert-warning">
+        <strong>Deleted!</strong> This article was deleted at {{ article.deletedAt|date('Y-m-d H:i:s') }}
+    </div>
+    {% endif %}
+
+    {% include 'SowpArticleBundle:article:_panel_info.html.twig' with {'obj': article}  %}
+    {% include 'SowpArticleBundle:article:_panel_history.html.twig' with {'obj': article}  %}
+{% endblock %}

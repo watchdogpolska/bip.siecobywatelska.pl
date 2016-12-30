@@ -1,0 +1,24 @@
+services:
+#    sowp_article.example:
+#        class: Sowp\ArticleBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
+
+    sowp_article.file_uploader:
+        class: Sowp\ArticleBundle\FileUploader
+        arguments: ['%kernel.root_dir%/../web/uploads/attachments/']
+
+    sowp_article.attachment_listener:
+        class: Sowp\ArticleBundle\EventListener\AttachmentSubscriber
+        arguments: ["@sowp_article.file_uploader"]
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    sowp_article.form.transform.html_purifier:
+        class: Exercise\HTMLPurifierBundle\Form\HTMLPurifierTransformer
+        arguments: ["@exercise_html_purifier.default"]
+
+    sowp_article.form.type:
+        class: Sowp\ArticleBundle\Form\WysiwygType
+        arguments: ["@sowp_article.form.transform.html_purifier"]
+        tags:
+            - { name: form.type }

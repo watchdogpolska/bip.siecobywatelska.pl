@@ -1,0 +1,33 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2 class="panel-title">History</h2>
+    </div>
+    <table class="table table-boredered">
+        <tbody>
+        {% if obj.modifitedBy %}
+            <tr>
+                <th>Modifitedby</th>
+                <td>{{ obj.modifitedBy }}</td>
+            </tr>
+        {% endif %}
+        {% if obj.modifitedAt %}
+            <tr>
+                <th>Modifitedat</th>
+                <td>{{ obj.modifitedAt|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        {% endif %}
+        {% if obj.createdAt %}
+            <tr>
+                <th>CreatedBy</th>
+                <td>{{ obj.createdBy }}</td>
+            </tr>
+        {% endif %}
+        {% if obj.createdAt %}
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ obj.createdAt|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
