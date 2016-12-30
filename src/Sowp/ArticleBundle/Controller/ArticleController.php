@@ -41,7 +41,6 @@ class ArticleController extends Controller
         $articles->setMaxPerPage(10);
         $articles->setCurrentPage($page);
 
-
         return $this->render('SowpArticleBundle:article:index.html.twig', array(
             'articles' => $articles,
         ));
