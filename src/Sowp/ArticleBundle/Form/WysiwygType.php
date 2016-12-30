@@ -7,7 +7,6 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class WysiwygType extends AbstractType
 {
@@ -34,8 +33,8 @@ class WysiwygType extends AbstractType
             'compound' => false,
             'attr' => array(
                 'rows' => 25,
-                'data-tinymce' => true
-            )
+                'data-tinymce' => true,
+            ),
         ));
     }
 

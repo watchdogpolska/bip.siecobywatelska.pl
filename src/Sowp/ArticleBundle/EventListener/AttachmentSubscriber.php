@@ -23,7 +23,7 @@ class AttachmentSubscriber implements EventSubscriber
     {
         return array(
             Events::prePersist,
-            Events::preUpdate
+            Events::preUpdate,
         );
     }
 
@@ -31,17 +31,17 @@ class AttachmentSubscriber implements EventSubscriber
     {
         $entity = $args->getEntity();
 
-        if(!$entity instanceof Article){
+        if (!$entity instanceof Article) {
             return;
         }
 
-        if(!$args->hasChangedField('attachments')){
+        if (!$args->hasChangedField('attachments')) {
             return;
         }
 
         $oldValue = $args->getOldValue('attachments');
         $newValue = $args->getNewValue('attachments');
-        if(empty($newValue)){
+        if (empty($newValue)) {
             $newValue = array();
         }
         $this->handleAttachments($oldValue, $newValue, $entity);
@@ -50,24 +50,25 @@ class AttachmentSubscriber implements EventSubscriber
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        if(!$entity instanceof Article){
+        if (!$entity instanceof Article) {
             return;
         }
         $newValue = $entity->getAttachments();
-        if(empty($newValue)){
+        if (empty($newValue)) {
             $newValue = array();
         }
-        $this->handleAttachments([], $newValue , $entity);
+        $this->handleAttachments([], $newValue, $entity);
     }
 
-    private function handleAttachments(array $oldValue = array(), array $newValue = array(), Article $entity){
-        $new_attachment = array_filter($newValue, function($var) {
+    private function handleAttachments(array $oldValue, array $newValue, Article $entity)
+    {
+        $new_attachment = array_filter($newValue, function ($var) {
             return $var['file'] instanceof UploadedFile;
         });
 
         $new_attachment = $this->handleUploads($new_attachment);
 
-        $current_old_files = array_filter($newValue, function($attachment){
+        $current_old_files = array_filter($newValue, function ($attachment) {
             return !$attachment['file'] instanceof UploadedFile;
         });
         $old_files = array_intersect_key($oldValue, $current_old_files);
@@ -75,22 +76,22 @@ class AttachmentSubscriber implements EventSubscriber
         $entity->setAttachments(array_merge($new_attachment, $old_files));
     }
 
-    private function handleUploads($attachments){
-        if(empty($attachments)){
+    private function handleUploads($attachments)
+    {
+        if (empty($attachments)) {
             return $attachments;
         }
 
-        foreach ($attachments as &$attachment){
+        foreach ($attachments as &$attachment) {
             /** @var UploadedFile $file */
             $file = $attachment['file'];
             $attachment['file'] = $this->uploader->upload($file);
 
-            if(empty(trim($attachment['name']))) {
+            if (empty(trim($attachment['name']))) {
                 $attachment['name'] = $attachment['file']['filename'];
             }
         }
 
         return $attachments;
     }
-
 }

@@ -151,7 +151,7 @@ class ArticleContext implements Context
         $article->setCreatedBy($opts['created_by']);
         $article->setModifitedAt($opts['modifited_at']);
         $article->setModifitedBy($opts['modifited_by']);
-        foreach ($opts['collection'] as $collection){
+        foreach ($opts['collection'] as $collection) {
             $article->addCollection($opts['collection']);
         }
         $article->setEditNote($opts['edit_note']);

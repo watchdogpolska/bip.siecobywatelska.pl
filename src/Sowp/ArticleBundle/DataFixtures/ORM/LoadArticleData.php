@@ -31,6 +31,7 @@ class LoadArticleData implements FixtureInterface
 
     /**
      * @param ObjectManager $manager
+     *
      * @return int
      */
     public function loadCollections()

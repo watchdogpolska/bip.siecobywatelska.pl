@@ -22,10 +22,10 @@ class ArticleType extends AbstractType
             ->add('content', WysiwygType::class)
             ->add('attachments', FormCollectionType::class, array(
                 'entry_type' => AttachmentType::class,
-                'allow_add'    => true,
+                'allow_add' => true,
                 'allow_delete' => true,
-                'prototype'    => true,
-                'required'     => false,
+                'prototype' => true,
+                'required' => false,
 //                'delete_empty' => true,
             ))
             ->add('editNote')
@@ -38,10 +38,9 @@ class ArticleType extends AbstractType
                 'cache_timeout' => 60000, // if 'cache' is true
                 'language' => 'en',
                 'allow_add' => array(
-                    'enabled' => true
-                )
+                    'enabled' => true,
+                ),
             ]);
-        ;
     }
 
     /**

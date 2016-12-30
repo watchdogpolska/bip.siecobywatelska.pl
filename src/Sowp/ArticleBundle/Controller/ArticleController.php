@@ -106,7 +106,7 @@ class ArticleController extends Controller
     {
         $deleteForm = $this->createDeleteForm($article);
         $restoreForm = $this->createRestoreForm($article);
-        $revisions = array_map(function($revision, $entity){
+        $revisions = array_map(function ($revision, $entity) {
             return compact('revision', 'entity');
         },
             $this->getAuditReader()->findRevisions(Article::class, $article->getId()),
@@ -117,9 +117,10 @@ class ArticleController extends Controller
             'article' => $article,
             'delete_form' => $deleteForm->createView(),
             'restore_form' => $restoreForm->createView(),
-            'revisions' => $revisions
+            'revisions' => $revisions,
         ));
     }
+
     /**
      * Finds and displays a Article historic entity.
      *
@@ -134,10 +135,9 @@ class ArticleController extends Controller
 
         return $this->render('SowpArticleBundle:article:show_rev.html.twig', array(
             'article' => $article,
-            'is_current' => $curr_rev == $rev
+            'is_current' => $curr_rev == $rev,
         ));
     }
-
 
     /**
      * Displays a form to edit an existing Article entity.
@@ -211,8 +211,9 @@ class ArticleController extends Controller
 
         return $this->redirectToRoute('admin_article_show', array('id' => $article->getId()));
     }
+
     /**
-     * Return a JSON Response contain, a array for select2
+     * Return a JSON Response contain, a array for select2.
      *
      * @Route("/query/", name="admin_article_collection_query")
      * @Method("GET")
@@ -222,12 +223,13 @@ class ArticleController extends Controller
         $q = $request->query->get('q');
         $repo = $this->getDoctrine()->getRepository(Collection::class);
         $collections = $repo->search($q);
-        $collections = array_map(function(Collection $c){
+        $collections = array_map(function (Collection $c) {
             return [
                 'id' => $c->getId(),
-                'text' => $c->getName()
+                'text' => $c->getName(),
             ];
         }, $collections);
+
         return new Response(json_encode($collections));
     }
 

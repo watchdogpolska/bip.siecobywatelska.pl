@@ -121,7 +121,7 @@ class Article implements SoftDeleteable
     private $deletedAt;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -401,6 +401,7 @@ class Article implements SoftDeleteable
 
         return $this;
     }
+
     /**
      * Get collections.
      *
@@ -411,9 +412,8 @@ class Article implements SoftDeleteable
         return $this->collection;
     }
 
-
     /**
-     * Add collection
+     * Add collection.
      *
      * @param \Sowp\ArticleBundle\Entity\Collection $collection
      *
@@ -428,7 +428,7 @@ class Article implements SoftDeleteable
     }
 
     /**
-     * Remove collection
+     * Remove collection.
      *
      * @param \Sowp\ArticleBundle\Entity\Collection $collection
      */

@@ -1,9 +1,8 @@
 <?php
+
 namespace Sowp\ArticleBundle;
 
-
 use Gedmo\Uploadable\FilenameGenerator\FilenameGeneratorAlphanumeric;
-use Gedmo\Uploadable\FilenameGenerator\FilenameGeneratorInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileUploader
@@ -24,22 +23,23 @@ class FileUploader
 
         return [
             'filename' => $filename,
-            'filesize' => $file->getSize()
+            'filesize' => $file->getSize(),
         ];
     }
 
-    private function extractFilenameAndExt($filename){
+    private function extractFilenameAndExt($filename)
+    {
         $hasExtension = strrpos($filename, '.');
         if ($hasExtension) {
             return [
                 'filename' => substr($filename, 0, strrpos($filename, '.')),
-                'ext' => substr($filename, strrpos($filename, '.'))
+                'ext' => substr($filename, strrpos($filename, '.')),
             ];
         } else {
             // File without extension
             return [
                 'filename' => $filename,
-                'ext' => ''
+                'ext' => '',
             ];
         }
     }
