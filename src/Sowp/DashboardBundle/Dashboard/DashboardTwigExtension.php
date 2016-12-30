@@ -1,7 +1,6 @@
 <?php
 
-namespace AppBundle\Dashboard;
-
+namespace Sowp\DashboardBundle\Dashboard;
 
 class DashboardTwigExtension extends \Twig_Extension
 {

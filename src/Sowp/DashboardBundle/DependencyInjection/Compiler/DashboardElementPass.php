@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\DependencyInjection\Compiler;
+namespace Sowp\DashboardBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -10,14 +10,14 @@ class DashboardElementPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has('app.dashboard.manager')) {
+        if (!$container->has('sowp.dashboard.manager')) {
             return;
         }
 
-        $definition = $container->findDefinition('app.dashboard.manager');
+        $definition = $container->findDefinition('sowp.dashboard.manager');
 
-        $taggedServices = $container->findTaggedServiceIds('app.dashboard.element_provider');
-
+        $taggedServices = $container->findTaggedServiceIds('sowp.dashboard.element_provider');
+        var_dump($taggedServices);
         foreach ($taggedServices as $id => $tags) {
             $definition->addMethodCall('addElementsProvider', array(new Reference($id)));
         }

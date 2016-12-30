@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andrzej
- * Date: 11.10.16
- * Time: 18:26
- */
 
-namespace AppBundle\Dashboard;
-
+namespace Sowp\DashboardBundle\Dashboard;
 
 class DashboardRenderer
 {
@@ -20,6 +13,6 @@ class DashboardRenderer
     public function render($name = 'grid')
     {
         $elements = $this->manager->getElements();
-        return $this->templating->render("dashboard/_{$name}.html.twig", compact('elements'));
+        return $this->templating->render("SowpDashboardBundle:dashboard:_{$name}.html.twig", compact('elements'));
     }
 }

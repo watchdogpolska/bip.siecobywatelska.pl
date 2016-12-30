@@ -1,12 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andrzej
- * Date: 11.10.16
- * Time: 17:31
- */
-
-namespace AppBundle\Dashboard;
+namespace Sowp\DashboardBundle\Dashboard;
 
 class DashboardManager
 {

@@ -22,3 +22,9 @@ services:
         arguments: ["@sowp_article.form.transform.html_purifier"]
         tags:
             - { name: form.type }
+
+    sowp.article.dashboard_provider:
+        class: Sowp\ArticleBundle\Dashboard\ArticleDashboardProvider
+        arguments: ['@router']
+        tags:
+            - { name: sowp.dashboard.element_provider }

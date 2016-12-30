@@ -18,12 +18,4 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..'),
         ]);
     }
-
-    /**
-     * @Route("/admin", name="admin_dashboard")
-     */
-    public function dashboardAction(Request $request)
-    {
-        return $this->render('dashboard/index.html.twig');
-    }
 }

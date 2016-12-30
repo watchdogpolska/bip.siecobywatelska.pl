@@ -15,18 +15,3 @@ services:
 #    calls:
 #        - [ setAnnotationReader, [ @annotation_reader ] ]
 
-
-    app.dashboard.manager:
-        class: AppBundle\Dashboard\DashboardManager
-
-    app.dasboard.renderer:
-        class: AppBundle\Dashboard\DashboardRenderer
-        arguments: ['@app.dashboard.manager', '@twig']
-
-    app.dashboard.twig_extension:
-        class: AppBundle\Dashboard\DashboardTwigExtension
-        arguments: ['@app.dasboard.renderer']
-        public: false
-        tags:
-            - { name: twig.extension }
-

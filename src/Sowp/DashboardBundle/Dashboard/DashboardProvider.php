@@ -1,7 +1,6 @@
 <?php
 
-namespace AppBundle\Dashboard;
-
+namespace Sowp\DashboardBundle\Dashboard;
 
 interface DashboardProvider
 {

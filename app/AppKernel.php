@@ -33,6 +33,7 @@ class AppKernel extends Kernel
             // SWOP Bundles
             new Sowp\ArticleBundle\SowpArticleBundle(),
             new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
+            new Sowp\DashboardBundle\SowpDashboardBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
