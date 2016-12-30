@@ -5,6 +5,7 @@ Feature: Article admia panel
 
   Background:
     Given the database is clean
+    And 50 collections should exist
 
   Scenario: List articles
     Given The article "Emancypacja pastafarian" exists

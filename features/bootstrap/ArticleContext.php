@@ -112,7 +112,6 @@ class ArticleContext implements Context
         $users = $userRepo->findAll();
         $collections = $this->getManager()->getRepository(Collection::class)->findAll();
 
-
         $em = $this->getManager();
 
         $article = new Article();
@@ -151,8 +150,8 @@ class ArticleContext implements Context
         $article->setCreatedBy($opts['created_by']);
         $article->setModifitedAt($opts['modifited_at']);
         $article->setModifitedBy($opts['modifited_by']);
-        foreach ($opts['collection'] as $collection) {
-            $article->addCollection($opts['collection']);
+        foreach ($opts['collections'] as $collection) {
+            $article->addCollection($collection);
         }
         $article->setEditNote($opts['edit_note']);
         $em->persist($article);
