@@ -21,7 +21,7 @@ class DataLoader extends AbstractFixture
 
         for ($x = 20; $x > 0; --$x) {
             $col = new Collection();
-            $col->setTitle($faker->words(mt_rand(3, 8), true));
+            $col->setTitle($faker->words(5, true));
             $col->setPublic(true);
             $col->setCreatedAt($faker->dateTimeBetween());
             $col->setCreatedBy($faker->randomElement($users));
