@@ -21,7 +21,6 @@ class CollectionControllerTest extends WebTestCase
 
     public function testIndex()
     {
-        echo __FUNCTION__."\n";
         $client = $this->createClient();
         $crawler = $client->request('GET', '/kolekcje/');
 
