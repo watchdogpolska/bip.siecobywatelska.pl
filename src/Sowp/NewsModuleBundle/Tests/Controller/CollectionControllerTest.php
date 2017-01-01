@@ -35,7 +35,6 @@ class CollectionControllerTest extends WebTestCase
 
     public function testCollectionStructure()
     {
-        echo __FUNCTION__."\n";
         $collectionRepository = $this->em->getRepository('NewsModuleBundle:Collection');
         $slugs = $collectionRepository->getCollectionsSlugs();
 
@@ -63,7 +62,6 @@ class CollectionControllerTest extends WebTestCase
 
     public function testAddCollection()
     {
-        echo __FUNCTION__."\n";
         $client = $this->createClient();
         $client->followRedirects();
         $crawler = $client->request('GET', '/kolekcje/dodaj');
