@@ -104,7 +104,7 @@ class NewsControllerTest extends WebTestCase
                 case preg_match('#content#', $field_name) === 1:
                     $str = '';
                     $x1 = \rand(10, 500);
-                    for ($x = $x1; $x >= 0; --$x) {
+                    for ($x = 0; $x < $x1; $x++) {
                         $str .= $faker->text(mt_rand(10, 150));
                     }
                     $form[$field_name] = $str;
