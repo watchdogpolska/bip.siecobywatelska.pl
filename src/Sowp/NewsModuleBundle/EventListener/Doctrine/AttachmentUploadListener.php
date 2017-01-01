@@ -94,19 +94,16 @@ class AttachmentUploadListener
             $un = $file['name'];
 
             if ($uf instanceof UploadedFile) {
-
                 do {
-                    $uploadedFileName = md5(uniqid()) . ".{$uf->guessClientExtension()}";
-                } while (file_exists($this->uploadPath . '/' . $uploadedFileName));
+                    $uploadedFileName = md5(uniqid()).".{$uf->guessClientExtension()}";
+                } while (file_exists($this->uploadPath.'/'.$uploadedFileName));
 
                 $uf->move($this->uploadPath, $uploadedFileName);
                 $attachments[] = [
                     'name' => $file['name'],
                     'file' => $uploadedFileName,
                 ];
-
             } elseif ($uf === null) {
-
                 foreach ($oldAttachments as $oldEnt) {
                     if ($oldEnt['name'] === $un) {
                         $found = $oldEnt;
@@ -118,13 +115,10 @@ class AttachmentUploadListener
                 }
 
                 $attachments[] = $found;
-
             } elseif (is_string($uf)) {
-
-                if (file_exists($this->uploadPath . '/' . $uf)) {
+                if (file_exists($this->uploadPath.'/'.$uf)) {
                     $attachments[] = $file;
                 }
-
             } else {
                 throw new \Exception('Invalid uploaded field type');
             }

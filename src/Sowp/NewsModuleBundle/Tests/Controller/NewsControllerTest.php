@@ -85,7 +85,6 @@ class NewsControllerTest extends WebTestCase
 
     public function testAddNews()
     {
-        
         $client = $this->createClient();
         $client->followRedirects();
         $crawler = $client->request('GET', '/wiadomosci/dodaj');

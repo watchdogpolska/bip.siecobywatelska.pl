@@ -32,10 +32,9 @@ class DataLoader extends AbstractFixture
         for ($x = 10; $x > 0; --$x) {
             $news = new News();
             $news->setTitle($faker->words(mt_rand(3, 8), true));
-            $nb_collection = $faker->numberBetween(1,6);
+            $nb_collection = $faker->numberBetween(1, 6);
 
-            foreach($faker->randomElements($coll, $nb_collection) as $collection)
-            {
+            foreach ($faker->randomElements($coll, $nb_collection) as $collection) {
                 $news->addCollection($collection);
             }
 

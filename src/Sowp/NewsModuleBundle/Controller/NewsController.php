@@ -245,5 +245,4 @@ class NewsController extends Controller
             ->setMethod('POST')
             ->getForm();
     }
-
 }
