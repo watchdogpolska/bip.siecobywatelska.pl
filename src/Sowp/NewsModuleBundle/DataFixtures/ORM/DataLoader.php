@@ -23,8 +23,8 @@ class DataLoader extends AbstractFixture
             $col = new Collection();
             $col->setTitle($faker->words(mt_rand(3, 8), true));
             $col->setPublic(true);
-            $col->setCreatedAt($faker->dateTimeBetween($startDate = '-1 year', $endDate = 'now', $timezone = date_default_timezone_get()));
-            $col->setCreatedBy($users[array_rand($users)]);
+            $col->setCreatedAt($faker->dateTimeBetween());
+            $col->setCreatedBy($faker->randomElement($users));
             $om->persist($col);
             $coll[] = $col;
         }
@@ -32,17 +32,15 @@ class DataLoader extends AbstractFixture
         for ($x = 10; $x > 0; --$x) {
             $news = new News();
             $news->setTitle($faker->words(mt_rand(3, 8), true));
-            $r = mt_rand(1, 14);
-            while (($newsCol = $news->getCollections()) && $newsCol->count() < $r) {
-                $col = $coll[array_rand($coll)];
-                if (!$newsCol->contains($col)) {
-                    $news->addCollection($col);
-                }
+            $nb_collection = $faker->numberBetween(1,6);
+
+            foreach($faker->randomElements($coll, $nb_collection) as $collection)
+            {
+                $news->addCollection($collection);
             }
+
             $news->setContent($faker->text(5000));
             $news->setPinned($faker->boolean(30));
-            $col->setCreatedAt($faker->dateTimeBetween($startDate = '-1 year', $endDate = 'now', $timezone = date_default_timezone_get()));
-            $col->setCreatedBy($users[array_rand($users)]);
             $om->persist($news);
         }
         $om->flush();

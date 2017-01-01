@@ -36,9 +36,9 @@
                     <label class="col-sm-2 control-label" for="">Usuń</label>
                 </th>
                 <th>
-                    <a class="btn btn-default btn-add" id="add_attachment" title="Dodaj załącznik" href="#">
+                    <a class="btn btn-default btn-add" id="add_attachment" title="Add attachment" href="#">
                         <i class="fa fa-minus" aria-hidden="true"></i>
-                        Dodaj Załącznik
+                        Add attachment
                     </a>
                 </th>
             </thead>
@@ -75,16 +75,6 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css"
             integrity="sha256-xqxV4FDj5tslOz6MV13pdnXgf63lJwViadn//ciKmIs="
             crossorigin="anonymous" />
-{% endblock %}
-
-{% block flashes %}
-    {% for label, flashes in app.session.flashbag.all %}
-        {% for flash in flashes %}
-            <div class="alert alert-{{ label }}">
-                {{ flash }}
-            </div>
-        {% endfor %}
-    {% endfor %}
 {% endblock %}
 
 {% block body %}

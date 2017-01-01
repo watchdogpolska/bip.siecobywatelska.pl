@@ -58,11 +58,9 @@ class NewsController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($news);
                 $em->flush();
-                $this->addFlash('notice', 'Dodano wiadomość');
+                $this->addFlash('notice', 'Message added');
 
                 return $this->redirectToRoute('sowp_newsmodule_news_show', ['slug' => $news->getSlug()]);
-            } else {
-                $this->addFlash('error', 'Wprowadzone dane są niepoprawne, nie udało się zapisać wiadomości');
             }
         }
 
@@ -109,13 +107,9 @@ class NewsController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($news);
                 $em->flush();
-                $this->addFlash('notice', 'Zapisano zmiany');
+                $this->addFlash('notice', 'Changes saved');
 
                 return $this->redirectToRoute('sowp_newsmodule_news_show', ['slug' => $news->getSlug()]);
-            } else {
-                $this->addFlash('error', 'Nie zapisano zmian - formularz został niepoprawnie wypełniony');
-
-                return $this->redirectToRoute('sowp_newsmodule_news_edit', ['slug' => $news->getSlug()]);
             }
         }
 
@@ -142,9 +136,7 @@ class NewsController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($news);
                 $em->flush($news);
-                $this->addFlash('notice', 'Usunięto artykuł');
-            } else {
-                $this->addFlash('error', 'Nie usunięto artykułu');
+                $this->addFlash('notice', 'Article deleted');
             }
         }
 
@@ -173,11 +165,9 @@ class NewsController extends Controller
                 $news->setAttachments($attachments);
                 $em->persist($news);
                 $em->flush();
-                $this->addFlash('notice', 'Przywrócono artykuł');
+                $this->addFlash('notice', 'Article restored');
 
                 return $this->redirectToRoute('sowp_newsmodule_news_show', ['slug' => $news->getSlug()]);
-            } else {
-                $this->addFlash('error', 'Nie przywrócono artykułu');
             }
         }
 
@@ -256,8 +246,4 @@ class NewsController extends Controller
             ->getForm();
     }
 
-    protected function addFlash($type, $content)
-    {
-        $this->container->get('session')->getFlashBag()->add($type, $content);
-    }
 }

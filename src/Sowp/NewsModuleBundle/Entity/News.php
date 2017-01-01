@@ -256,7 +256,9 @@ class News
      */
     public function addCollection(\Sowp\NewsModuleBundle\Entity\Collection $collection)
     {
-        $this->collections[] = $collection;
+        if (!$this->collections->contains($collection)) {
+            $this->collections[] = $collection;
+        }
 
         return $this;
     }

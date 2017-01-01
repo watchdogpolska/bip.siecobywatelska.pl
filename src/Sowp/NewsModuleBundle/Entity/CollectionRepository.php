@@ -17,16 +17,6 @@ class CollectionRepository extends NestedTreeRepository
         return $res;
     }
 
-    public function getCollectionsIds()
-    {
-        return $this->getEntityManager()
-            ->createQueryBuilder('c')
-            ->select('c.id')
-            ->from('NewsModuleBundle:Collection', 'c')
-            ->getQuery()
-            ->getArrayResult();
-    }
-
     public function getCollectionsSlugs()
     {
         return $this->getEntityManager()

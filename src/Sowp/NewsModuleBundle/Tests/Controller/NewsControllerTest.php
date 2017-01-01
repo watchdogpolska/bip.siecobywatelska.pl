@@ -39,7 +39,6 @@ class NewsControllerTest extends WebTestCase
      */
     public function testIndexHeader()
     {
-        echo __FUNCTION__."\n";
         $client = $this->createClient();
         $crawler = $client->request('GET', '/wiadomosci/');
 
@@ -56,7 +55,6 @@ class NewsControllerTest extends WebTestCase
      */
     public function testIndexMessageStructure()
     {
-        echo __FUNCTION__."\n";
         $client = $this->createClient();
         $crawler = $client->request('GET', '/wiadomosci/');
         $count = (int) $this->news_R->getTotalNewsCount();
@@ -87,17 +85,13 @@ class NewsControllerTest extends WebTestCase
 
     public function testAddNews()
     {
-        echo __FUNCTION__."\n";
+        
         $client = $this->createClient();
         $client->followRedirects();
         $crawler = $client->request('GET', '/wiadomosci/dodaj');
         $form = $crawler->selectButton('send_new_message')->form();
         $coll_ids = [];
         $faker = \Faker\Factory::create();
-
-        foreach ($this->cat_R->getCollectionsIds() as $id) {
-            $coll_ids[] = $id['id'];
-        }
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode(),
                             "Route '/wiadomosci/dodaj' should return HTTP 200");
@@ -130,15 +124,8 @@ class NewsControllerTest extends WebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode(),
             'Route should return HTTP 200');
 
-        $x = false;
-        if (
-            ($crawler->filter('html:contains("Dodano")')->count() > 0) ||
-            ($crawler->filter('html:contains("niepoprawne,")')->count() > 0)
-        ) {
-            $x = true;
-        }
-
-        $this->assertTrue($x, 'Client submited form properly, response code OK, but response HTML structure');
+        $this->assertTrue($crawler->filter('html:contains("Message added")')->count() > 0,
+            'Client submited form properly, response code OK, but response HTML structure');
     }
 
     protected function tearDown()

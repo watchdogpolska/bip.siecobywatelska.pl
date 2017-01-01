@@ -81,53 +81,52 @@ class AttachmentUploadListener
      *
      * @return array
      */
-    private function upload(array $files, array $oldAttachments = null)
+    private function upload(array $files = null, array $oldAttachments = null)
     {
         $attachments = [];
+
+        if ($files === null) {
+            return $attachments;
+        }
 
         foreach ($files as $file) {
             $uf = $file['file'];
             $un = $file['name'];
 
-            switch (true) {
-                case $uf instanceof UploadedFile:
+            if ($uf instanceof UploadedFile) {
 
-                    do {
-                        $uploadedFileName = md5(uniqid()).".{$uf->guessClientExtension()}";
-                    } while (file_exists($this->uploadPath.'/'.$uploadedFileName));
+                do {
+                    $uploadedFileName = md5(uniqid()) . ".{$uf->guessClientExtension()}";
+                } while (file_exists($this->uploadPath . '/' . $uploadedFileName));
 
-                    $uf->move($this->uploadPath, $uploadedFileName);
-                    $attachments[] = [
-                        'name' => $file['name'],
-                        'file' => $uploadedFileName,
-                    ];
-                    break;
+                $uf->move($this->uploadPath, $uploadedFileName);
+                $attachments[] = [
+                    'name' => $file['name'],
+                    'file' => $uploadedFileName,
+                ];
 
-                case $uf === null:
+            } elseif ($uf === null) {
 
-                    foreach ($oldAttachments as $oldEnt) {
-                        if ($oldEnt['name'] === $un) {
-                            $found = $oldEnt;
-                        }
+                foreach ($oldAttachments as $oldEnt) {
+                    if ($oldEnt['name'] === $un) {
+                        $found = $oldEnt;
                     }
+                }
 
-                    if (!isset($found)) {
-                        throw new \Exception('Are You attempting to add empty attachment?');
-                    }
+                if (!isset($found)) {
+                    throw new \Exception('Are You attempting to add empty attachment?');
+                }
 
-                    $attachments[] = $found;
-                    break;
+                $attachments[] = $found;
 
-                case is_string($uf):
+            } elseif (is_string($uf)) {
 
-                    if (file_exists($this->uploadPath.'/'.$uf)) {
-                        $attachments[] = $file;
-                    }
+                if (file_exists($this->uploadPath . '/' . $uf)) {
+                    $attachments[] = $file;
+                }
 
-                    break;
-
-                default:
-                    throw new \Exception('Invalid uploaded field type');
+            } else {
+                throw new \Exception('Invalid uploaded field type');
             }
         }
 
