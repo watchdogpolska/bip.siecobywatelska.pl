@@ -68,7 +68,6 @@ doctrine:
                 dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
                 is_bundle: false
 
-
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"
@@ -90,7 +89,6 @@ stof_doctrine_extensions:
             timestampable: true
             blameable: true
             sluggable: true
-            softdeleteable: true
             tree: true
 white_october_pagerfanta:
     default_view: 'twitter_bootstrap3'
