@@ -8,6 +8,11 @@ sowp_article:
     type:     annotation
     prefix:   /
 
+sowp_news:
+    resource: "@NewsModuleBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

@@ -20,20 +20,21 @@ class AppKernel extends Kernel
             // FOS User Bundle
             new FOS\UserBundle\FOSUserBundle(),
 
-            // Doctrine Extensions
+            // Forms
+            new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
+            new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
+
+            // Database
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new SimpleThings\EntityAudit\SimpleThingsEntityAuditBundle(),
 
             // Pagination
             new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
 
-            // TinyMCE depedencies
-            new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
-
             // SWOP Bundles
             new Sowp\ArticleBundle\SowpArticleBundle(),
-            new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
             new Sowp\DashboardBundle\SowpDashboardBundle(),
+            new Sowp\NewsModuleBundle\NewsModuleBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
