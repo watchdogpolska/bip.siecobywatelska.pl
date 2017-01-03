@@ -9,7 +9,7 @@ sowp_article:
     prefix:   /
 
 sowp_news:
-    resource: "@NewsModuleBundle/Controller/"
+    resource: "@NewsBundle/Controller/"
     type:     annotation
     prefix:   /
 

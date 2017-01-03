@@ -34,7 +34,7 @@ class AppKernel extends Kernel
             // SWOP Bundles
             new Sowp\ArticleBundle\SowpArticleBundle(),
             new Sowp\DashboardBundle\SowpDashboardBundle(),
-            new Sowp\NewsModuleBundle\NewsModuleBundle(),
+            new Sowp\NewsBundle\NewsBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
