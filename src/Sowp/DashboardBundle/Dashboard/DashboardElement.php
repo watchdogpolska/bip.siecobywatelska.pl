@@ -4,9 +4,9 @@ namespace Sowp\DashboardBundle\Dashboard;
 
 class DashboardElement
 {
-    const TYPE_HTML = "HTML";
-    const TYPE_IMAGE = "IMAGE";
-    const TYPE_FONT_AWESOME = "FONT_AWESOME";
+    const TYPE_HTML = 'HTML';
+    const TYPE_IMAGE = 'IMAGE';
+    const TYPE_FONT_AWESOME = 'FONT_AWESOME';
 
     /** @var string */
     private $name;
@@ -19,6 +19,7 @@ class DashboardElement
 
     /**
      * DashboardElement constructor.
+     *
      * @param string $name
      * @param string $type
      * @param string $icon
@@ -63,6 +64,4 @@ class DashboardElement
     {
         return $this->href;
     }
-
-
 }

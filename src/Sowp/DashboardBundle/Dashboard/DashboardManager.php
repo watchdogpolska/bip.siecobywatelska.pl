@@ -1,4 +1,5 @@
 <?php
+
 namespace Sowp\DashboardBundle\Dashboard;
 
 class DashboardManager
@@ -8,17 +9,19 @@ class DashboardManager
      */
     private $providers = [];
 
-    public function addElementsProvider(DashboardProvider $provider){
+    public function addElementsProvider(DashboardProvider $provider)
+    {
         $this->providers[] = $provider;
     }
 
-    public function getElements(){
+    public function getElements()
+    {
         $elements = [];
-        foreach ($this->providers as $provider){
+        foreach ($this->providers as $provider) {
             $elements = array_merge($elements, $provider->getElements());
         }
 
-        usort($elements, function(DashboardElement $a, DashboardElement $b) {
+        usort($elements, function (DashboardElement $a, DashboardElement $b) {
             return strcmp($a->getName(), $b->getName());
         });
 

@@ -7,13 +7,12 @@ use AppBundle\Dashboard\DashboardManager;
 
 class DashboardManagerTest extends \PHPUnit_Framework_TestCase
 {
-
-    public function testGetElements(){
-
+    public function testGetElements()
+    {
         $manager = new DashboardManager();
 
-        $provider1 = $this->getProviderMock(array("AA", "AB", "CC"));
-        $provider2 = $this->getProviderMock(array("AA", "BB"));
+        $provider1 = $this->getProviderMock(array('AA', 'AB', 'CC'));
+        $provider2 = $this->getProviderMock(array('AA', 'BB'));
 
         $manager->addElementsProvider($provider1);
         $manager->addElementsProvider($provider2);
@@ -22,19 +21,21 @@ class DashboardManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(5, $elements);
 
-        $this->assertSame(array_map(function(DashboardElement $element){
+        $this->assertSame(array_map(function (DashboardElement $element) {
             return $element->getName();
-        }, $elements), array("AA", "AA", "AB", "BB", "CC"));
+        }, $elements), array('AA', 'AA', 'AB', 'BB', 'CC'));
     }
 
-    private function getManagerMock($methods = array()){
+    private function getManagerMock($methods = array())
+    {
         return $this->getMockBuilder('AppBundle\Dashboard\DashboardManager')
             ->setMethods($methods)
             ->disableOriginalConstructor()
             ->getMock();
     }
 
-    private function getProviderMock($names = array()){
+    private function getProviderMock($names = array())
+    {
         $mock = $this->getMockBuilder('\AppBundle\Dashboard\DashboardProvider')
             ->disableOriginalConstructor()
             ->getMock();
@@ -44,7 +45,8 @@ class DashboardManagerTest extends \PHPUnit_Framework_TestCase
         return $mock;
     }
 
-    private function getElementMock($name){
+    private function getElementMock($name)
+    {
         $mock = $this->getMockBuilder('\AppBundle\Dashboard\DashboardElement')
             ->disableOriginalConstructor()
             ->getMock();
@@ -53,5 +55,4 @@ class DashboardManagerTest extends \PHPUnit_Framework_TestCase
 
         return $mock;
     }
-
 }

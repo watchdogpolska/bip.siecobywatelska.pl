@@ -2,7 +2,6 @@
 
 namespace AppBundle;
 
-
 use AppBundle\Dashboard\DashboardElement;
 use AppBundle\Dashboard\DashboardProvider;
 
@@ -16,7 +15,7 @@ class ExampleDashboardProvider implements DashboardProvider
     public function getElements()
     {
         return array(
-            new DashboardElement("CAT", DashboardElement::TYPE_FONT_AWESOME, 'eye', 'http://google.pl'),
+            new DashboardElement('CAT', DashboardElement::TYPE_FONT_AWESOME, 'eye', 'http://google.pl'),
         );
     }
 }

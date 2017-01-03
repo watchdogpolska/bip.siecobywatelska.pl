@@ -4,8 +4,7 @@ namespace Sowp\DashboardBundle\Dashboard;
 
 class DashboardTwigExtension extends \Twig_Extension
 {
-
-    /** @var DashboardRenderer  */
+    /** @var DashboardRenderer */
     private $renderer;
 
     public function __construct(DashboardRenderer $renderer)
@@ -20,16 +19,16 @@ class DashboardTwigExtension extends \Twig_Extension
                 'sowp_dashboard_render',
                 array(
                     $this,
-                    'render'
+                    'render',
                 ),
                 array('is_safe' => array('html'))
-            )
+            ),
         );
     }
 
     public function getName()
     {
-        return "dashboard_extension";
+        return 'dashboard_extension';
     }
 
     public function render($name = 'grid')

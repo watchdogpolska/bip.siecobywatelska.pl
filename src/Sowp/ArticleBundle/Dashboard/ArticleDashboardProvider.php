@@ -3,20 +3,17 @@
  * Created by PhpStorm.
  * User: andrzej
  * Date: 30.12.16
- * Time: 03:43
+ * Time: 03:43.
  */
 
 namespace Sowp\ArticleBundle\Dashboard;
 
-
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use Sowp\DashboardBundle\Dashboard\DashboardElement;
 use Sowp\DashboardBundle\Dashboard\DashboardProvider;
 use Symfony\Component\Routing\Router;
 
 class ArticleDashboardProvider implements DashboardProvider
 {
-
     private $router;
 
     public function __construct(Router $router)
@@ -31,16 +28,16 @@ class ArticleDashboardProvider implements DashboardProvider
     {
         return array(
             new DashboardElement(
-                "Article",
+                'Article',
                 DashboardElement::TYPE_FONT_AWESOME,
-                "book",
-                $this->router->generate("admin_article_index")
+                'book',
+                $this->router->generate('admin_article_index')
             ),
             new DashboardElement(
-                "Bookmark",
+                'Bookmark',
                 DashboardElement::TYPE_FONT_AWESOME,
-                "bookmark",
-                $this->router->generate("admin_collection_index")
+                'bookmark',
+                $this->router->generate('admin_collection_index')
             ),
         );
     }
