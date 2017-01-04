@@ -17,24 +17,24 @@ class DataLoader extends AbstractFixture
         $faker = \Faker\Factory::create();
         $userRepo = $om->getRepository('AppBundle\Entity\User');
         $users = $userRepo->findAll();
-        $coll = [];
 
-        for ($x = 20; $x > 0; --$x) {
-            $col = new Collection();
-            $col->setTitle($faker->words(5, true));
-            $col->setPublic(true);
-            $col->setCreatedAt($faker->dateTimeBetween());
-            $col->setCreatedBy($faker->randomElement($users));
-            $om->persist($col);
-            $coll[] = $col;
+        $collections = [];
+        for ($x = 0; $x < 20; $x++) {
+            $collection = new Collection();
+            $collection->setTitle($faker->words(5, true));
+            $collection->setPublic(true);
+            $collection->setCreatedAt($faker->dateTimeBetween());
+            $collection->setCreatedBy($faker->randomElement($users));
+            $om->persist($collection);
+            $collections[] = $collection;
         }
 
-        for ($x = 10; $x > 0; --$x) {
+        for ($x = 0; $x < 10; $x++) {
             $news = new News();
             $news->setTitle($faker->words(mt_rand(3, 8), true));
             $nb_collection = $faker->numberBetween(1, 6);
 
-            foreach ($faker->randomElements($coll, $nb_collection) as $collection) {
+            foreach ($faker->randomElements($collections, $nb_collection) as $collection) {
                 $news->addCollection($collection);
             }
 
