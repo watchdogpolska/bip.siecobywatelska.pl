@@ -1,0 +1,6 @@
+{% if not obj.isDeleted %}
+<a href="{{ path('admin_article_edit', { 'id': obj.id }) }}" class="btn btn-default">
+    <i class="fa fa-pencil"></i>
+    Edit
+</a>
+{% endif %}

@@ -1,0 +1,17 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2 class="panel-title">
+            <i class="fa fa-clock-o" aria-hidden="true"></i> Revisions
+        </h2>
+    </div>
+    <div class="list-group">
+        {% for obj in objs %}
+            <a href="{{ path('admin_article_show_rev', {'id': obj.entity.id, 'rev': obj.revision.rev }) }}" class="list-group-item">
+                <div class="list-group-item-heading">Zmiana nr {{ obj.revision.rev }} z {{ obj.revision.timestamp|date('Y-m-d H:i:s') }} przez {{ obj.revision.username }} </div>
+                <p class="list-group-item-text">Powód zmiany: {{ obj.entity.editNote }}</p>
+            </a>
+        {% else %}
+            <div class="list-group-item">Not found</div>
+        {% endfor %}
+    </div>
+</div>
