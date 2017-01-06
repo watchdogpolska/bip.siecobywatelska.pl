@@ -1,0 +1,15 @@
+services:
+
+    sowp.dashboard.manager:
+        class: Sowp\DashboardBundle\Dashboard\DashboardManager
+
+    sowp.dasboard.renderer:
+        class: Sowp\DashboardBundle\Dashboard\DashboardRenderer
+        arguments: ['@sowp.dashboard.manager', '@twig']
+
+    sowp.dashboard.twig_extension:
+        class: Sowp\DashboardBundle\Dashboard\DashboardTwigExtension
+        arguments: ['@sowp.dasboard.renderer']
+        public: false
+        tags:
+            - { name: twig.extension }

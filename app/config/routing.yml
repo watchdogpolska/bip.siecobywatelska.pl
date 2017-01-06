@@ -1,5 +1,13 @@
 news_module:
     resource: "@NewsModuleBundle/Controller/"
+
+sowp_dashboard:
+    resource: "@SowpDashboardBundle/Controller/"
+    type:     annotation
+    prefix:   /dashboard
+
+sowp_article:
+    resource: "@SowpArticleBundle/Controller/"
     type:     annotation
     prefix:   /
 
