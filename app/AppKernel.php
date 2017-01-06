@@ -35,6 +35,8 @@ class AppKernel extends Kernel
             new Sowp\ArticleBundle\SowpArticleBundle(),
             new Sowp\DashboardBundle\SowpDashboardBundle(),
             new Sowp\NewsBundle\NewsBundle(),
+            new Sowp\MenuBundle\SowpMenuBundle(),
+
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

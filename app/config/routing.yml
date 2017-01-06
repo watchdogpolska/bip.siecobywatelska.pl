@@ -13,6 +13,11 @@ sowp_news:
     type:     annotation
     prefix:   /
 
+sowp_menu:
+    resource: "@SowpMenuBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

@@ -1,0 +1,18 @@
+services:
+#    sowp_menu.example:
+#        class: Sowp\MenuBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
+
+
+    sowp.menu.resolver_chain:
+        class: Sowp\MenuBundle\Menu\ItemResolverChain
+
+    sowp.menu.manager:
+        class: Sowp\MenuBundle\MenuManager
+        arguments: ['@doctrine.orm.entity_manager', '@sowp.menu.resolver_chain']
+
+    sowp.menu.dashboard_provider:
+        class: Sowp\MenuBundle\Dashboard\MenuDashboardProvider
+        arguments: ['@router']
+        tags:
+            - { name: sowp.dashboard.element_provider }

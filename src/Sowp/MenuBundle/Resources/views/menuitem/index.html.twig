@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% macro menu_items(menuItems) %}
+    {% for item in menuItems %}
+        <li>
+            <a href="{{ path('admin_menuitem_show', { 'id': item.id }) }}">{{ item.name }}</a>
+            <a href="{{ path('admin_menuitem_child_up', { 'id': item.id }) }}" class="btn btn-default btn-xs"> <i class="fa fa-angle-up" aria-hidden="true"></i> Up</a>
+            <a href="{{ path('admin_menuitem_child_down', { 'id': item.id }) }}" class="btn btn-default btn-xs"> <i class="fa fa-angle-down" aria-hidden="true"></i> Down</a>
+            <a href="{{ path('admin_menuitem_new_child', { 'id': item.id }) }}" class="btn btn-default btn-xs"><i class="fa fa-plus"></i> Add child</a>
+            {% if item.children %}
+                <ul>
+                    {{ _self.menu_items(item.children) }}
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+{% endmacro %}
+
+{% block body %}
+    <div class="pull-right">
+        <a href="{{ path('admin_menuitem_new') }}" class="btn btn-primary">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Create a new entry
+        </a>
+    </div>
+    <h1>MenuItem list</h1>
+
+    <ul>
+        {% for item in menuItems %}
+            <li>
+                <a href="{{ path('admin_menuitem_show', { 'id': item.id }) }}">{{ item.name }}</a>
+                <a href="{{ path('admin_menuitem_new_child', { 'id': item.id }) }}" class="btn btn-default btn-xs"><i class="fa fa-plus"></i> Add child</a>
+                {% if item.children %}
+                    <ul>
+                        {{ _self.menu_items(item.children) }}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+

@@ -1,0 +1,53 @@
+    {% extends 'base.html.twig' %}
+
+    {% block body %}
+    <div class="pull-right">
+    
+        <a href="{{ path('admin_menuitem_index') }}" class="btn btn-default">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            Back to the list
+        </a>
+        <a href="{{ path('admin_menuitem_edit', { 'id': menuItem.id }) }}" class="btn btn-default">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            Edit
+        </a>
+        {{ form_start(delete_form, {"attr": {"style": "display: inline-block"}}) }}
+            <button type="submit" class="btn btn-danger">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                Delete
+            </button>
+        {{ form_end(delete_form) }}
+    </div>
+<h1>MenuItem</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title">Info</h2>
+        </div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ menuItem.id }}</td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ menuItem.name }}</td>
+                </tr>
+                <tr>
+                    <th>Url</th>
+                    <td>{{ menuItem.url }}</td>
+                </tr>
+                <tr>
+                    <th>Object_clazz</th>
+                    <td>{{ menuItem.objectclazz }}</td>
+                </tr>
+                <tr>
+                    <th>Object_id</th>
+                    <td>{{ menuItem.objectid }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
