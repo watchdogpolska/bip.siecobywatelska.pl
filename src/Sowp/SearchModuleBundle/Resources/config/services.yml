@@ -1,0 +1,2 @@
+sowp.bip.search_manager:
+    class: Sowp\SearchModuleBundle\Search\SearchManager
