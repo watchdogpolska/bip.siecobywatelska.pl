@@ -1,2 +1,10 @@
-sowp.bip.search_manager:
-    class: Sowp\SearchModuleBundle\Search\SearchManager
+services:
+
+    sowp.bip.search_manager:
+        class: SowpSearchModuleBundle\Search\SearchManager
+
+    sowp.bip.search_twig_ext:
+        class: Sowp\SearchModuleBundle\Search\SearchTwigExtension
+        arguments: ['@twig']
+        tags:
+            - { name: twig.extension }
