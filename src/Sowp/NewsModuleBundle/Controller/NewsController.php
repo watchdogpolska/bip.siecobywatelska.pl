@@ -13,7 +13,7 @@ use Pagerfanta\Pagerfanta;
 /**
  * News controller.
  *
- * @Route("/wiadomosci")
+ * @Route("/admin/wiadomosci")
  */
 class NewsController extends Controller
 {
