@@ -31,8 +31,15 @@ services:
         arguments: ['@news_module.form.transformer.html_purifier']
         tags:
             - { name: form.type }
+
     news_module.dashboard_provider:
-            class: Sowp\NewsModuleBundle\DashboardProvider\NewsDashboardProvider
-            arguments: ['@router']
-            tags:
-                - { name: sowp.dashboard.element_provider }
+        class: Sowp\NewsModuleBundle\DashboardProvider\NewsDashboardProvider
+        arguments: ['@router']
+        tags:
+            - { name: sowp.dashboard.element_provider }
+
+    sowp.bip.search_result_provider.orm:
+        class: Sowp\NewsModuleBundle\SearchProvider\SearchProvider
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: sowp.bip.search_result_provider.orm }

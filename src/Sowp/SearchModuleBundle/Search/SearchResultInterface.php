@@ -4,8 +4,6 @@ namespace Sowp\SearchModuleBundle\Search;
 
 interface SearchResultInterface
 {
-    public function getHeaderName();
-    public function getTypeName();
-    public function getTemplateName();
-    public function getResult();
+    public function search($query);
+    public function getResultObject();
 }

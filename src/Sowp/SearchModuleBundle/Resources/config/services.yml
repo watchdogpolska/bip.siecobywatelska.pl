@@ -1,7 +1,7 @@
 services:
 
     sowp.bip.search_manager:
-        class: SowpSearchModuleBundle\Search\SearchManager
+        class: Sowp\SearchModuleBundle\Search\SearchManager
 
     sowp.bip.search_twig_ext:
         class: Sowp\SearchModuleBundle\Search\SearchTwigExtension
