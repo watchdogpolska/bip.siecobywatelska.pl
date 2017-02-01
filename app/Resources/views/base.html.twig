@@ -24,6 +24,9 @@
         {% block header %}
             <header>
                 <div class="navbar navbar-default navbar-static-top" role="navigation">
+                    {% block search %}
+                        {{ include('SearchModuleBundle::_search.html.twig') }}
+                    {% endblock %}
                     <div class="container">
                         <div class="navbar-header">
                             <a class="navbar-brand" href="{{ path('homepage') }}">
@@ -40,6 +43,7 @@
                             </button>
 
                         </div>
+
                              <ul class="nav navbar-nav navbar-right">
                                 {% block header_navigation_links %}
 
@@ -130,9 +134,10 @@
                     src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
                     integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
                     crossorigin="anonymous"></script>
-            <script>
+            <script type="text/javascript">
                 $(function () {
-                    $('[data-toggle="tooltip"]').tooltip()
+                    $('[data-toggle="tooltip"]').tooltip();
+                    {{ include('SearchModuleBundle::search_js.html.twig') }}
                 })
             </script>
         {% endblock %}
