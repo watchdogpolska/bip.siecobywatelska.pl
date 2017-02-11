@@ -1,20 +1,20 @@
 <?php
 
-namespace Sowp\NewsModuleBundle\Command;
+namespace Sowp\ArticleBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
-class AddFulltextCommand extends ContainerAwareCommand
+class AddFullTextCommand extends ContainerAwareCommand
 {
     const ADD_KEY = 'add';
     const DROP_KEY = 'drop';
 
     protected function configure()
     {
-        $this->setName('search_provider:fulltextindex:newsmodulebundle');
+        $this->setName('search_provider:fulltextindex:articlebundle');
         $this->setDescription('Add/Drop FULL TEXT index for Match Against in current bundle');
 
         $this->addOption(
@@ -47,20 +47,20 @@ class AddFulltextCommand extends ContainerAwareCommand
     {
         $conn = $this->getConnection();
 
-        $out->writeln("Adding full text index to table `news_collection`:");
+        $out->writeln("Adding full text index to table `collection`:");
 
-        if ($conn->query("ALTER TABLE news_collection ADD FULLTEXT `search_indexes` (`title`)")) {
-            $out->writeln("Add on `collections` successfull...");
+        if ($conn->query("ALTER TABLE collection ADD FULLTEXT `search_indexes` (`name`)")) {
+            $out->writeln("Add on `collection` successfull...");
         } else {
-            $out->writeln("Add on `collections` failed...");
+            $out->writeln("Add on `collection` failed...");
         }
 
-        $out->writeln("Adding full text index to table `news`:");
+        $out->writeln("Adding full text index to table `article`:");
 
-        if ($conn->query("ALTER TABLE news ADD FULLTEXT `search_indexes` (`title`, `content`)")) {
-            $out->writeln("Add on `news` successfull...");
+        if ($conn->query("ALTER TABLE article ADD FULLTEXT `search_indexes` (`title`, `content`)")) {
+            $out->writeln("Add on `article` successfull...");
         } else {
-            $out->writeln("Add on `news` failed...");
+            $out->writeln("Add on `article` failed...");
         }
     }
 
@@ -70,18 +70,18 @@ class AddFulltextCommand extends ContainerAwareCommand
 
         $out->writeln("Dropping full text index in table `news_collection`");
 
-        if ($conn->query("ALTER TABLE news_collection DROP INDEX `search_indexes`")) {
-            $out->writeln("Drop on `collections` successfull...");
+        if ($conn->query("ALTER TABLE collection DROP INDEX `search_indexes`")) {
+            $out->writeln("Drop on `collection` successfull...");
         } else {
             $out->writeln("Drop on `collections` failed...");
         }
 
-        $out->writeln("Dropping full text index to table `news`:");
+        $out->writeln("Dropping full text index to table `article`:");
 
-        if ($conn->query("ALTER TABLE news DROP INDEX `search_indexes`")) {
-            $out->writeln("Drop on `news` successfull...");
+        if ($conn->query("ALTER TABLE article DROP INDEX `search_indexes`")) {
+            $out->writeln("Drop on `article` successfull...");
         } else {
-            $out->writeln("Drop on `news` failed...");
+            $out->writeln("Drop on `article` failed...");
         }
     }
 

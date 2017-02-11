@@ -1,6 +1,6 @@
 <?php
 
-namespace Sowp\NewsModuleBundle\SearchProvider;
+namespace Sowp\ArticleBundle\SearchProvider;
 
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\EntityManager;
@@ -33,8 +33,8 @@ class SearchProvider implements SearchProviderInterface
     public function __construct(EntityManager $em)
     {
         $this->em = $em;
-        $this->nRepo = $this->em->getRepository('Sowp\NewsModuleBundle\Entity\News');
-        $this->cRepo = $this->em->getRepository('Sowp\NewsModuleBundle\Entity\Collection');
+        $this->nRepo = $this->em->getRepository('Sowp\ArticleBundle\Entity\Article');
+        $this->cRepo = $this->em->getRepository('Sowp\ArticleBundle\Entity\Collection');
     }
 
     /**
@@ -59,14 +59,14 @@ class SearchProvider implements SearchProviderInterface
         $this->qbSingle = null;
 
         try {
-            $this->qbMulti = $this->nRepo->createQueryBuilder('news')
-                ->addSelect("MATCH_AGAINST (news.title, news.content, :phrase) as score")
+            $this->qbMulti = $this->nRepo->createQueryBuilder('article')
+                ->addSelect("MATCH_AGAINST (article.title, article.content, :phrase) as score")
                 ->andWhere('score > 0.01')
                 ->setMaxResults($numResMulti)
                 ->setParameter('phrase', $query);
 
             $this->qbSingle = $this->nRepo->createQueryBuilder('article')
-                ->addSelect("MATCH_AGAINST (news.title, news.content, :phrase) as score")
+                ->addSelect("MATCH_AGAINST (article.title, article.content, :phrase) as score")
                 ->andWhere('score > 0.01')
                 ->setParameter('phrase', $query);
 

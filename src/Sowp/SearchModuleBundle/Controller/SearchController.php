@@ -22,24 +22,30 @@ class SearchController extends Controller
     public function searchAction(Request $request)
     {
         $q = $request->query->get("q", false);
-        $sm = $this->get("sowp.bip.search_manager");
-
-        $results = [];
 
         if (!$q || empty($q)) {
             throw new NotFoundHttpException();
         }
+
+        $sm = $this->get("sowp.bip.search_manager");
 
         /**
          * @var $provider SearchModuleBundle\Search\SearchResultInterface
          */
         foreach ($sm->getProviders() as $provider) {
             $provider->search($q);
-            \array_merge($results, $provider->getResultObject());
+
+            // Whata data need a put into template
+            // to use |render_search_entry()
+            // assume that each module can provide
+            // diffrent link types like:
+            // - custom/{slug}
+            // - /{slug}-{id}
+            // so on;
         }
 
-        print_r($results);
-
-        return new Response("prniss");
+        return $this->render('SearchModuleBundle::search.html.twig',[
+            'query' => $q,
+        ]);
     }
 }

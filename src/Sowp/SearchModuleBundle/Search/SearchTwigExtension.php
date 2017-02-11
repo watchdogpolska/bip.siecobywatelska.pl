@@ -13,11 +13,24 @@ class SearchTwigExtension extends \Twig_Extension
         $this->twig = $te;
     }
 
-    public function getFunctions()
+//    public function getFunctions()
+//    {
+//        return [
+//            new \Twig_SimpleFunction(
+//                'render_search_provider',
+//                [
+//                    $this,
+//                    'renderSearchProvider'
+//                ]
+//            )
+//        ];
+//    }
+
+    public function getFilters()
     {
         return [
-            new \Twig_SimpleFunction(
-                'render_search_provider',
+            new \Twig_SimpleFilter(
+                'render_search_entry',
                 [
                     $this,
                     'renderSearchProvider'
@@ -26,26 +39,13 @@ class SearchTwigExtension extends \Twig_Extension
         ];
     }
 
-    public function getFilters()
-    {
-        return [
-            new \Twig_SimpleFilter(
-                'object_title_search_provider',
-                [
-                    $this,
-                    'titleSearchProvider'
-                ]
-            )
-        ];
-    }
-
-    public function renderSearchProvider(SearchResultInterface $provider)
+    public function renderSearchProvider()
     {
 
     }
 
-    public function titleSearchProvider(SearchResultInterface $provider)
-    {
-
-    }
+//    public function titleSearchProvider(SearchResultInterface $provider)
+//    {
+//
+//    }
 }

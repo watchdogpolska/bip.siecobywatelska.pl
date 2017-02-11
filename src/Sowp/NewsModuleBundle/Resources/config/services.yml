@@ -38,7 +38,7 @@ services:
         tags:
             - { name: sowp.dashboard.element_provider }
 
-    sowp.bip.search_result_provider.orm:
+    sowp.news.search_result_provider.orm:
         class: Sowp\NewsModuleBundle\SearchProvider\SearchProvider
         arguments: ['@doctrine.orm.entity_manager']
         tags:

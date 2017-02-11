@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {#<div class="container">#}
+        {#<h1 class="page-header">Nagłówek strony</h1>#}
+    {#</div>#}
+    <div class="preview">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="logo"></div>
+                </div>
+                <div class="col-md-4">
+                    {#<form class="form search-form">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for...">
+                            <span class="input-group-btn">
+            <button class="btn btn-primary" type="button">Search!</button>
+          </span>
+                        </div>
+                        <!-- /input-group -->
+                    </form>#}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="page-header">
+            <h1>Wynik wyszukiwania <code>search_multi_results</code> - treśc strony</h1>
+        </div>
+    </div>
+    <div class="preview">
+        <div class="container">
+            <h1>Wynik wyszukiwania "{{ query }}"</h1>
+            <!-- -->
+            <h2>Artykuły</h2>
+            <h3><a href="">Lorem ipsum dolor sit amet.</a></h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque repellat dolore iusto quos similique vel. Quia accusantium incidunt at dolorum, ipsum quo. Temporibus ad officia magnam nesciunt mollitia, quod porro?</p>
+            <h3><a href="">Aliquam repudiandae ullam culpa voluptates.</a></h3>
+            <p>Ducimus voluptatem eos alias, nemo doloremque eaque fuga, a tenetur distinctio tempore enim quo, sint adipisci quam labore inventore maxime deleniti in consequuntur reiciendis. Temporibus facere porro recusandae soluta enim.</p>
+            <h3><a href="">Rerum unde incidunt, dolores a!</a></h3>
+            <p>Fuga voluptate ipsum reiciendis sapiente rem vitae necessitatibus, impedit quaerat incidunt accusantium, corporis cum illo aperiam saepe itaque omnis, doloremque animi non expedita consectetur. Dignissimos quam a illum, totam magnam?</p>
+            <a href="">Zobacz więcej dla typu "Artykuły"</a>
+            <!-- -->
+            {#
+                foreach (result)
+                    print block multi
+                endforeach
+            #}
+
+        </div>
+    </div>
+
+    <div class="container">
+      <div class="page-header">
+            <h1>Wynik wyszukiwania <code>search_single_results</code> - treśc strony</h1>
+        </div>
+    </div>
+    <div class="preview">
+        <div class="container">
+            <h1>Wynik wyszukiwania "{{ query }}"</h1>
+
+            <!-- -->
+            <h3><a href="">Lorem ipsum dolor sit amet.</a></h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque repellat dolore iusto quos similique vel. Quia accusantium incidunt at dolorum, ipsum quo. Temporibus ad officia magnam nesciunt mollitia, quod porro?</p>
+            <!-- -->
+            {#
+                foreach (result)
+                    print block single
+                endforeach
+            #}
+            <ul class="pagination pagination-lg">
+                <li><a href="#">&laquo;</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">&raquo;</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block multi %}
+    <h2>Artykuły</h2>
+    {#<h3><a href="">Lorem ipsum dolor sit amet.</a></h3>#}
+    {#<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque repellat dolore iusto quos similique vel. Quia accusantium incidunt at dolorum, ipsum quo. Temporibus ad officia magnam nesciunt mollitia, quod porro?</p>#}
+    {#<h3><a href="">Aliquam repudiandae ullam culpa voluptates.</a></h3>#}
+    {#<p>Ducimus voluptatem eos alias, nemo doloremque eaque fuga, a tenetur distinctio tempore enim quo, sint adipisci quam labore inventore maxime deleniti in consequuntur reiciendis. Temporibus facere porro recusandae soluta enim.</p>#}
+    {#<h3><a href="">Rerum unde incidunt, dolores a!</a></h3>#}
+    {#<p>Fuga voluptate ipsum reiciendis sapiente rem vitae necessitatibus, impedit quaerat incidunt accusantium, corporis cum illo aperiam saepe itaque omnis, doloremque animi non expedita consectetur. Dignissimos quam a illum, totam magnam?</p>#}
+    {#<a href="">Zobacz więcej dla typu "Artykuły"</a>#}
+{% endblock %}
+
+{% block single %}
+
+    {#<h2>Artykuły</h2>#}
+
+    {#<h3><a href="">Lorem ipsum dolor sit amet.</a></h3>#}
+    {#<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque repellat dolore iusto quos similique vel. Quia accusantium incidunt at dolorum, ipsum quo. Temporibus ad officia magnam nesciunt mollitia, quod porro?</p>#}
+
+
+{% endblock %}

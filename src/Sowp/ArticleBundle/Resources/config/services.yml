@@ -28,3 +28,9 @@ services:
         arguments: ['@router']
         tags:
             - { name: sowp.dashboard.element_provider }
+
+    sowp.article.search_result_provider.orm:
+        class: Sowp\ArticleBundle\SearchProvider\SearchProvider
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: sowp.bip.search_result_provider.orm }

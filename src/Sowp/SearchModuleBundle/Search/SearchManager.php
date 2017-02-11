@@ -2,14 +2,14 @@
 
 namespace Sowp\SearchModuleBundle\Search;
 
-use Sowp\SearchModuleBundle\Search\SearchResultInterface;
+use Sowp\SearchModuleBundle\Search\SearchProviderInterface;
 
 class SearchManager
 {
     /** @var array */
     private $providers = [];
 
-    public function addProvider(SearchResultInterface $provider)
+    public function addProvider(SearchProviderInterface $provider)
     {
         //each module may have only one search provider
         $this->providers[$provider->getTypeName()] = $provider;
