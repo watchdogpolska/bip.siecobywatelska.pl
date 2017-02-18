@@ -16,25 +16,17 @@ class SearchProvider implements SearchProviderInterface
     private $em;
 
     /** @var EntityRepository*/
-    private $nRepo;
-
-    /** @var EntityRepository*/
-    private $cRepo;
-
-    /** @var \Doctrine\ORM\QueryBuilder for results in multimode */
-    private $qbMulti;
+    private $repo;
 
     /** @var \Doctrine\ORM\QueryBuilder for results in single mode */
-    private $qbSingle;
+    private $qb;
 
-    private $resultsSingle = [];
-    private $resultsMulti = [];
+    private $results = [];
 
     public function __construct(EntityManager $em)
     {
         $this->em = $em;
-        $this->nRepo = $this->em->getRepository('Sowp\ArticleBundle\Entity\Article');
-        $this->cRepo = $this->em->getRepository('Sowp\ArticleBundle\Entity\Collection');
+        $this->repo = $this->em->getRepository('Sowp\ArticleBundle\Entity\Article');
     }
 
     /**
@@ -47,27 +39,18 @@ class SearchProvider implements SearchProviderInterface
      * @param string $query
      * @return bool
      */
-    public function search($query, $numResMulti = 3)
+    public function search($query)
     {
         if (!$query) {
             throw new NotFoundHttpException();
         }
 
-        $this->resultsMulti = [];
-        $this->resultsSingle = [];
-        $this->qbMulti = null;
-        $this->qbSingle = null;
+        $this->results = [];
+        $this->qb = null;
 
         try {
-            $this->qbMulti = $this->nRepo->createQueryBuilder('article')
-                ->addSelect("MATCH_AGAINST (article.title, article.content, :phrase) as score")
-                ->andWhere('score > 0.01')
-                ->setMaxResults($numResMulti)
-                ->setParameter('phrase', $query);
-
-            $this->qbSingle = $this->nRepo->createQueryBuilder('article')
-                ->addSelect("MATCH_AGAINST (article.title, article.content, :phrase) as score")
-                ->andWhere('score > 0.01')
+            $this->qb = $this->repo->createQueryBuilder('article')
+                ->andWhere("MATCH_AGAINST (article.title, article.content, :phrase) > 0.01")
                 ->setParameter('phrase', $query);
 
             $this->extractResults();
@@ -81,13 +64,8 @@ class SearchProvider implements SearchProviderInterface
 
     private function extractResults()
     {
-        $this->resultsMulti =
-            $this->qbMulti
-                ->getQuery()
-                ->getResult();
-
-        $this->resultsSingle =
-            $this->qbSingle
+        $this->results =
+            $this->qb
                 ->getQuery()
                 ->getResult();
     }
@@ -114,17 +92,9 @@ class SearchProvider implements SearchProviderInterface
      *
      * @return array
      */
-    public function getResultsSingle()
+    public function getResults()
     {
-        return [$this->getTypeName() => $this->resultsSingle];
-    }
-
-    /**
-     * @return array
-     */
-    public function getResultsMulti()
-    {
-        return [$this->getTypeName() => $this->resultsMulti];
+        return $this->results;
     }
 
     /**
@@ -138,17 +108,8 @@ class SearchProvider implements SearchProviderInterface
     /**
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getQbMulti(): \Doctrine\ORM\QueryBuilder
+    public function getQb(): \Doctrine\ORM\QueryBuilder
     {
-        return $this->qbMulti;
+        return $this->qb;
     }
-
-    /**
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    public function getQbSingle(): \Doctrine\ORM\QueryBuilder
-    {
-        return $this->qbSingle;
-    }
-
 }

@@ -4,11 +4,8 @@ namespace Sowp\SearchModuleBundle\Search;
 
 interface SearchProviderInterface
 {
-    public function search($query, $numResMulti = 3);
+    public function search($query);
     public function getTypeName();
-    public function getResultsMulti();
-    public function getResultsSingle();
-    public function getQbSingle();
-    public function getQbMulti();
-    //public function setTypeName($name);
+    public function getResults();
+    public function getQb();
 }

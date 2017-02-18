@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <h2>{{ entity.title }}
+        <a href="/admin/wiadomosci/{{ entity.slug }}" >
+            <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span></h2>
+        </a>
+    <p class="popover-content">
+        {{ entity.content[:150] }} ...
+    </p>
+    <hr>
+</div>

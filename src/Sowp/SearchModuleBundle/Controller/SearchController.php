@@ -22,6 +22,7 @@ class SearchController extends Controller
     public function searchAction(Request $request)
     {
         $q = $request->query->get("q", false);
+        $results = [];
 
         if (!$q || empty($q)) {
             throw new NotFoundHttpException();
@@ -33,7 +34,6 @@ class SearchController extends Controller
          * @var $provider SearchModuleBundle\Search\SearchResultInterface
          */
         foreach ($sm->getProviders() as $provider) {
-            $provider->search($q);
 
             // Whata data need a put into template
             // to use |render_search_entry()
@@ -42,10 +42,17 @@ class SearchController extends Controller
             // - custom/{slug}
             // - /{slug}-{id}
             // so on;
+
+            //initiate provider
+            $provider->search($q);
+            $results[$provider->getTypeName()] = $provider->getResults();
         }
 
         return $this->render('SearchModuleBundle::search.html.twig',[
             'query' => $q,
+            'results' => $results
         ]);
     }
+
+//    public function
 }
