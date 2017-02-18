@@ -32,7 +32,7 @@
     <div class="preview">
         <div class="container">
             <h1>Wynik wyszukiwania "{{ query }}"</h1>
-            <!-- -->
+            <!--
             <h2>Artykuły</h2>
             <h3><a href="">Lorem ipsum dolor sit amet.</a></h3>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque repellat dolore iusto quos similique vel. Quia accusantium incidunt at dolorum, ipsum quo. Temporibus ad officia magnam nesciunt mollitia, quod porro?</p>
@@ -41,13 +41,32 @@
             <h3><a href="">Rerum unde incidunt, dolores a!</a></h3>
             <p>Fuga voluptate ipsum reiciendis sapiente rem vitae necessitatibus, impedit quaerat incidunt accusantium, corporis cum illo aperiam saepe itaque omnis, doloremque animi non expedita consectetur. Dignissimos quam a illum, totam magnam?</p>
             <a href="">Zobacz więcej dla typu "Artykuły"</a>
-            <!-- -->
-            {#
-                foreach (result)
-                    print block multi
-                endforeach
-            #}
+            -->
+            {% for key, items in results %}
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h2><code>{{ key }}</code></h2>
+                    </div>
+                    <div class="panel-body">
+                        {% set counter = 0 %}
+                        {% set break = false %}
 
+                        {% for item in items if not break %}
+
+                            {{ item|render_search_entry_multi(item,key)|raw}}
+
+                            {% if counter == 2 %}
+                                {% set break = true %}
+                            {% endif %}
+                            {% set counter = counter + 1 %}
+                        {% endfor %}
+                    </div>
+
+                    <div>
+                        <a class="type-more" data-content="{{ key }}">Zobacz więcej dla {{ key }} ...</a>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 
@@ -101,4 +120,11 @@
     {#<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque repellat dolore iusto quos similique vel. Quia accusantium incidunt at dolorum, ipsum quo. Temporibus ad officia magnam nesciunt mollitia, quod porro?</p>#}
 
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    $(function() {
+        $(".")
+    });
 {% endblock %}
