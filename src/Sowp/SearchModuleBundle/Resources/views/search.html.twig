@@ -70,6 +70,7 @@
         </div>
     </div>
 
+    {% if items_single %}
     <div class="container">
       <div class="page-header">
             <h1>Wynik wyszukiwania <code>search_single_results</code> - treśc strony</h1>
@@ -79,19 +80,17 @@
         <div class="container">
             <h1>Wynik wyszukiwania "{{ query }}"</h1>
 
-            {% if items_single %}
-                {% for item in items_single %}
-                    {{ item|render_search_entry_single|raw }}
-                {% endfor %}
+            {% for item in items_single %}
+                {{ item|render_search_entry_single|raw }}
+            {% endfor %}
 
-                <div class="panel panel-default">
-                    {{ pagerfanta(items_single) }}
-                </div>
-
-            {% endif %}
+            <div class="panel panel-default">
+                {{ pagerfanta(items_single) }}
+            </div>
 
         </div>
     </div>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}

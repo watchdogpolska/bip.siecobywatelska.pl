@@ -8,3 +8,6 @@ services:
         arguments: ['@twig']
         tags:
             - { name: twig.extension }
+
+    sowp.bip.search_templates_register:
+        class: Sowp\SearchModuleBundle\Search\SearchTemplateRegister

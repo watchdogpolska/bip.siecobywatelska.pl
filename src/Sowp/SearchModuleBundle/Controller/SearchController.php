@@ -24,7 +24,7 @@ class SearchController extends Controller
     {
         $q = $request->query->get("q", false);
         $module = $request->query->get("mod", false);
-        $p = $request->query->get("p", 1);
+        $p = $request->query->get("page", 1);
         $results = [];
 
         if (!$q || empty($q)) {
@@ -63,5 +63,4 @@ class SearchController extends Controller
         ]);
     }
 
-//    public function
 }
