@@ -16,12 +16,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class SearchController extends Controller
 {
+    const NEWS_PER_PAGE = 5;
     /**
      * @Route("/search", name="sowp_searchbundle_search")
      */
     public function searchAction(Request $request)
     {
         $q = $request->query->get("q", false);
+        $module = $request->query->get("mod", false);
+        $p = $request->query->get("p", 1);
         $results = [];
 
         if (!$q || empty($q)) {
@@ -34,23 +37,29 @@ class SearchController extends Controller
          * @var $provider SearchModuleBundle\Search\SearchResultInterface
          */
         foreach ($sm->getProviders() as $provider) {
-
-            // Whata data need a put into template
-            // to use |render_search_entry()
-            // assume that each module can provide
-            // diffrent link types like:
-            // - custom/{slug}
-            // - /{slug}-{id}
-            // so on;
-
             //initiate provider
             $provider->search($q);
             $results[$provider->getTypeName()] = $provider->getResults();
+
+//            $page = $request->query->get('page', 1);
+
+
+            if ($module === \strtolower($provider->getTypeName())) {
+
+                // here we know that single mode search was requested
+                // we want query builder for pagerfanta
+                // we can use existing because we already searched =]
+                $pagerAdapter = new DoctrineORMAdapter($provider->getQb(), false);
+                $itemsSingle = new Pagerfanta($pagerAdapter);
+                $itemsSingle->setMaxPerPage(self::NEWS_PER_PAGE);
+                $itemsSingle->setCurrentPage($p);
+            }
         }
 
         return $this->render('SearchModuleBundle::search.html.twig',[
             'query' => $q,
-            'results' => $results
+            'results' => $results,
+            'items_single' => isset($itemsSingle) ? $itemsSingle : false
         ]);
     }
 

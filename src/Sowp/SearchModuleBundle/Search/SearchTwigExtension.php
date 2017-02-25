@@ -35,12 +35,6 @@ class SearchTwigExtension extends \Twig_Extension
 
     public function renderSearchProviderMulti($entity)
     {
-        //$name = $this->getTemplateFromEntity($entity);
-
-        if (!is_object($entity)) {
-            throw new \LogicException("Template name from \$entity expected");
-        }
-
         $name = $this->getTemplateFromEntity($entity);
         $name .= '_multi.html.twig';
 
@@ -54,7 +48,15 @@ class SearchTwigExtension extends \Twig_Extension
 
     public function renderSearchProviderSingle($entity)
     {
-//        $this->checkIfEntity($entity);
+        $name = $this->getTemplateFromEntity($entity);
+        $name .= '_single.html.twig';
+
+        return $this->twig->render(
+            "SearchModuleBundle:ProviderTemplates:$name",
+            [
+                'entity' => $entity
+            ]
+        );
     }
 
     private function checkIfEntity($e)
