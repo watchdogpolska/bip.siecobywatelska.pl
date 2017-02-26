@@ -43,3 +43,8 @@ services:
         arguments: ['@doctrine.orm.entity_manager']
         tags:
             - { name: sowp.bip.search_result_provider.orm }
+
+    sowp.news.Search_template_provider:
+        class: Sowp\NewsModuleBundle\SearchProvider\SearchTemplateProvider
+        tags:
+            - { name: sowp.bip.search_template }
