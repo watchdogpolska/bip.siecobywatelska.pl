@@ -5,7 +5,7 @@ services:
 
     sowp.bip.search_twig_ext:
         class: Sowp\SearchModuleBundle\Search\SearchTwigExtension
-        arguments: ['@twig']
+        arguments: ['@twig', '@sowp.bip.search_templates_register']
         tags:
             - { name: twig.extension }
 

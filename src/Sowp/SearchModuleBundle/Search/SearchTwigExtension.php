@@ -6,11 +6,16 @@ use Sowp\SearchModuleBundle\Search\SearchResultInterface;
 
 class SearchTwigExtension extends \Twig_Extension
 {
-    private $twig;
+    const MODE_MULTI = 22;
+    const MODE_SINGLE = 32;
 
-    public function __construct(\Twig_Environment $te)
+    private $twig;
+    private $templateRegister;
+
+    public function __construct(\Twig_Environment $te, SearchTemplateRegister $tr)
     {
         $this->twig = $te;
+        $this->templateRegister = $tr;
     }
 
     public function getFilters()
@@ -35,11 +40,14 @@ class SearchTwigExtension extends \Twig_Extension
 
     public function renderSearchProviderMulti($entity)
     {
-        $name = $this->getTemplateFromEntity($entity);
-        $name .= '_multi.html.twig';
+        $index = $this->getTemplateFromEntity($entity);
+
+        if (($template = $this->getTemplateFromRegister($index, self::MODE_MULTI)) === false) {
+            $template = "SearchModuleBundle:ProviderTemplates:{$index}_multi.html.twig";
+        }
 
         return $this->twig->render(
-            "SearchModuleBundle:ProviderTemplates:$name",
+            $template,
             [
                 'entity' => $entity
             ]
@@ -48,11 +56,14 @@ class SearchTwigExtension extends \Twig_Extension
 
     public function renderSearchProviderSingle($entity)
     {
-        $name = $this->getTemplateFromEntity($entity);
-        $name .= '_single.html.twig';
+        $index = $this->getTemplateFromEntity($entity);
+
+        if (($template = $this->getTemplateFromRegister($index, self::MODE_SINGLE)) === false) {
+            $template = "SearchModuleBundle:ProviderTemplates:{$index}_single.html.twig";
+        }
 
         return $this->twig->render(
-            "SearchModuleBundle:ProviderTemplates:$name",
+            $template,
             [
                 'entity' => $entity
             ]
@@ -80,14 +91,19 @@ class SearchTwigExtension extends \Twig_Extension
         return $name;
     }
 
-    private function getTemplateFromEntityRegister()
+    private function getTemplateFromRegister($index, $mode)
     {
-        /**
-         * @TODO:
-         *  v1
-         *      ComplierPass collects tags
-         *      that holds classes tht in to string
-         *      returns template path...???
-         */
+        if (!$this->templateRegister->hasElement($index)) {
+            return false;
+        }
+
+        $templateProvider = $this->templateRegister->getElement($index);
+
+        if ($mode === self::MODE_MULTI) {
+            return $templateProvider->getTemplateMulti();
+        } elseif ($mode === self::MODE_SINGLE) {
+            return $templateProvider->getTemplateSingle();
+        }
     }
+
 }

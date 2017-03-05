@@ -41,9 +41,6 @@ class SearchController extends Controller
             $provider->search($q);
             $results[$provider->getTypeName()] = $provider->getResults();
 
-//            $page = $request->query->get('page', 1);
-
-
             if ($module === \strtolower($provider->getTypeName())) {
 
                 // here we know that single mode search was requested

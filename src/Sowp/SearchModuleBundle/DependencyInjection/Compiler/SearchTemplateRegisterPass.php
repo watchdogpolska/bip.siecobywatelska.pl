@@ -18,7 +18,10 @@ class SearchTemplateRegisterPass implements CompilerPassInterface
         $taggedServices = $container->findTaggedServiceIds('sowp.bip.search_template');
 
         foreach ($taggedServices as $id => $tags) {
-            $definition->addMethodCall('addProvider', array(new Reference($id)));
+            $definition->addMethodCall(
+                'addElement',
+                array($container->get($id)->getIndex(), new Reference($id))
+            );
         }
     }
 }
