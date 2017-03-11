@@ -1,7 +1,6 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
 parameters:
-    sowp_news_module_upload_path: "%kernel.root_dir%/../web/upload/news_attachments"
 
 services:
 #    service_name:
@@ -17,7 +16,7 @@ services:
 
     news_module.attachment_upload:
         class: Sowp\NewsModuleBundle\EventListener\Doctrine\AttachmentUploadListener
-        arguments: [ '%sowp_news_module_upload_path%' ]
+        arguments: [ '%upload_path%' ]
         tags:
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: preUpdate }
