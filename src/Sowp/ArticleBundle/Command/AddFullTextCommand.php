@@ -39,7 +39,7 @@ class AddFullTextCommand extends ContainerAwareCommand
         } elseif ($input->getOption(self::DROP_KEY)) {
             $this->dropIndex($output);
         } else {
-            $output->writeln("use one of options: --add to add index, --drop to drop index");
+            $output->writeln('use one of options: --add to add index, --drop to drop index');
         }
     }
 
@@ -47,20 +47,20 @@ class AddFullTextCommand extends ContainerAwareCommand
     {
         $conn = $this->getConnection();
 
-        $out->writeln("Adding full text index to table `collection`:");
+        $out->writeln('Adding full text index to table `collection`:');
 
-        if ($conn->query("ALTER TABLE collection ADD FULLTEXT `search_indexes` (`name`)")) {
-            $out->writeln("Add on `collection` successfull...");
+        if ($conn->query('ALTER TABLE collection ADD FULLTEXT `search_indexes` (`name`)')) {
+            $out->writeln('Add on `collection` successfull...');
         } else {
-            $out->writeln("Add on `collection` failed...");
+            $out->writeln('Add on `collection` failed...');
         }
 
-        $out->writeln("Adding full text index to table `article`:");
+        $out->writeln('Adding full text index to table `article`:');
 
-        if ($conn->query("ALTER TABLE article ADD FULLTEXT `search_indexes` (`title`, `content`)")) {
-            $out->writeln("Add on `article` successfull...");
+        if ($conn->query('ALTER TABLE article ADD FULLTEXT `search_indexes` (`title`, `content`)')) {
+            $out->writeln('Add on `article` successfull...');
         } else {
-            $out->writeln("Add on `article` failed...");
+            $out->writeln('Add on `article` failed...');
         }
     }
 
@@ -68,20 +68,20 @@ class AddFullTextCommand extends ContainerAwareCommand
     {
         $conn = $this->getConnection();
 
-        $out->writeln("Dropping full text index in table `news_collection`");
+        $out->writeln('Dropping full text index in table `news_collection`');
 
-        if ($conn->query("ALTER TABLE collection DROP INDEX `search_indexes`")) {
-            $out->writeln("Drop on `collection` successfull...");
+        if ($conn->query('ALTER TABLE collection DROP INDEX `search_indexes`')) {
+            $out->writeln('Drop on `collection` successfull...');
         } else {
-            $out->writeln("Drop on `collections` failed...");
+            $out->writeln('Drop on `collections` failed...');
         }
 
-        $out->writeln("Dropping full text index to table `article`:");
+        $out->writeln('Dropping full text index to table `article`:');
 
-        if ($conn->query("ALTER TABLE article DROP INDEX `search_indexes`")) {
-            $out->writeln("Drop on `article` successfull...");
+        if ($conn->query('ALTER TABLE article DROP INDEX `search_indexes`')) {
+            $out->writeln('Drop on `article` successfull...');
         } else {
-            $out->writeln("Drop on `article` failed...");
+            $out->writeln('Drop on `article` failed...');
         }
     }
 

@@ -16,7 +16,6 @@ class DataLoader extends AbstractFixture
     {
         $faker = \Faker\Factory::create();
 
-
         $userRepo = $om->getRepository('AppBundle\Entity\User');
         $users = $userRepo->findAll();
         $coll = [];

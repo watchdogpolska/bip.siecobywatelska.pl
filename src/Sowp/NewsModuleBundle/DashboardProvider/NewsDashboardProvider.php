@@ -9,7 +9,6 @@ use Symfony\Component\Routing\Router;
 
 class NewsDashboardProvider implements DashboardProvider
 {
-
     private $router;
 
     /**
@@ -20,16 +19,16 @@ class NewsDashboardProvider implements DashboardProvider
         return array(
             //__construct($name, $type, $icon, $href)
             new DashboardElement(
-                "News Index",
+                'News Index',
                 DashboardElement::TYPE_FONT_AWESOME,
-                "envelope",
-                $this->router->generate("sowp_newsmodule_news_index")
+                'envelope',
+                $this->router->generate('sowp_newsmodule_news_index')
             ),
             new DashboardElement(
-                "News Tags Indexed",
+                'News Tags Indexed',
                 DashboardElement::TYPE_FONT_AWESOME,
-                "envelope",
-                $this->router->generate("sowp_news_collection_index")
+                'envelope',
+                $this->router->generate('sowp_news_collection_index')
             ),
         );
     }

@@ -66,9 +66,8 @@ class AttachmentUploadListener
         }
 
         /**
-         * @var $arg PreUpdateEventArgs
+         * @var PreUpdateEventArgs
          */
-
         $oldAttachmentsValue = (array_key_exists('attachments', $arg->getEntityChangeSet())) ?
             $arg->getOldValue('attachments') : $entity->getAttachments();
         $preUploadAttachments = $entity->getAttachments();

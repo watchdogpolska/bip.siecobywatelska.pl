@@ -12,10 +12,10 @@ class SearchProvider implements SearchProviderInterface
 {
     private $typeName = 'News';
 
-    /** @var EntityManager  */
+    /** @var EntityManager */
     private $em;
 
-    /** @var EntityRepository*/
+    /** @var EntityRepository */
     private $repo;
 
     /** @var \Doctrine\ORM\QueryBuilder for results in single mode */
@@ -37,6 +37,7 @@ class SearchProvider implements SearchProviderInterface
      * Also on each call it clears currently stored results&query builders.
      *
      * @param string $query
+     *
      * @return bool
      */
     public function search($query)
@@ -50,11 +51,10 @@ class SearchProvider implements SearchProviderInterface
 
         try {
             $this->qb = $this->repo->createQueryBuilder('news')
-                ->andWhere("MATCH_AGAINST (news.title, news.content, :phrase) > 0.01")
+                ->andWhere('MATCH_AGAINST (news.title, news.content, :phrase) > 0.01')
                 ->setParameter('phrase', $query);
 
             $this->extractResults();
-
         } catch (\Exception $e) {
             return false;
         }
@@ -73,7 +73,7 @@ class SearchProvider implements SearchProviderInterface
     /**
      * Munction getResults*() must be called after $this->search($query)
      * Its role is to take results from search and return them as array
-     * eith one value -  array with results under $this->getTypeName()
+     * eith one value -  array with results under $this->getTypeName().
      *
      *  return [
      *      $typeName => [

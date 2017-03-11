@@ -13,6 +13,7 @@ class DashboardRenderer
     public function render($name = 'grid')
     {
         $elements = $this->manager->getElements();
+
         return $this->templating->render("SowpDashboardBundle:dashboard:_{$name}.html.twig", compact('elements'));
     }
 }

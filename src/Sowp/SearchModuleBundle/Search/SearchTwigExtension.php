@@ -2,8 +2,6 @@
 
 namespace Sowp\SearchModuleBundle\Search;
 
-use Sowp\SearchModuleBundle\Search\SearchResultInterface;
-
 class SearchTwigExtension extends \Twig_Extension
 {
     const MODE_MULTI = 22;
@@ -25,16 +23,16 @@ class SearchTwigExtension extends \Twig_Extension
                 'render_search_entry_multi',
                 [
                     $this,
-                    'renderSearchProviderMulti'
+                    'renderSearchProviderMulti',
                 ]
             ),
             new \Twig_SimpleFilter(
                 'render_search_entry_single',
                 [
                     $this,
-                    'renderSearchProviderSingle'
+                    'renderSearchProviderSingle',
                 ]
-            )
+            ),
         ];
     }
 
@@ -49,7 +47,7 @@ class SearchTwigExtension extends \Twig_Extension
         return $this->twig->render(
             $template,
             [
-                'entity' => $entity
+                'entity' => $entity,
             ]
         );
     }
@@ -65,7 +63,7 @@ class SearchTwigExtension extends \Twig_Extension
         return $this->twig->render(
             $template,
             [
-                'entity' => $entity
+                'entity' => $entity,
             ]
         );
     }
@@ -73,7 +71,7 @@ class SearchTwigExtension extends \Twig_Extension
     private function checkIfEntity($e)
     {
         if (!is_object($e)) {
-            throw new \LogicException("Entity expected.");
+            throw new \LogicException('Entity expected.');
         }
     }
 
@@ -85,7 +83,7 @@ class SearchTwigExtension extends \Twig_Extension
         $name = strtolower(array_pop($name));
 
         if (!$name) {
-            throw new \Exception("Name from \$entity expected");
+            throw new \Exception('Name from $entity expected');
         }
 
         return $name;
@@ -105,5 +103,4 @@ class SearchTwigExtension extends \Twig_Extension
             return $templateProvider->getTemplateSingle();
         }
     }
-
 }
