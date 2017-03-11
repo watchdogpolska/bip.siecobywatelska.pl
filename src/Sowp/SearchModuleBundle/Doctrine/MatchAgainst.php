@@ -1,4 +1,5 @@
 <?php
+
 namespace Sowp\SearchModuleBundle\Doctrine;
 
 use Doctrine\ORM\Query\Lexer;
@@ -8,10 +9,12 @@ use Doctrine\ORM\Query\AST\Functions\FunctionNode;
  * @example by https://gist.github.com/1234419 Jérémy Hubert
  * "MATCH_AGAINST" "(" {StateFieldPathExpression ","}* InParameter {Literal}? ")"
  */
-class MatchAgainst extends FunctionNode {
+class MatchAgainst extends FunctionNode
+{
     public $columns = array();
     public $needle;
     public $mode;
+
     public function parse(\Doctrine\ORM\Query\Parser $parser)
     {
         $parser->match(Lexer::T_IDENTIFIER);
@@ -19,14 +22,14 @@ class MatchAgainst extends FunctionNode {
         do {
             $this->columns[] = $parser->StateFieldPathExpression();
             $parser->match(Lexer::T_COMMA);
-        }
-        while ($parser->getLexer()->isNextToken(Lexer::T_IDENTIFIER));
+        } while ($parser->getLexer()->isNextToken(Lexer::T_IDENTIFIER));
         $this->needle = $parser->InParameter();
         while ($parser->getLexer()->isNextToken(Lexer::T_STRING)) {
             $this->mode = $parser->Literal();
         }
         $parser->match(Lexer::T_CLOSE_PARENTHESIS);
     }
+
     public function getSql(\Doctrine\ORM\Query\SqlWalker $sqlWalker)
     {
         $haystack = null;
@@ -35,13 +38,14 @@ class MatchAgainst extends FunctionNode {
             $first ? $first = false : $haystack .= ', ';
             $haystack .= $column->dispatch($sqlWalker);
         }
-        $query = "MATCH(" . $haystack .
-            ") AGAINST (" . $this->needle->dispatch($sqlWalker);
-        if($this->mode) {
-            $query .= " " . $this->mode->dispatch($sqlWalker) . " )";
+        $query = 'MATCH('.$haystack.
+            ') AGAINST ('.$this->needle->dispatch($sqlWalker);
+        if ($this->mode) {
+            $query .= ' '.$this->mode->dispatch($sqlWalker).' )';
         } else {
-            $query .= " )";
+            $query .= ' )';
         }
+
         return $query;
     }
 }

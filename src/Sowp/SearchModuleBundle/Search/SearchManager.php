@@ -2,8 +2,6 @@
 
 namespace Sowp\SearchModuleBundle\Search;
 
-use Sowp\SearchModuleBundle\Search\SearchProviderInterface;
-
 class SearchManager
 {
     /** @var array */
@@ -19,5 +17,4 @@ class SearchManager
     {
         return $this->providers;
     }
-
 }

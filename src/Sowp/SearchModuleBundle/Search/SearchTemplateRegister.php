@@ -14,18 +14,19 @@ class SearchTemplateRegister
     /**
      * @return array
      */
-    public function getElements():array
+    public function getElements(): array
     {
         return $this->elements->getArrayCopy();
     }
 
-    public function addElement($index, $element):SearchTemplateRegister
+    public function addElement($index, $element): SearchTemplateRegister
     {
         $this->elements->offsetSet($index, $element);
+
         return $this;
     }
 
-    public function hasElement($elementIndex):bool
+    public function hasElement($elementIndex): bool
     {
         return $this->elements->offsetExists($elementIndex);
     }

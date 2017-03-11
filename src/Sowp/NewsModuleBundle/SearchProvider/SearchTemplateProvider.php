@@ -24,5 +24,4 @@ class SearchTemplateProvider implements SearchTemplateRegisterInterface
     {
         return $this->template_single;
     }
-
 }
