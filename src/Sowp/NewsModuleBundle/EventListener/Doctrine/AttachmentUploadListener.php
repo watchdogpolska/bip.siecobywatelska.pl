@@ -23,7 +23,7 @@ class AttachmentUploadListener
             !is_dir($this->uploadPath) ||
             !is_writable($this->uploadPath)
         ) {
-            throw new \Exception("parameter 'sowp_news_module_upload_path' need adjustment");
+            throw new \Exception("parameter 'upload_path' need adjustment - '$this->uploadPath'' must be writeable");
         }
     }
 
