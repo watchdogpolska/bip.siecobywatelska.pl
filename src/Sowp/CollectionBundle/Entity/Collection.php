@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @Gedmo\Tree(type="nested")
  * @ORM\Entity(repositoryClass="Sowp\CollectionBundle\Entity\CollectionRepository")
- * @ORM\Table(name="news_collection")
+ * @ORM\Table(name="collections")
  */
 class Collection
 {
