@@ -1,0 +1,12 @@
+{% extends '_form_new_layout.html.twig' %}
+
+{% block body %}
+    <h1>Dodajesz Kolekcję</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <input type="submit" class="pull-right" name="add_collection" value="Add" />
+    {{ form_end(form) }}
+    
+    <hr />
+{% endblock %}

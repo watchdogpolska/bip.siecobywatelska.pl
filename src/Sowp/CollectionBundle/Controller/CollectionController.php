@@ -4,6 +4,8 @@ namespace Sowp\CollectionBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sowp\CollectionBundle\Entity\Collection;
+use Sowp\CollectionBundle\Form\addCollectionForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 
@@ -29,7 +31,7 @@ class CollectionController extends Controller
         $collections = [];
         $query = $request->query->get('q');
         $repo = $this->getDoctrine()
-            ->getRepository('Sowp\NewsModuleBundle\Entity\Collection');
+            ->getRepository(Collection::class);
         $resTmp = $repo->searchTitle($query);
 
         foreach ($resTmp as $key => $val) {
@@ -51,7 +53,7 @@ class CollectionController extends Controller
     public function addAction(Request $req)
     {
         $collection = new Collection();
-        $form = $this->createForm(addForm::class, $collection);
+        $form = $this->createForm(addCollectionForm::class, $collection);
         $form->handleRequest($req);
 
         if ($form->isSubmitted()) {
@@ -61,7 +63,7 @@ class CollectionController extends Controller
                 $em->flush();
                 $this->addFlash('notice', 'Collection added');
 
-                return $this->redirectToRoute('sowp_news_collection_show', ['slug' => $collection->getSlug()]);
+                //return $this->redirectToRoute('sowp_news_collection_show', ['slug' => $collection->getSlug()]);
             }
         }
 
