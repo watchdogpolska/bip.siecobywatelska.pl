@@ -111,7 +111,7 @@ class Article implements SoftDeleteable
     /**
      * @var \Sowp\ArticleBundle\Entity\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Sowp\ArticleBundle\Entity\Collection", inversedBy="articles", fetch="EAGER", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Sowp\CollectionBundle\Entity\Collection", inversedBy="articles", fetch="EAGER", cascade={"persist"})
      */
     private $collection;
 
@@ -391,11 +391,11 @@ class Article implements SoftDeleteable
     /**
      * Set collections.
      *
-     * @param \Sowp\ArticleBundle\Entity\Collection $collection
+     * @param \Sowp\CollectionBundle\Entity\Collection $collection
      *
      * @return Article
      */
-    public function setCollection(\Sowp\ArticleBundle\Entity\Collection $collection = null)
+    public function setCollection(\Sowp\CollectionBundle\Entity\Collection $collection = null)
     {
         $this->collection = $collection;
 
@@ -405,7 +405,7 @@ class Article implements SoftDeleteable
     /**
      * Get collections.
      *
-     * @return \Sowp\ArticleBundle\Entity\Collection
+     * @return \Sowp\CollectionBundle\Entity\Collection
      */
     public function getCollection()
     {
@@ -415,11 +415,11 @@ class Article implements SoftDeleteable
     /**
      * Add collection.
      *
-     * @param \Sowp\ArticleBundle\Entity\Collection $collection
+     * @param \Sowp\CollectionBundle\Entity\Collection $collection
      *
      * @return Article
      */
-    public function addCollection(\Sowp\ArticleBundle\Entity\Collection $collection)
+    public function addCollection(\Sowp\CollectionBundle\Entity\Collection $collection)
     {
         $this->collection[] = $collection;
         $collection->addArticle($this);

@@ -33,8 +33,7 @@ class News
     private $title;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Sowp\NewsModuleBundle\Entity\Collection", inversedBy="news")
-     * @ORM\JoinTable(name="collection_news")
+     * @ORM\ManyToMany(targetEntity="Sowp\CollectionBundle\Entity\Collection", inversedBy="news")
      */
     private $collections;
 

@@ -6,7 +6,7 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\User;
 use Sowp\ArticleBundle\Entity\Article;
-use Sowp\ArticleBundle\Entity\Collection;
+use Sowp\CollectionBundle\Entity\Collection;
 
 class LoadArticleData implements FixtureInterface
 {
@@ -34,14 +34,16 @@ class LoadArticleData implements FixtureInterface
      *
      * @return int
      */
-    public function loadCollections()
+    public function loadCollections(ObjectManager $manager)
     {
-        for ($i = 0; $i < 100; ++$i) {
-            $collection = new Collection();
-            $collection->setName($this->faker->word);
-            $this->manager->persist($collection);
+//        for ($i = 0; $i < 100; ++$i) {
+//            $collection = new Collection();
+//            $collection->setName($this->faker->word);
+//            $this->manager->persist($collection);
+        foreach ($manager->getRepository(Collection::class)->findAll() as $collection) {
             $this->collections[] = $collection;
         }
+
     }
 
     /**
@@ -49,14 +51,14 @@ class LoadArticleData implements FixtureInterface
      */
     public function loadArticles(ObjectManager $manager)
     {
-        $users = $manager->getRepository(User::class)->findAll() + [];
+        //$users = $manager->getRepository(User::class)->findAll() + [];
 
         for ($i = 0; $i < 100; ++$i) {
             $article = new Article();
             $article->setTitle($this->faker->text(255));
             $article->setContent($this->faker->paragraph(20));
-            $article->setCreatedBy($this->faker->randomElement($users));
-            $article->setModifitedBy($this->faker->randomElement($users));
+          //  $article->setCreatedBy($this->faker->randomElement($users));
+          //  $article->setModifitedBy($this->faker->randomElement($users));
             $article->setCreatedAt($this->faker->dateTimeBetween('-5 years', 'now'));
             $article->setEditNote($this->faker->text());
             $article_collection = $this->faker->randomElements($this->collections, $this->faker->numberBetween(0, 4));
