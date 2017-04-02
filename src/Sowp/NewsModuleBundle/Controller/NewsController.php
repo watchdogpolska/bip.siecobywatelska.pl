@@ -13,7 +13,7 @@ use Pagerfanta\Pagerfanta;
 /**
  * News controller.
  *
- * @Route("/admin/wiadomosci")
+ * @Route("/admin/messages")
  */
 class NewsController extends Controller
 {
@@ -199,7 +199,7 @@ class NewsController extends Controller
     /**
      * Shows detail of selected revision for selected news.
      *
-     * @Route("/rewizja/{newsId},{revId}", name="sowp_newsmodule_news_revisions_detail")
+     * @Route("/revision/{newsId},{revId}", name="sowp_newsmodule_news_revisions_detail")
      * @Method({"GET"})
      */
     public function revisiondetailAction($newsId, $revId)

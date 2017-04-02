@@ -249,11 +249,11 @@ class News
     /**
      * Add collection.
      *
-     * @param \NewsModuleBundle\Entity\Collection $collection
+     * @param \CollectionBundle\Entity\Collection $collection
      *
      * @return News
      */
-    public function addCollection(\Sowp\NewsModuleBundle\Entity\Collection $collection)
+    public function addCollection(\Sowp\CollectionBundle\Entity\Collection $collection)
     {
         if (!$this->collections->contains($collection)) {
             $this->collections[] = $collection;
@@ -265,9 +265,9 @@ class News
     /**
      * Remove collection.
      *
-     * @param \NewsModuleBundle\Entity\Collection $collection
+     * @param \CollectionBundle\Entity\Collection $collection
      */
-    public function removeCollection(\Sowp\NewsModuleBundle\Entity\Collection $collection)
+    public function removeCollection(\Sowp\CollectionBundle\Entity\Collection $collection)
     {
         $this->collections->removeElement($collection);
     }

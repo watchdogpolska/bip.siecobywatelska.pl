@@ -77,7 +77,7 @@
                         <th>Collections</th>
                         <td>
                             {% for collection in news.collections %}
-                                <a href="{{ url('sowp_news_collection_show', { 'slug' : collection.slug }) }}">{{ collection.title }}</a>
+                                <a href="{{ url('admin_collections_show', { 'slug' : collection.slug }) }}">{{ collection.title }}</a>
                             {% endfor %}
                         </td>
                     </tr>

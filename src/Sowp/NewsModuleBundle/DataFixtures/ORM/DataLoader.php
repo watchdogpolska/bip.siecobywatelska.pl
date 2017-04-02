@@ -17,7 +17,7 @@ class DataLoader extends AbstractFixture
         $faker = \Faker\Factory::create();
 //        $users = $om->getRepository('AppBundle\Entity\User')->findAll();
         $collections = $om->getRepository(Collection::class)->findAll();
-        $coll = [];
+
 
 //        for ($x = 20; $x > 0; --$x) {
 //            $col = new Collection();
@@ -33,7 +33,7 @@ class DataLoader extends AbstractFixture
             $news = new News();
             $news->setTitle($faker->words(mt_rand(3, 8), true));
 
-            foreach ($faker->randomElements($coll, $faker->numberBetween(1, 6)) as $collection) {
+            foreach ($faker->randomElements($collections, $faker->numberBetween(1, 6)) as $collection) {
                 $news->addCollection($collection);
             }
 

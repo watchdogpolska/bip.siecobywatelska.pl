@@ -20,7 +20,7 @@
             <th>Collection</th>
             <td>
                 {% for collection in obj.collection %}
-                    <a href="{{ path('admin_collection_show', { 'id': collection.id }) }}">{{ collection }}</a>
+                    <a href="{{ path('admin_collections_show', { 'slug': collection.slug }) }}">{{ collection }}</a>
                     {% if not loop.last %},{% endif %}
                 {% else %}
                     No collection
