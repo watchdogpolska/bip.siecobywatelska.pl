@@ -2,3 +2,9 @@ services:
 #    collection.example:
 #        class: Sowp\CollectionBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
+
+
+    news_module.form.type.purified_textarea:
+        class: Sowp\CollectionBundle\Form\addCollectionForm
+        tags:
+            - { name: form.type }

@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sowp\CollectionBundle\Entity\Collection;
 use Sowp\CollectionBundle\Form\addCollectionForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 
 /**
@@ -80,7 +81,7 @@ class CollectionController extends Controller
      */
     public function editAction(Request $req, Collection $collection)
     {
-        $form = $this->createForm(addForm::class, $collection);
+        $form = $this->createForm(addCollectionForm::class, $collection);
         $form->handleRequest($req);
 
         if ($form->isSubmitted()) {

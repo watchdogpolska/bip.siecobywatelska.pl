@@ -17,7 +17,7 @@ class addCollectionForm extends AbstractType
         $builder->add('parent', Select2::class, [
             'multiple' => false,
             'class' => Collection::class,
-            'remote_route' => 'sowp_news_collection_query_select2',
+            'remote_route' => 'admin_collections_query_select2',
             'primary_key' => 'id',
             'language' => 'en',
             'placeholder' => 'Wybierz tag/kolekcję nadrzędną',
