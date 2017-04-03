@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sowp\CollectionBundle\Entity\Collection;
 use Sowp\CollectionBundle\Form\addCollectionForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -42,7 +43,7 @@ class CollectionController extends Controller
             ];
         }
 
-        return new Response(json_encode($collections));
+        return new JsonResponse($collections);
     }
 
     /**
@@ -64,7 +65,7 @@ class CollectionController extends Controller
                 $em->flush();
                 $this->addFlash('notice', 'Collection added');
 
-                //return $this->redirectToRoute('sowp_news_collection_show', ['slug' => $collection->getSlug()]);
+                return $this->redirectToRoute('admin_collections_show', ['slug' => $collection->getSlug()]);
             }
         }
 

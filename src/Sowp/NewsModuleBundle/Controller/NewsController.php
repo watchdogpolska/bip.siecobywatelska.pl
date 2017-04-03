@@ -44,7 +44,7 @@ class NewsController extends Controller
     /**
      * Creates a new news entity.
      *
-     * @Route("/dodaj", name="sowp_newsmodule_news_new")
+     * @Route("/add", name="sowp_newsmodule_news_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -93,7 +93,7 @@ class NewsController extends Controller
     /**
      * Displays a form to edit an existing news entity.
      *
-     * @Route("/edytuj/{slug}", name="sowp_newsmodule_news_edit")
+     * @Route("/edit/{slug}", name="sowp_newsmodule_news_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, News $news)
@@ -124,7 +124,7 @@ class NewsController extends Controller
     /**
      * Deletes a news entity.
      *
-     * @Route("/wykasuj/{slug}", name="sowp_newsmodule_news_delete")
+     * @Route("/delete/{slug}", name="sowp_newsmodule_news_delete")
      * @Method({"DELETE"})
      */
     public function deleteAction(Request $request, News $news)
@@ -147,7 +147,7 @@ class NewsController extends Controller
     /**
      * Restores a soft deleted entity.
      *
-     * @Route("/przywroc/{slug}", name="sowp_newsmodule_news_restore")
+     * @Route("/restore/{slug}", name="sowp_newsmodule_news_restore")
      * @Method({"POST"})
      */
     public function restoreAction(Request $request, News $news)
@@ -178,7 +178,7 @@ class NewsController extends Controller
     /**
      * Shows list of revisions for selected news.
      *
-     * @Route("/lista-zmian/{slug}", name="sowp_newsmodule_news_revisions_list")
+     * @Route("/changes-list/{slug}", name="sowp_newsmodule_news_revisions_list")
      * @Method({"GET"})
      */
     public function revisionlistAction(News $news)

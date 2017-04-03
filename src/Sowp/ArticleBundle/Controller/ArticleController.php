@@ -5,7 +5,7 @@ namespace Sowp\ArticleBundle\Controller;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sowp\ArticleBundle\Entity\Collection;
+use Sowp\CollectionBundle\Entity\Collection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;

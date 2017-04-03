@@ -301,7 +301,7 @@ class Collection
      *
      * @return Collection
      */
-    public function addNews(\Sowp\CollectionBundle\Entity\News $news)
+    public function addNews(\Sowp\NewsModuleBundle\Entity\News $news)
     {
         $this->news[] = $news;
 
@@ -313,7 +313,7 @@ class Collection
      *
      * @param \CollectionBundle\Collection $news
      */
-    public function removeNews(\Sowp\CollectionBundle\Entity\News $news)
+    public function removeNews(\Sowp\NewsModuleBundle\Entity\News $news)
     {
         $this->news->removeElement($news);
     }
