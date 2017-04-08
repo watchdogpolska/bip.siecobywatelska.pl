@@ -32,6 +32,9 @@ class AppKernel extends Kernel
             new Sowp\SearchModuleBundle\SearchModuleBundle(),
             new Sowp\ApiBundle\ApiBundle(),
             new Sowp\CollectionBundle\CollectionBundle(),
+
+            //Jms Serializer
+            new JMS\SerializerBundle\JMSSerializerBundle()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
