@@ -27,6 +27,9 @@ class AppKernel extends Kernel
             new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
             new SimpleThings\EntityAudit\SimpleThingsEntityAuditBundle(),
             new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+            new Sowp\ArticleBundle\SowpArticleBundle(),
+            new Sowp\DashboardBundle\SowpDashboardBundle(),
+            new Sowp\SearchModuleBundle\SearchModuleBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

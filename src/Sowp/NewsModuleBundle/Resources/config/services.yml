@@ -14,17 +14,37 @@ services:
 #        - { name: doctrine.event_subscriber, connection: default }
 #    calls:
 #        - [ setAnnotationReader, [ @annotation_reader ] ]
+
     news_module.attachment_upload:
         class: Sowp\NewsModuleBundle\EventListener\Doctrine\AttachmentUploadListener
         arguments: [ '%sowp_news_module_upload_path%' ]
         tags:
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: preUpdate }
+
     news_module.form.transformer.html_purifier:
         class: Exercise\HTMLPurifierBundle\Form\HTMLPurifierTransformer
         arguments: ['@exercise_html_purifier.default']
+
     news_module.form.type.purified_textarea:
         class: Sowp\NewsModuleBundle\Form\TinyMceType
         arguments: ['@news_module.form.transformer.html_purifier']
         tags:
             - { name: form.type }
+
+    news_module.dashboard_provider:
+        class: Sowp\NewsModuleBundle\DashboardProvider\NewsDashboardProvider
+        arguments: ['@router']
+        tags:
+            - { name: sowp.dashboard.element_provider }
+
+    sowp.news.search_result_provider.orm:
+        class: Sowp\NewsModuleBundle\SearchProvider\SearchProvider
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: sowp.bip.search_result_provider.orm }
+
+    sowp.news.Search_template_provider:
+        class: Sowp\NewsModuleBundle\SearchProvider\SearchTemplateProvider
+        tags:
+            - { name: sowp.bip.search_template }

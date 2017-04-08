@@ -13,7 +13,7 @@ use Sowp\NewsModuleBundle\Form\addCollectionForm as addForm;
 /**
  * Collection controller.
  *
- * @Route("/kolekcje")
+ * @Route("/admin/kolekcje")
  */
 class CollectionController extends Controller
 {

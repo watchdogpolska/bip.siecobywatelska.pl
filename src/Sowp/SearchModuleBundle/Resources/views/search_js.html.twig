@@ -1,0 +1,7 @@
+$(".search-button").click(
+    function(e){
+        var href = '{{ path("sowp_searchbundle_search") }}';
+        var q = $("input[name='q']").val();
+        window.location = href + '?q=' + q;
+    }
+);

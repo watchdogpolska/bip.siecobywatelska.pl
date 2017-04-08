@@ -13,7 +13,7 @@ use Pagerfanta\Pagerfanta;
 /**
  * News controller.
  *
- * @Route("/wiadomosci")
+ * @Route("/admin/wiadomosci")
  */
 class NewsController extends Controller
 {
@@ -105,6 +105,7 @@ class NewsController extends Controller
         if ($editForm->isSubmitted()) {
             if ($editForm->isValid()) {
                 $em = $this->getDoctrine()->getManager();
+                //$attachments = $news->getAttachments();
                 $em->persist($news);
                 $em->flush();
                 $this->addFlash('notice', 'Changes saved');

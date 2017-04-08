@@ -1,0 +1,36 @@
+services:
+#    sowp_article.example:
+#        class: Sowp\ArticleBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
+
+    sowp_article.file_uploader:
+        class: Sowp\ArticleBundle\FileUploader
+        arguments: ['%kernel.root_dir%/../web/uploads/attachments/']
+
+    sowp_article.attachment_listener:
+        class: Sowp\ArticleBundle\EventListener\AttachmentSubscriber
+        arguments: ["@sowp_article.file_uploader"]
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    sowp_article.form.transform.html_purifier:
+        class: Exercise\HTMLPurifierBundle\Form\HTMLPurifierTransformer
+        arguments: ["@exercise_html_purifier.default"]
+
+    sowp_article.form.type:
+        class: Sowp\ArticleBundle\Form\WysiwygType
+        arguments: ["@sowp_article.form.transform.html_purifier"]
+        tags:
+            - { name: form.type }
+
+    sowp.article.dashboard_provider:
+        class: Sowp\ArticleBundle\Dashboard\ArticleDashboardProvider
+        arguments: ['@router']
+        tags:
+            - { name: sowp.dashboard.element_provider }
+
+    sowp.article.search_result_provider.orm:
+        class: Sowp\ArticleBundle\SearchProvider\SearchProvider
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: sowp.bip.search_result_provider.orm }

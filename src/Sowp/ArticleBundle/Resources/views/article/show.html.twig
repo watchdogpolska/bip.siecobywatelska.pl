@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="pull-right">
+
+        <a href="{{ path('admin_article_index') }}" class="btn btn-default">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            Back to the list
+        </a>
+
+        {% include '@SowpArticle/article/_edit_btn.html.twig' with {'obj': article } %}
+
+        {% if article.isDeleted() %}
+            {{ include('@SowpArticle/article/_restore_form.html.twig') }}
+        {% else %}
+            {{ include('@SowpArticle/article/_delete_form.html.twig') }}
+        {% endif %}
+
+    </div>
+
+    <h1>Article</h1>
+
+    {% if article.isDeleted() %}
+    <div class="alert alert-warning">
+        <strong>Deleted!</strong> This article was deleted at {{ article.deletedAt|date('Y-m-d H:i:s') }}
+    </div>
+    {% endif %}
+
+    {% include 'SowpArticleBundle:article:_panel_info.html.twig' with {'obj': article}  %}
+    {% include 'SowpArticleBundle:article:_panel_history.html.twig' with {'obj': article}  %}
+    {% include 'SowpArticleBundle:article:_panel_revisions.html.twig' with {'objs': revisions} %}
+
+{% endblock %}
