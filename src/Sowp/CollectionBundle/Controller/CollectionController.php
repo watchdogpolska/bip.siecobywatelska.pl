@@ -1,19 +1,20 @@
 <?php
 
-namespace Sowp\NewsModuleBundle\Controller;
+namespace Sowp\CollectionBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sowp\CollectionBundle\Entity\Collection;
+use Sowp\CollectionBundle\Form\addCollectionForm;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Sowp\NewsModuleBundle\Entity\Collection;
-use Sowp\NewsModuleBundle\Form\addCollectionForm as addForm;
+
 
 /**
- * Collection controller.
- *
- * @Route("/admin/kolekcje")
+ * Class CollectionController
+ * @package Sowp\CollectionBundle\Controller
+ * @Route("/admin/collections")
  */
 class CollectionController extends Controller
 {
@@ -24,16 +25,16 @@ class CollectionController extends Controller
      *
      * @return string
      *
-     * @Route("/query", name="sowp_news_collection_query_select2")
+     * @Route("/query", name="admin_collections_query_select2")
      * @Method("GET")
      */
     public function queryAction(Request $request)
     {
         $collections = [];
         $query = $request->query->get('q');
-        $repo = $this->getDoctrine()
-                ->getRepository('Sowp\NewsModuleBundle\Entity\Collection');
-        $resTmp = $repo->searchTitle($query);
+        $resTmp = $this->getDoctrine()
+            ->getRepository(Collection::class)
+            ->searchTitle($query);
 
         foreach ($resTmp as $key => $val) {
             $collections[] = [
@@ -42,19 +43,19 @@ class CollectionController extends Controller
             ];
         }
 
-        return new Response(json_encode($collections));
+        return new JsonResponse($collections);
     }
 
     /**
      * add new collection entry.
      *
-     * @Route("/dodaj", name="sowp_news_collection_add")
+     * @Route("/add", name="admin_collections_add")
      * @Method({"GET","POST"})
      */
     public function addAction(Request $req)
     {
         $collection = new Collection();
-        $form = $this->createForm(addForm::class, $collection);
+        $form = $this->createForm(addCollectionForm::class, $collection);
         $form->handleRequest($req);
 
         if ($form->isSubmitted()) {
@@ -64,11 +65,11 @@ class CollectionController extends Controller
                 $em->flush();
                 $this->addFlash('notice', 'Collection added');
 
-                return $this->redirectToRoute('sowp_news_collection_show', ['slug' => $collection->getSlug()]);
+                return $this->redirectToRoute('admin_collections_show', ['slug' => $collection->getSlug()]);
             }
         }
 
-        return $this->render('NewsModuleBundle:collection:add.html.twig', [
+        return $this->render('CollectionBundle::add.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -76,12 +77,12 @@ class CollectionController extends Controller
     /**
      * edit collection entry.
      *
-     * @Route("/edytuj/{slug}", name="sowp_news_collection_edit")
+     * @Route("/edit/{slug}", name="admin_collections_edit")
      * @Method({"GET","POST"})
      */
     public function editAction(Request $req, Collection $collection)
     {
-        $form = $this->createForm(addForm::class, $collection);
+        $form = $this->createForm(addCollectionForm::class, $collection);
         $form->handleRequest($req);
 
         if ($form->isSubmitted()) {
@@ -91,11 +92,11 @@ class CollectionController extends Controller
                 $em->flush();
                 $this->addFlash('notice', 'Operation success');
 
-                return $this->redirectToRoute('sowp_news_collection_show', ['slug' => $collection->getSlug()]);
+                return $this->redirectToRoute("admin_collections_show", ['slug' => $collection->getSlug()]);
             }
         }
 
-        return $this->render('NewsModuleBundle:collection:edit.html.twig', [
+        return $this->render('CollectionBundle::edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -103,16 +104,16 @@ class CollectionController extends Controller
     /**
      * Lists all Collection entities.
      *
-     * @Route("/", name="sowp_news_collection_index")
+     * @Route("/", name="admin_collections_index")
      * @Method("GET")
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $collections = $em->getRepository('NewsModuleBundle:Collection')->findAll();
+        $collections = $em->getRepository(Collection::class)->findAll();
 
-        return $this->render('NewsModuleBundle:collection:index.html.twig', array(
+        return $this->render('CollectionBundle::index.html.twig', array(
             'collections' => $collections,
         ));
     }
@@ -120,12 +121,12 @@ class CollectionController extends Controller
     /**
      * Finds and displays a Collection entity.
      *
-     * @Route("/{slug}", name="sowp_news_collection_show")
+     * @Route("/{slug}", name="admin_collections_show")
      * @Method("GET")
      */
     public function showAction(Collection $collection)
     {
-        return $this->render('NewsModuleBundle:collection:show.html.twig', array(
+        return $this->render('CollectionBundle::show.html.twig', array(
             'collection' => $collection,
         ));
     }

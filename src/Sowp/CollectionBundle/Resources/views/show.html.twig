@@ -1,14 +1,14 @@
     {% extends 'base.html.twig' %}
 
     {% block body %}
-        {% include 'NewsModuleBundle::flash.html.twig' %}
+        {% include 'flash.html.twig' %}
     <div class="pull-right">
-    
-        <a href="{{ path('sowp_news_collection_index') }}" class="btn btn-default">
+
+        <a href="{{ path('admin_collections_index') }}" class="btn btn-default">
             <i class="fa fa-list" aria-hidden="true"></i>
             Back to the list
         </a>
-        <a href="{{ path('sowp_news_collection_edit', {'slug' : collection.slug}) }}" class="btn btn-default">
+        <a href="{{ path('admin_collections_edit', {'slug' : collection.slug}) }}" class="btn btn-default">
             <i class="fa fa-pencil" aria-hidden="true"></i>
             Edit
         </a>

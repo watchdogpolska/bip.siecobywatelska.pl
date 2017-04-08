@@ -1,6 +1,6 @@
 <?php
 
-namespace Sowp\NewsModuleBundle\Entity;
+namespace Sowp\CollectionBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -8,8 +8,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Gedmo\Tree(type="nested")
- * @ORM\Entity(repositoryClass="Sowp\NewsModuleBundle\Entity\CollectionRepository")
- * @ORM\Table(name="news_collection")
+ * @ORM\Entity(repositoryClass="Sowp\CollectionBundle\Entity\CollectionRepository")
+ * @ORM\Table(name="collections")
  */
 class Collection
 {
@@ -65,20 +65,20 @@ class Collection
 
     /**
      * @Gedmo\TreeRoot
-     * @ORM\ManyToOne(targetEntity="Sowp\NewsModuleBundle\Entity\Collection")
+     * @ORM\ManyToOne(targetEntity="Sowp\CollectionBundle\Entity\Collection")
      * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
     private $root;
 
     /**
      * @Gedmo\TreeParent
-     * @ORM\ManyToOne(targetEntity="Sowp\NewsModuleBundle\Entity\Collection", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="Sowp\CollectionBundle\Entity\Collection", inversedBy="children")
      * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="Sowp\NewsModuleBundle\Entity\Collection", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="Sowp\CollectionBundle\Entity\Collection", mappedBy="parent")
      * @ORM\OrderBy({"lft" = "ASC"})
      */
     private $children;
@@ -87,6 +87,13 @@ class Collection
      * @ORM\ManyToMany(targetEntity="Sowp\NewsModuleBundle\Entity\News", mappedBy="collections")
      */
     private $news;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Sowp\ArticleBundle\Entity\Article", mappedBy="collection")
+     */
+    private $articles;
 
     /**
      * @var \DateTime
@@ -125,7 +132,7 @@ class Collection
     public function __construct()
     {
         $this->news = new \Doctrine\Common\Collections\ArrayCollection();
-        //$this->childCollections = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->articles = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function __toString()
@@ -290,7 +297,7 @@ class Collection
     /**
      * Add news.
      *
-     * @param \NewsModuleBundle\Collection $news
+     * @param \CollectionBundle\Collection $news
      *
      * @return Collection
      */
@@ -304,7 +311,7 @@ class Collection
     /**
      * Remove news.
      *
-     * @param \NewsModuleBundle\Collection $news
+     * @param \CollectionBundle\Collection $news
      */
     public function removeNews(\Sowp\NewsModuleBundle\Entity\News $news)
     {
@@ -348,11 +355,11 @@ class Collection
     /**
      * Add parent.
      *
-     * @param \Sowp\NewsModuleBundle\Entity\Collection $parent
+     * @param \Sowp\CollectionBundle\Entity\Collection $parent
      *
      * @return Collection
      */
-    public function addParent(\Sowp\NewsModuleBundle\Entity\Collection $parent)
+    public function addParent(\Sowp\CollectionBundle\Entity\Collection $parent)
     {
         $this->parent[] = $parent;
 
@@ -362,9 +369,9 @@ class Collection
     /**
      * Remove parent.
      *
-     * @param \Sowp\NewsModuleBundle\Entity\Collection $parent
+     * @param \Sowp\CollectionBundle\Entity\Collection $parent
      */
-    public function removeParent(\Sowp\NewsModuleBundle\Entity\Collection $parent)
+    public function removeParent(\Sowp\CollectionBundle\Entity\Collection $parent)
     {
         $this->parent->removeElement($parent);
     }
@@ -454,11 +461,11 @@ class Collection
     /**
      * Set root.
      *
-     * @param \Sowp\NewsModuleBundle\Entity\Collection $root
+     * @param \Sowp\CollectionBundle\Entity\Collection $root
      *
      * @return Collection
      */
-    public function setRoot(\Sowp\NewsModuleBundle\Entity\Collection $root)
+    public function setRoot(\Sowp\CollectionBundle\Entity\Collection $root)
     {
         $this->root = $root;
 
@@ -468,7 +475,7 @@ class Collection
     /**
      * Get root.
      *
-     * @return \Sowp\NewsModuleBundle\Entity\Collection
+     * @return \Sowp\CollectionBundle\Entity\Collection
      */
     public function getRoot()
     {
@@ -478,11 +485,11 @@ class Collection
     /**
      * Set parent.
      *
-     * @param \Sowp\NewsModuleBundle\Entity\Collection $parent
+     * @param \Sowp\CollectionBundle\Entity\Collection $parent
      *
      * @return Collection
      */
-    public function setParent(\Sowp\NewsModuleBundle\Entity\Collection $parent)
+    public function setParent(\Sowp\CollectionBundle\Entity\Collection $parent)
     {
         $this->parent = $parent;
 
@@ -492,11 +499,11 @@ class Collection
     /**
      * Add child.
      *
-     * @param \Sowp\NewsModuleBundle\Entity\Collection $child
+     * @param \Sowp\CollectionBundle\Entity\Collection $child
      *
      * @return Collection
      */
-    public function addChild(\Sowp\NewsModuleBundle\Entity\Collection $child)
+    public function addChild(\Sowp\CollectionBundle\Entity\Collection $child)
     {
         $this->children[] = $child;
 
@@ -506,9 +513,9 @@ class Collection
     /**
      * Remove child.
      *
-     * @param \Sowp\NewsModuleBundle\Entity\Collection $child
+     * @param \Sowp\CollectionBundle\Entity\Collection $child
      */
-    public function removeChild(\Sowp\NewsModuleBundle\Entity\Collection $child)
+    public function removeChild(\Sowp\CollectionBundle\Entity\Collection $child)
     {
         $this->children->removeElement($child);
     }
@@ -529,5 +536,39 @@ class Collection
         $this->slug = $slug;
 
         return $this;
+    }
+
+    /**
+     * Add article.
+     *
+     * @param \Sowp\ArticleBundle\Entity\Article $article
+     *
+     * @return Collection
+     */
+    public function addArticle(\Sowp\ArticleBundle\Entity\Article $article)
+    {
+        $this->articles[] = $article;
+
+        return $this;
+    }
+
+    /**
+     * Remove article.
+     *
+     * @param \Sowp\ArticleBundle\Entity\Article $article
+     */
+    public function removeArticle(\Sowp\ArticleBundle\Entity\Article $article)
+    {
+        $this->articles->removeElement($article);
+    }
+
+    /**
+     * Get articles.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getArticles()
+    {
+        return $this->articles;
     }
 }

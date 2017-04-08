@@ -1,8 +1,19 @@
-news_module:
+collection:
+    resource: "@CollectionBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+sowp_api:
+    resource: "@ApiBundle/Controller/"
+    type:     annotation
+    prefix:   /api/v1
+
+sowp_news:
     resource: "@NewsModuleBundle/Controller/"
     type: annotation
+    prefix:   /
 
-search_module:
+sowp_search:
     resource: "@SearchModuleBundle/Controller"
     type: annotation
 

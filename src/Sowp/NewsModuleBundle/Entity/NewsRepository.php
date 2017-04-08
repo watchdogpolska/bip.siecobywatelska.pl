@@ -42,11 +42,12 @@ class NewsRepository extends EntityRepository
 
     public function getNewsCountByCategory(\Sowp\NewsModuleBundle\Entity\Collection $collection)
     {
-        $conn = $this->getEntityManager()->getConnection();
-        $stmt = $conn->prepare('SELECT COUNT(*) AS count FROM collection_news WHERE collection_id = ? ');
-        $stmt->bindValue(1, $collection->getId());
-        $stmt->execute();
-
-        return $stmt->fetch(\PDO::FETCH_OBJ);
+//        $conn = $this->getEntityManager()->getConnection();
+//        $stmt = $conn->prepare('SELECT COUNT(*) AS count FROM collection_news WHERE collection_id = ? ');
+//        $stmt->bindValue(1, $collection->getId());
+//        $stmt->execute();
+//
+//        return $stmt->fetch(\PDO::FETCH_OBJ);
+        return 0;
     }
 }

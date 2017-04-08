@@ -1,6 +1,6 @@
 <?php
 
-namespace Sowp\NewsModuleBundle\Entity;
+namespace Sowp\CollectionBundle\Entity;
 
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 
@@ -8,13 +8,10 @@ class CollectionRepository extends NestedTreeRepository
 {
     public function searchTitle($q)
     {
-        $search = "%$q%";
-        $query = $this->getEntityManager()
-                ->createQuery('SELECT c FROM NewsModuleBundle:Collection c WHERE c.title LIKE :search')
-                ->setParameter('search', $search);
-        $res = $query->getResult();
-
-        return $res;
+        return $this->getEntityManager()
+            ->createQuery('SELECT c FROM CollectionBundle:Collection c WHERE c.title LIKE :search')
+            ->setParameter('search', "%$q%")
+            ->getResult();
     }
 
     public function getCollectionsSlugs()
@@ -22,7 +19,7 @@ class CollectionRepository extends NestedTreeRepository
         return $this->getEntityManager()
             ->createQueryBuilder('c')
             ->select('c.slug')
-            ->from('NewsModuleBundle:Collection', 'c')
+            ->from('CollectionBundle:Collection', 'c')
             ->getQuery()
             ->getArrayResult();
     }
