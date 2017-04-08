@@ -24,6 +24,9 @@ class SearchTwigExtension extends \Twig_Extension
                 [
                     $this,
                     'renderSearchProviderMulti',
+                ],
+                [
+                    'is_safe' => ['html']
                 ]
             ),
             new \Twig_SimpleFilter(
@@ -31,6 +34,9 @@ class SearchTwigExtension extends \Twig_Extension
                 [
                     $this,
                     'renderSearchProviderSingle',
+                ],
+                [
+                    'is_safe' => ['html']
                 ]
             ),
         ];
