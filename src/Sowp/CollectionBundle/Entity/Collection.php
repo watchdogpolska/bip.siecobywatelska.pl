@@ -4,12 +4,18 @@ namespace Sowp\CollectionBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\XmlSerializationVisitor;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Accessor;
+use JMS\Serializer\Annotation\HandlerCallback;
+use JMS\Serializer\Annotation\MaxDepth;
 /**
  * @Gedmo\Tree(type="nested")
  * @ORM\Entity(repositoryClass="Sowp\CollectionBundle\Entity\CollectionRepository")
  * @ORM\Table(name="collections")
+ * @ExclusionPolicy("all")
  */
 class Collection
 {
@@ -19,6 +25,7 @@ class Collection
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Expose
      */
     private $id;
 
@@ -27,6 +34,7 @@ class Collection
      *
      * @Assert\NotBlank()
      * @ORM\Column(name="title", type="string", length=255, unique=true, nullable=false)
+     * @Expose
      */
     private $title;
 
@@ -34,6 +42,7 @@ class Collection
      * @var bool
      *
      * @ORM\Column(name="public", type="boolean", nullable=false)
+     * @Expose
      */
     private $public;
 
@@ -42,6 +51,7 @@ class Collection
      *
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(length=255, unique=true)
+     * @Expose
      */
     private $slug;
 
@@ -74,6 +84,8 @@ class Collection
      * @Gedmo\TreeParent
      * @ORM\ManyToOne(targetEntity="Sowp\CollectionBundle\Entity\Collection", inversedBy="children")
      * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
+     * @Expose
+     * @MaxDepth(1)
      */
     private $parent;
 

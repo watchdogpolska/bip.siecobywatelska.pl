@@ -15,19 +15,7 @@ class DataLoader extends AbstractFixture
     public function load(ObjectManager $om)
     {
         $faker = \Faker\Factory::create();
-//        $users = $om->getRepository('AppBundle\Entity\User')->findAll();
         $collections = $om->getRepository(Collection::class)->findAll();
-
-
-//        for ($x = 20; $x > 0; --$x) {
-//            $col = new Collection();
-//            $col->setTitle($faker->words(5, true));
-//            $col->setPublic(true);
-//            $col->setCreatedAt($faker->dateTimeBetween());
-//            $col->setCreatedBy($faker->randomElement($users));
-//            $om->persist($col);
-//            $coll[] = $col;
-//        }
 
         for ($x = 0; $x < 100; $x++) {
             $news = new News();

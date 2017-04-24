@@ -5,6 +5,7 @@ namespace Sowp\ApiBundle\Tests\Controller;
 
 
 use Doctrine\ORM\EntityManager;
+use Faker\Factory;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use Sowp\CollectionBundle\Entity\Collection;
@@ -31,7 +32,7 @@ class CollectionControllerTest extends WebTestCase
     private $em;
 
     /**
-     * @var
+     * @var Faker
      */
     private $faker;
     /**
@@ -41,6 +42,7 @@ class CollectionControllerTest extends WebTestCase
     {
         parent::setUp();
         self::bootKernel();
+        $this->faker = Factory::create('de_DE');
         $this->container = self::$kernel->getContainer();
         $this->em = $this->container->get('Doctrine')->getManager();
         $this->client = new Client([
@@ -54,18 +56,18 @@ class CollectionControllerTest extends WebTestCase
     /**
      *
      */
-    public function testPostAction()
+    public function testAddtAction()
     {
+
         $collection = new Collection();
-        $collection->setTitle("");
-        $this
-            ->container
-            ->get('jms_serializer');
+        $collection->setTitle($this->faker->words(3, 5));
+        $collection->setPublic(true);
+
         /**
          * @var Response
          */
         $response =  $this->client->post('http://jakowaty.pl/api/v1/collections/add', [
-            'body' => \GuzzleHttp\json_encode([1,23,3])
+            'body' => $this->container->get('jms_serializer')->serialize($collection, 'json')
         ]);
 
         $json = $response->getBody();
