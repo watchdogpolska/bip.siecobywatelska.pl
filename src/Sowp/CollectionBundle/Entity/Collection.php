@@ -11,6 +11,7 @@ use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\Accessor;
 use JMS\Serializer\Annotation\HandlerCallback;
 use JMS\Serializer\Annotation\MaxDepth;
+use JMS\Serializer\Annotation\Exclude;
 /**
  * @Gedmo\Tree(type="nested")
  * @ORM\Entity(repositoryClass="Sowp\CollectionBundle\Entity\CollectionRepository")
