@@ -8,6 +8,7 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Sowp\ArticleBundle\Entity\Article;
 use Sowp\ArticleBundle\FileUploader;
+use Sowp\NewsModuleBundle\Entity\News;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AttachmentSubscriber implements EventSubscriber
@@ -31,7 +32,7 @@ class AttachmentSubscriber implements EventSubscriber
     {
         $entity = $args->getEntity();
 
-        if (!$entity instanceof Article) {
+        if (!($entity instanceof Article) && !($entity instanceof News)) {
             return;
         }
 
@@ -50,7 +51,7 @@ class AttachmentSubscriber implements EventSubscriber
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        if (!$entity instanceof Article) {
+        if (!($entity instanceof Article) && !($entity instanceof News)) {
             return;
         }
         $newValue = $entity->getAttachments();
