@@ -2,6 +2,8 @@
 
 namespace Sowp\ApiBundle\Controller;
 
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Sowp\CollectionBundle\Entity\Collection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -24,7 +26,9 @@ class CollectionController extends Controller
     public function showAction(Collection $collection)
     {
         return new Response(
-            $this->get('jms_serializer')->serialize($collection, 'json'),
+            $this
+                ->get('jms_serializer')
+                ->serialize($collection, 'json'),
             Response::HTTP_OK,
             ['content-type' => 'application/json']
         );
@@ -34,9 +38,28 @@ class CollectionController extends Controller
      * @Route("/")
      * @Method("GET")
      */
-    public function listAction()
+    public function listAction(Request $request)
     {
 
+        $repo = $this->getDoctrine()->getManager()->getRepository(Collection::class);
+        $pagerAdapter = new DoctrineORMAdapter($repo->getQueryBuilderAll(), false);
+        $col = new Pagerfanta($pagerAdapter);
+        $result = [];
+
+        $col->setMaxPerPage($request->query->get('per_page', 10));
+        $col->setCurrentPage($request->query->get('page', 1));
+
+        foreach ($col->getCurrentPageResults() as $collection) {
+            $result[] = $collection;
+        }
+
+        return new Response(
+            $this
+                ->getSerializer()
+                ->serialize($result, 'json'),
+            Response::HTTP_OK,
+            ['content-type' => 'application/json']
+        );
     }
 
     /**
@@ -45,47 +68,30 @@ class CollectionController extends Controller
      */
     public function newAction(Request $request)
     {
-         $response = new \StdClass;
-
         try {
-//            $collection = $this
-//                ->container
-//                ->get('jms_serializer')
-//                ->deserialize($request->getContent(), Collection::class, 'json');
-//
-//            $this
-//                ->getDoctrine()
-//                ->getEntityManager()
-//                ->persist($collection);
-//
-//            $this
-//                ->getDoctrine()
-//                ->getEntityManager()
-//                ->flush();
+            $body = $request->getContent();
+            $collection = $this->getSerializer()->deserialize($body, Collection::class, 'json');
+            $this->get('doctrine')->getEntityManager()->persist($collection);
+            $this->get('doctrine')->getEntityManager()->flush();
 
-            $response->error = false;
-            $response->success = true;
-            $response->msg = "OK";
-            $response->object = $request->getContent();
-
-            return new JsonResponse($response,201);
-
+            return new Response(
+                $this->getSerializer()->serialize($collection, 'json'),
+                Response::HTTP_CREATED,
+                ['content-type' => 'application/json']
+            );
         } catch (\Exception $e) {
-
-            $response->error = true;
-            $response->success = false;
-            $response->msg =  $e->getMessage();
-            return new JsonResponse($response,501);
+            throw $e;
         }
+
     }
 
     /**
      * @Route("/edit/{id}")
      * @Method("PUT")
      */
-    public function editAction()
+    public function editAction(Collection $collection, Request $request)
     {
-
+        $payload = $request->getContent();
     }
 
     /**
@@ -106,7 +112,7 @@ class CollectionController extends Controller
 
     }
 
-    private function getSerialaizer()
+    private function getSerializer()
     {
         return $this->get('serializer');
     }

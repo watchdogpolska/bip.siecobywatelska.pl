@@ -20,26 +20,6 @@ class ApiHelper
         $this->setSerializer($serializer);
     }
 
-    public function deserializeRequest(Request $request)
-    {
-//        $body = $request->getContent();
-//        $object = $this
-//            ->getSerializer()
-//            ->deserialize($request->getContent(), Collection::class, 'json');
-//        return $object;
-    }
-
-    public function serializeCollection(Collection $collection)
-    {
-        return $this->serializer->serialize($collection, 'json');
-    }
-
-
-    public function serializeNews(News $news)
-    {
-
-    }
-
     /**
      * @return Serializer
      */
@@ -55,4 +35,22 @@ class ApiHelper
     {
         $this->serializer = $serializer;
     }
+
+
+    public function deserializeRequest(Request $request)
+    {
+
+    }
+
+    public function serializeCollection(Collection $collection)
+    {
+        return $this->serializer->serialize($collection, 'json');
+    }
+
+
+    public function serializeNews(News $news)
+    {
+
+    }
+
 }

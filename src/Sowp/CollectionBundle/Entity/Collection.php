@@ -113,9 +113,14 @@ class Collection
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @Expose
      */
     private $createdAt;
 
+    public function getCreatedDate()
+    {
+        return $this->getCreatedAt()->format('Y-m-d H:i:s');
+    }
     /**
      * @var \AppBundle\Entity\User
      *

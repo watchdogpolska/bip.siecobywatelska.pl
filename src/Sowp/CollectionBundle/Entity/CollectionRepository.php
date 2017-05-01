@@ -23,4 +23,10 @@ class CollectionRepository extends NestedTreeRepository
             ->getQuery()
             ->getArrayResult();
     }
+
+    public function getQueryBuilderAll()
+    {
+        return $this
+            ->createQueryBuilder('collection');
+    }
 }
