@@ -5,6 +5,7 @@ namespace Sowp\ApiBundle\Controller;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Sowp\CollectionBundle\Entity\Collection;
+use Sowp\CollectionBundle\Form\addCollectionForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -87,29 +88,42 @@ class CollectionController extends Controller
 
     /**
      * @Route("/edit/{id}")
-     * @Method("PUT")
+     * @Method({"PUT", "PATCH"})
      */
     public function editAction(Collection $collection, Request $request)
     {
-        $payload = $request->getContent();
-    }
+        $clear = ($request->getMethod() === 'PATCH') ? true : false;
 
-    /**
-     * @Route("/patch/{id}")
-     * @Method("PATCH")
-     */
-    public function patchAction()
-    {
+        $form = $this->createForm(addCollectionForm::class, $collection, ['csrf_protection' => false]);
+        $form->submit(\json_decode($request->getContent(), true), $clear);
 
+        if (!$form->isValid()) {
+            throw new \Exception("", 500);
+        }
+
+        try {
+            $this->getDoctrine()->getEntityManager()->persist($collection);
+            $this->getDoctrine()->getEntityManager()->flush();
+        } catch (\Exception $e) {
+            throw $e;
+        }
+
+        return new Response(
+            $this->getSerializer()->serialize($collection, 'json'),
+            Response::HTTP_ACCEPTED,
+            ['content-type' => 'application/json']
+        );
     }
 
     /**
      * @Route("/remove/{id}")
      * @Method("DELETE")
      */
-    public function removeAction()
+    public function removeAction(Collection $collection)
     {
-
+        $this->getDoctrine()->getEntityManager()->remove($collection);
+        $this->getDoctrine()->getEntityManager()->flush();
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     private function getSerializer()

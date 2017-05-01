@@ -44,6 +44,7 @@ class Collection
      *
      * @ORM\Column(name="public", type="boolean", nullable=false)
      * @Expose
+     * @Assert\Type("bool")
      */
     private $public;
 
@@ -117,10 +118,6 @@ class Collection
      */
     private $createdAt;
 
-    public function getCreatedDate()
-    {
-        return $this->getCreatedAt()->format('Y-m-d H:i:s');
-    }
     /**
      * @var \AppBundle\Entity\User
      *
