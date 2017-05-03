@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 class CollectionController extends Controller
 {
     /**
-     * @Route("/{id}")
+     * @Route("/{id}", name="api_collections_show")
      * @Method("GET")
      */
     public function showAction(Collection $collection)
@@ -39,7 +39,7 @@ class CollectionController extends Controller
     }
 
     /**
-     * @Route("/")
+     * @Route("/", name="api_collections_list")
      * @Method("GET")
      */
     public function listAction(Request $request)
@@ -67,7 +67,7 @@ class CollectionController extends Controller
     }
 
     /**
-     * @Route("/add", name="api_collection_add")
+     * @Route("/add", name="api_collections_add")
      * @Method("POST")
      */
     public function newAction(Request $request)
@@ -90,7 +90,7 @@ class CollectionController extends Controller
     }
 
     /**
-     * @Route("/edit/{id}")
+     * @Route("/edit/{id}", name="api_collections_edit")
      * @Method({"PUT", "PATCH"})
      */
     public function editAction(Collection $collection, Request $request)
@@ -119,7 +119,7 @@ class CollectionController extends Controller
     }
 
     /**
-     * @Route("/remove/{id}")
+     * @Route("/remove/{id}", name="api_collections_delete")
      * @Method("DELETE")
      */
     public function removeAction(Collection $collection)

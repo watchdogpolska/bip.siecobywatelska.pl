@@ -6,12 +6,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use SimpleThings\EntityAudit\Mapping\Annotation as Audit;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="Sowp\NewsModuleBundle\Entity\NewsRepository")
  * @ORM\Table(name="news")
  * @Audit\Auditable()
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Serializer\ExclusionPolicy("all")
  */
 class News
 {
@@ -21,6 +23,7 @@ class News
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @serializer\Expose()
      */
     private $id;
 
@@ -29,6 +32,7 @@ class News
      *
      * @Assert\NotBlank()
      * @ORM\Column(name="title", type="string", length=255, unique=true, nullable=false)
+     * @serializer\Expose()
      */
     private $title;
 
@@ -42,6 +46,7 @@ class News
      *
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(length=255, unique=true)
+     * @serializer\Expose()
      */
     private $slug;
 
@@ -49,6 +54,7 @@ class News
      * @var string
      *
      * @ORM\Column(name="content", type="text", length=65535, nullable=false)
+     * @serializer\Expose()
      */
     private $content;
 
@@ -61,6 +67,7 @@ class News
      * @var bool
      *
      * @ORM\Column(name="pinned", type="boolean", nullable=false)
+     * @serializer\Expose()
      */
     private $pinned;
 
@@ -69,6 +76,7 @@ class News
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @serializer\Expose()
      */
     private $createdAt;
 
@@ -102,6 +110,7 @@ class News
      * @var string
      *
      * @ORM\Column(name="modifynote", type="text", length=10000, nullable=true)
+     * @serializer\Expose()
      */
     private $modifyNote;
 
