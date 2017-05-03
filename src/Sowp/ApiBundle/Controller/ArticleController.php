@@ -4,6 +4,8 @@ namespace Sowp\ApiBundle\Controller;
 
 use Sowp\ArticleBundle\Entity\Article;
 use Sowp\ArticleBundle\Form\ArticleType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class ArticleController
 {
