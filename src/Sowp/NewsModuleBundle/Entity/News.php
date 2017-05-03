@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use SimpleThings\EntityAudit\Mapping\Annotation as Audit;
 use Symfony\Component\Validator\Constraints as Assert;
-use JMS\Serializer\Annotation as Serializer;
+use JMS\Serializer\Annotation as serializer;
 
 /**
  * @ORM\Entity(repositoryClass="Sowp\NewsModuleBundle\Entity\NewsRepository")

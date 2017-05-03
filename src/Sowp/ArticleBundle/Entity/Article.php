@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\SoftDeleteable;
 use SimpleThings\EntityAudit\Mapping\Annotation as Audit;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Article.
@@ -22,6 +23,7 @@ use SimpleThings\EntityAudit\Mapping\Annotation as Audit;
  * @ORM\Entity(repositoryClass="Sowp\ArticleBundle\Entity\ArticleRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Audit\Auditable()
+ * @Serializer\ExclusionPolicy("all")
  */
 class Article implements SoftDeleteable
 {
@@ -31,6 +33,7 @@ class Article implements SoftDeleteable
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serializer\Expose()
      */
     private $id;
 
@@ -39,6 +42,7 @@ class Article implements SoftDeleteable
      *
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(name="slug", type="string", length=255, nullable=false)
+     * @Serializer\Expose()
      */
     private $slug;
 
@@ -46,6 +50,7 @@ class Article implements SoftDeleteable
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
+     * @Serializer\Expose()
      */
     private $title;
 
@@ -53,6 +58,7 @@ class Article implements SoftDeleteable
      * @var string
      *
      * @ORM\Column(name="content", type="text")
+     * @Serializer\Expose()
      */
     private $content;
 
@@ -61,6 +67,7 @@ class Article implements SoftDeleteable
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @Serializer\Expose()
      */
     private $createdAt;
 
@@ -105,6 +112,7 @@ class Article implements SoftDeleteable
      * @var string
      *
      * @ORM\Column(name="edit_note", type="string", length=255, nullable=false)
+     * @Serializer\Expose()
      */
     private $editNote;
 
