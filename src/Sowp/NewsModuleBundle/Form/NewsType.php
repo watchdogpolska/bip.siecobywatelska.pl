@@ -20,7 +20,7 @@ class NewsType extends AbstractType
     {
         $builder
             ->add('title', null, ['label' => 'Tytuł'])
-            ->add('content', TinyMceType::class, [
+            ->add('content', TestType::class, [
                 'label' => 'Treść',
                 'required' => false,
             ])
@@ -36,7 +36,7 @@ class NewsType extends AbstractType
             ->add('collections', Select2::class, [
                 'multiple' => true,
                 'class' => 'Sowp\NewsModuleBundle\Entity\Collection',
-                'remote_route' => 'sowp_news_collection_query_select2',
+                'remote_route' => 'admin_collections_query_select2',
                 'primary_key' => 'id',
                 'language' => 'en',
                 'placeholder' => 'Wybierz tagi jakie będzie posiadał news',

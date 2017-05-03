@@ -3,6 +3,7 @@
 namespace Sowp\NewsModuleBundle\Controller;
 
 use Sowp\NewsModuleBundle\Entity\News;
+use Sowp\NewsModuleBundle\Form\NewsType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -50,7 +51,7 @@ class NewsController extends Controller
     public function newAction(Request $request)
     {
         $news = new News();
-        $form = $this->createForm('Sowp\NewsModuleBundle\Form\NewsType', $news);
+        $form = $this->createForm(NewsType::class, $news);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
@@ -99,7 +100,7 @@ class NewsController extends Controller
     public function editAction(Request $request, News $news)
     {
         $deleteForm = $this->createDeleteForm($news);
-        $editForm = $this->createForm('Sowp\NewsModuleBundle\Form\NewsType', $news);
+        $editForm = $this->createForm(NewsType::class, $news);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted()) {
