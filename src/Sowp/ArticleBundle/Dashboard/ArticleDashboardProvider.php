@@ -33,12 +33,6 @@ class ArticleDashboardProvider implements DashboardProvider
                 'book',
                 $this->router->generate('admin_article_index')
             ),
-            new DashboardElement(
-                'Bookmark',
-                DashboardElement::TYPE_FONT_AWESOME,
-                'bookmark',
-                $this->router->generate('admin_collection_index')
-            ),
         );
     }
 }
