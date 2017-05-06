@@ -15,26 +15,35 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new AppBundle\AppBundle(),
+            //Jms Serializer
+            new JMS\SerializerBundle\JMSSerializerBundle(),
 
             // FOS User Bundle
             new FOS\UserBundle\FOSUserBundle(),
 
             // Doctrine Extensions
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            new Sowp\NewsModuleBundle\NewsModuleBundle(),
-            new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
-            new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
             new SimpleThings\EntityAudit\SimpleThingsEntityAuditBundle(),
+
+            // Visual Extension
+            new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
             new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+
+            // Security Extension
+            new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
+
+            // Sowp - Entity Extension
+            new Sowp\NewsModuleBundle\NewsModuleBundle(),
             new Sowp\ArticleBundle\SowpArticleBundle(),
+            new Sowp\CollectionBundle\CollectionBundle(),
+
+            // Sowp - Other Extension
             new Sowp\DashboardBundle\SowpDashboardBundle(),
             new Sowp\SearchModuleBundle\SearchModuleBundle(),
             new Sowp\ApiBundle\ApiBundle(),
-            new Sowp\CollectionBundle\CollectionBundle(),
 
-            //Jms Serializer
-            new \JMS\SerializerBundle\JMSSerializerBundle()
+            new AppBundle\AppBundle(),
+
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

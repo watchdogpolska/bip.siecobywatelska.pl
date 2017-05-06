@@ -1,7 +1,6 @@
 <?php
-
 namespace Sowp\NewsModuleBundle\Form;
-
+use Sowp\CollectionBundle\Form\CollectionAutocompleteFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
@@ -10,7 +9,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType as Select2;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-
 class NewsType extends AbstractType
 {
     /**
@@ -20,7 +18,7 @@ class NewsType extends AbstractType
     {
         $builder
             ->add('title', null, ['label' => 'Tytuł'])
-            ->add('content', TestType::class, [
+            ->add('content', TinyMceType::class, [
                 'label' => 'Treść',
                 'required' => false,
             ])
@@ -33,17 +31,7 @@ class NewsType extends AbstractType
                 'required' => false,
             ])
             ->add('pinned', null, ['label' => 'Przypięty'])
-            ->add('collections', Select2::class, [
-                'multiple' => true,
-                'class' => 'Sowp\NewsModuleBundle\Entity\Collection',
-                'remote_route' => 'admin_collections_query_select2',
-                'primary_key' => 'id',
-                'language' => 'en',
-                'placeholder' => 'Wybierz tagi jakie będzie posiadał news',
-                'cache' => true,
-                'cache_timeout' => 60000,
-                'label' => 'Tagi',
-            ])
+            ->add('collections', CollectionAutocompleteFormType::class)
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 if ($event->getData()->getId() !== null) {
                     $event->getForm()->add('modifyNote', TextareaType::class, [
@@ -55,7 +43,6 @@ class NewsType extends AbstractType
                 }
             });
     }
-
     /**
      * {@inheritdoc}
      */
