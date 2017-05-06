@@ -35,6 +35,7 @@ class WysiwygType extends AbstractType
                 'rows' => 25,
                 'data-tinymce' => true,
             ),
+            'required' => false,
         ));
     }
 
