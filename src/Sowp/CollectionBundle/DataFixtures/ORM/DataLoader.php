@@ -20,16 +20,12 @@ class DataLoader extends AbstractFixture
     {
         $faker = \Faker\Factory::create();
 
-        $collections = [];
-
-        for ($x = 0; $x < 20; $x++) {
-
+        for ($i = 0; $i < 20; $i++) {
             $collection = new Collection();
             $collection->setPublic(true);
             $collection->setTitle($faker->words(4, true));
 
             $manager->persist($collection);
-            $collections[] = $collection;
         }
 
         $manager->flush();
