@@ -39,10 +39,7 @@ class CollectionController extends Controller
      */
     public function newAction(Request $request)
     {
-        $this
-            ->get('jms_serializer')
-            ->deserialize($request->getContent(),'array');
-        return new JsonResponse([1,2,3], 201);
+
     }
 
     /**
