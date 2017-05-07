@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <h2>{{ entity.title }}
-        <a href="/admin/wiadomosci/{{ entity.slug }}" >
+        <a href="{{ path("admin_article_show", {"id" : entity.id}) }}" >
             <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span></h2>
         </a>
     </h2>

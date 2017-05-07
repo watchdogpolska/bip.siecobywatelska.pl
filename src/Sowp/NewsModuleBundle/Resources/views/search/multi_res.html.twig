@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <h2>{{ entity.title }}
-        <a href="/admin/wiadomosci/{{ entity.slug }}" >
+        <a href="{{ path("sowp_newsmodule_news_show", {"slug" : entity.slug}) }}" >
             <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span></h2>
     </a>
     <p class="popover-content">
