@@ -47,13 +47,13 @@ class AddFullTextCommand extends ContainerAwareCommand
     {
         $conn = $this->getConnection();
 
-        $out->writeln('Adding full text index to table `collection`:');
+//        $out->writeln('Adding full text index to table `collection`:');
 
-        if ($conn->query('ALTER TABLE collection ADD FULLTEXT `search_indexes` (`name`)')) {
-            $out->writeln('Add on `collection` successfull...');
-        } else {
-            $out->writeln('Add on `collection` failed...');
-        }
+//        if ($conn->query('ALTER TABLE collection ADD FULLTEXT `search_indexes` (`name`)')) {
+//            $out->writeln('Add on `collection` successfull...');
+//        } else {
+//            $out->writeln('Add on `collection` failed...');
+//        }
 
         $out->writeln('Adding full text index to table `article`:');
 
@@ -68,13 +68,13 @@ class AddFullTextCommand extends ContainerAwareCommand
     {
         $conn = $this->getConnection();
 
-        $out->writeln('Dropping full text index in table `news_collection`');
-
-        if ($conn->query('ALTER TABLE collection DROP INDEX `search_indexes`')) {
-            $out->writeln('Drop on `collection` successfull...');
-        } else {
-            $out->writeln('Drop on `collections` failed...');
-        }
+//        $out->writeln('Dropping full text index in table `news_collection`');
+//
+//        if ($conn->query('ALTER TABLE collection DROP INDEX `search_indexes`')) {
+//            $out->writeln('Drop on `collection` successfull...');
+//        } else {
+//            $out->writeln('Drop on `collections` failed...');
+//        }
 
         $out->writeln('Dropping full text index to table `article`:');
 
