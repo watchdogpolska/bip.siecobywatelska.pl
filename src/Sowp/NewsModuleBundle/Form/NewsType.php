@@ -2,6 +2,7 @@
 
 namespace Sowp\NewsModuleBundle\Form;
 
+use Sowp\CollectionBundle\Form\CollectionAutocompleteFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
@@ -33,17 +34,7 @@ class NewsType extends AbstractType
                 'required' => false,
             ])
             ->add('pinned', null, ['label' => 'Przypięty'])
-            ->add('collections', Select2::class, [
-                'multiple' => true,
-                'class' => 'Sowp\NewsModuleBundle\Entity\Collection',
-                'remote_route' => 'sowp_news_collection_query_select2',
-                'primary_key' => 'id',
-                'language' => 'en',
-                'placeholder' => 'Wybierz tagi jakie będzie posiadał news',
-                'cache' => true,
-                'cache_timeout' => 60000,
-                'label' => 'Tagi',
-            ])
+            ->add('collections', CollectionAutocompleteFormType::class)
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 if ($event->getData()->getId() !== null) {
                     $event->getForm()->add('modifyNote', TextareaType::class, [

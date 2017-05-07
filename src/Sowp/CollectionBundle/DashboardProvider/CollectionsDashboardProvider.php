@@ -1,25 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andrzej
- * Date: 30.12.16
- * Time: 03:43.
- */
-
-namespace Sowp\ArticleBundle\Dashboard;
+namespace  Sowp\CollectionBundle\DashboardProvider;
 
 use Sowp\DashboardBundle\Dashboard\DashboardElement;
 use Sowp\DashboardBundle\Dashboard\DashboardProvider;
 use Symfony\Component\Routing\Router;
 
-class ArticleDashboardProvider implements DashboardProvider
+class CollectionsDashboardProvider implements DashboardProvider
 {
     private $router;
-
-    public function __construct(Router $router)
-    {
-        $this->router = $router;
-    }
 
     /**
      * @return DashboardElement[]
@@ -27,12 +15,18 @@ class ArticleDashboardProvider implements DashboardProvider
     public function getElements()
     {
         return array(
+            //__construct($name, $type, $icon, $href)
             new DashboardElement(
-                'Article',
+                'Collections Index',
                 DashboardElement::TYPE_FONT_AWESOME,
-                'book',
-                $this->router->generate('admin_article_index')
+                'code',
+                $this->router->generate('admin_collections_index')
             ),
         );
+    }
+
+    public function __construct(Router $router)
+    {
+        $this->router = $router;
     }
 }

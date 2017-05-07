@@ -24,12 +24,6 @@ class NewsDashboardProvider implements DashboardProvider
                 'envelope',
                 $this->router->generate('sowp_newsmodule_news_index')
             ),
-            new DashboardElement(
-                'News Tags Indexed',
-                DashboardElement::TYPE_FONT_AWESOME,
-                'envelope',
-                $this->router->generate('sowp_news_collection_index')
-            ),
         );
     }
 
