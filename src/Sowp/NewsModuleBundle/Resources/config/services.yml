@@ -50,6 +50,6 @@ services:
 
     sowp.news.form.test_type:
         class: Sowp\NewsModuleBundle\Form\TestType
-        arguments: ['@news_module.form.transformer.html_purifier']
+        arguments: ['@sowp.news.form.transform.html_purifier']
         tags:
             - { name: form.type}

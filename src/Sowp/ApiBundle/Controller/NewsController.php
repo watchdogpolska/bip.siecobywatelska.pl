@@ -9,7 +9,7 @@ use Sowp\NewsModuleBundle\Form\NewsType;
 /**
  * Class ControllerController
  * @package Sowp\ApiBundle\Controller
- * @Route("/collections")
+ * @Route("/messages")
  */
 class NewsController
 {
