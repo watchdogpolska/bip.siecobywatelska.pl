@@ -72,6 +72,7 @@ class CollectionController extends Controller
      */
     public function newAction(Request $request)
     {
+
         try {
             $body = $request->getContent();
             $collection = $this->getSerializer()->deserialize($body, Collection::class, 'json');

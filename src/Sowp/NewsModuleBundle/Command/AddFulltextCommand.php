@@ -47,14 +47,6 @@ class AddFulltextCommand extends ContainerAwareCommand
     {
         $conn = $this->getConnection();
 
-        $out->writeln('Adding full text index to table `news_collection`:');
-
-        if ($conn->query('ALTER TABLE news_collection ADD FULLTEXT `search_indexes` (`title`)')) {
-            $out->writeln('Add on `collections` successfull...');
-        } else {
-            $out->writeln('Add on `collections` failed...');
-        }
-
         $out->writeln('Adding full text index to table `news`:');
 
         if ($conn->query('ALTER TABLE news ADD FULLTEXT `search_indexes` (`title`, `content`)')) {
@@ -67,14 +59,6 @@ class AddFulltextCommand extends ContainerAwareCommand
     private function dropIndex(OutputInterface $out)
     {
         $conn = $this->getConnection();
-
-        $out->writeln('Dropping full text index in table `news_collection`');
-
-        if ($conn->query('ALTER TABLE news_collection DROP INDEX `search_indexes`')) {
-            $out->writeln('Drop on `collections` successfull...');
-        } else {
-            $out->writeln('Drop on `collections` failed...');
-        }
 
         $out->writeln('Dropping full text index to table `news`:');
 

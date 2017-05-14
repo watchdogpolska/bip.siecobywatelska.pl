@@ -13,7 +13,7 @@ class CollectionAutocompleteFormType extends AbstractType
     {
         $resolver->setDefaults([
             'multiple' => true,
-            'remote_route' => 'admin_article_collection_query',
+            'remote_route' => 'admin_collections_query_select2',
             'text_property' => 'title',
             'class' => Collection::class,
             'cache' => true,
