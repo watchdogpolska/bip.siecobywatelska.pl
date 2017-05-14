@@ -1,13 +1,13 @@
 <?php
 
-namespace Sowp\ArticleBundle\EventListener;
+namespace Sowp\UploadBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Sowp\ArticleBundle\Entity\Article;
-use Sowp\ArticleBundle\FileUploader;
+use Sowp\UploadBundle\Service\FileUploader;
 use Sowp\NewsModuleBundle\Entity\News;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -61,7 +61,8 @@ class AttachmentSubscriber implements EventSubscriber
         $this->handleAttachments([], $newValue, $entity);
     }
 
-    private function handleAttachments(array $oldValue, array $newValue, Article $entity)
+//    private function handleAttachments(array $oldValue, array $newValue, Article $entity)
+    private function handleAttachments(array $oldValue, array $newValue, $entity)
     {
         $new_attachment = array_filter($newValue, function ($var) {
             return $var['file'] instanceof UploadedFile;
