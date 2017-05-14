@@ -7,11 +7,11 @@ services:
 #        class: Sowp\ArticleBundle\FileUploader
 #        arguments: ['%kernel.root_dir%/../web/uploads/attachments/']
 
-    sowp_article.attachment_listener:
-        class: Sowp\ArticleBundle\EventListener\AttachmentSubscriber
-        arguments: ["@sowp_article.file_uploader"]
-        tags:
-            - { name: doctrine.event_subscriber }
+#    sowp_article.attachment_listener:
+#        class: Sowp\ArticleBundle\EventListener\AttachmentSubscriber
+#        arguments: ["@sowp_article.file_uploader"]
+#        tags:
+#            - { name: doctrine.event_subscriber }
 
     sowp_article.form.transform.html_purifier:
         class: Exercise\HTMLPurifierBundle\Form\HTMLPurifierTransformer
