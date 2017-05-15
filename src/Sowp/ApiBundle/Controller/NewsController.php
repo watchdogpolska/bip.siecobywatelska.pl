@@ -7,6 +7,7 @@ use Sowp\NewsModuleBundle\Entity\News;
 use Sowp\NewsModuleBundle\Form\NewsType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @package Sowp\ApiBundle\Controller
