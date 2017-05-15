@@ -5,29 +5,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sowp\NewsModuleBundle\Entity\News;
 use Sowp\NewsModuleBundle\Form\NewsType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class ControllerController
  * @package Sowp\ApiBundle\Controller
  * @Route("/messages")
  */
-class NewsController
+class NewsController extends Controller
 {
-    /**
-     * @Route("/{id}", name="api_news_show")
-     * @Method("GET")
-     */
-    public function showAction(News $news)
-    {
-        return new Response(
-            $this
-                ->get('jms_serializer')
-                ->serialize($news, 'json'),
-            Response::HTTP_OK,
-            ['content-type' => 'application/json']
-        );
-    }
-
     /**
      * @Route("/", name="api_news_list")
      * @Method("GET")
@@ -51,6 +37,21 @@ class NewsController
             $this
                 ->getSerializer()
                 ->serialize($result, 'json'),
+            Response::HTTP_OK,
+            ['content-type' => 'application/json']
+        );
+    }
+
+    /**
+     * @Route("/{id}", name="api_news_show")
+     * @Method("GET")
+     */
+    public function showAction(News $news)
+    {
+        return new Response(
+            $this
+                ->get('jms_serializer')
+                ->serialize($news, 'json'),
             Response::HTTP_OK,
             ['content-type' => 'application/json']
         );

@@ -7,6 +7,10 @@ use Sowp\ArticleBundle\Form\ArticleType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
+/**
+ * @package Sowp\ApiBundle\Controller
+ * @Route("/article")
+ */
 class ArticleController
 {
     /**

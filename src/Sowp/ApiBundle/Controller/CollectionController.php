@@ -27,8 +27,9 @@ class CollectionController extends Controller
      * @Route("/{id}", name="api_collections_show")
      * @Method("GET")
      */
-    public function showAction(Collection $collection)
+    public function showAction()
     {
+        $collection = [];
         return new Response(
             $this
                 ->get('jms_serializer')
@@ -72,7 +73,6 @@ class CollectionController extends Controller
      */
     public function newAction(Request $request)
     {
-
         try {
             $body = $request->getContent();
             $collection = $this->getSerializer()->deserialize($body, Collection::class, 'json');
