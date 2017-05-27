@@ -1,8 +1,3 @@
-upload:
-    resource: "@UploadBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 collection:
     resource: "@CollectionBundle/Controller/"
     type:     annotation
