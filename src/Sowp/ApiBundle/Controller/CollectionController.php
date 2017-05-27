@@ -4,6 +4,7 @@ namespace Sowp\ApiBundle\Controller;
 
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
+use Sowp\ApiBundle\Response\Link;
 use Sowp\CollectionBundle\Entity\Collection;
 use Sowp\CollectionBundle\Form\addCollectionForm;
 use Sowp\NewsModuleBundle\Entity\News;
@@ -15,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Router;
 
 /**
  * Class ControllerController
@@ -33,12 +35,14 @@ class CollectionController extends Controller
         $apiHelper = $this->get('api_helper');
 
         if (!$col) {
-            return $apiHelper->createErrorResponse(404, "Not Found", []);
+            return $apiHelper->createErrorResponse(404, "Not Found", $this->commonLinks());
         }
 
+        $links = \array_merge($this->commonLinks(),[
+            'self' => $this->get('router')->generate('api_collections_show', ['id' => $id], Router::ABSOLUTE_URL)
+        ]);
 
-        return $apiHelper->createApiResponse(200, $col, []);
-
+        return $apiHelper->createApiResponse(Response::HTTP_OK, $col, $links);
     }
 
     /**
@@ -51,102 +55,19 @@ class CollectionController extends Controller
         $repo = $this->getDoctrine()->getManager()->getRepository(Collection::class);
         $pagerAdapter = new DoctrineORMAdapter($repo->getQueryBuilderAll(), false);
         $col = new Pagerfanta($pagerAdapter);
-        $result = [];
+        $collections = [];
 
         $col->setMaxPerPage($request->query->get('per_page', 10));
         $col->setCurrentPage($request->query->get('page', 1));
 
         foreach ($col->getCurrentPageResults() as $collection) {
-            $result[] = $collection;
+            $collections[] = $collection;
         }
 
-        return new Response(
-            $this
-                ->getSerializer()
-                ->serialize($result, 'json'),
-            Response::HTTP_OK,
-            ['content-type' => 'application/json']
-        );
-    }
+        $links = $this->getApiHelper()->generateNavLinks($col,'page', 'api_collections_list');
+        $links = \array_merge($links, $this->commonLinks());
 
-    /**
-     * POST /api/v1/collections
-
-    Tworzy kategorię.
-
-    Parametry:
-    Brak
-
-    Kody:
-
-    201 - gdy się powiodło.
-    400 - gdy się nie powiodło.
-    Treść:
-
-    Nowy kategoria zapisany jako JSON
-
-    Odpowiedź:
-    W nagłóœkach “Location” i “http://127.0.0.1:8000/api/collections/6”, gdy się uda.
-     * @Route("/add", name="api_collections_add")
-     * @Method("POST")
-     */
-    public function newAction(Request $request)
-    {
-        try {
-            $body = $request->getContent();
-            $collection = $this->getSerializer()->deserialize($body, Collection::class, 'json');
-            $this->get('doctrine')->getEntityManager()->persist($collection);
-            $this->get('doctrine')->getEntityManager()->flush();
-
-            return new Response(
-                $this->getSerializer()->serialize($collection, 'json'),
-                Response::HTTP_CREATED,
-                ['content-type' => 'application/json']
-            );
-        } catch (\Exception $e) {
-            throw $e;
-        }
-
-    }
-
-    /**
-     * @Route("/edit/{id}", name="api_collections_edit")
-     * @Method({"PUT", "PATCH"})
-     */
-    public function editAction(Collection $collection, Request $request)
-    {
-        $clear = ($request->getMethod() === 'PATCH') ? true : false;
-
-        $form = $this->createForm(addCollectionForm::class, $collection, ['csrf_protection' => false]);
-        $form->submit(\json_decode($request->getContent(), true), $clear);
-
-        if (!$form->isValid()) {
-            throw new \Exception("", 500);
-        }
-
-        try {
-            $this->getDoctrine()->getEntityManager()->persist($collection);
-            $this->getDoctrine()->getEntityManager()->flush();
-        } catch (\Exception $e) {
-            throw $e;
-        }
-
-        return new Response(
-            $this->getSerializer()->serialize($collection, 'json'),
-            Response::HTTP_ACCEPTED,
-            ['content-type' => 'application/json']
-        );
-    }
-
-    /**
-     * @Route("/remove/{id}", name="api_collections_delete")
-     * @Method("DELETE")
-     */
-    public function removeAction(Collection $collection)
-    {
-        $this->getDoctrine()->getEntityManager()->remove($collection);
-        $this->getDoctrine()->getEntityManager()->flush();
-        return new Response(null, Response::HTTP_NO_CONTENT);
+        return $this->getApiHelper()->createApiResponse(Response::HTTP_OK, $collections, $links);
     }
 
     private function getSerializer()
@@ -157,5 +78,14 @@ class CollectionController extends Controller
     private function getApiHelper()
     {
         return $this->get('api_helper');
+    }
+
+    private function commonLinks()
+    {
+        return [
+            'collection_index' => $this->get('router')->generate('api_collections_list'),
+            'article_index' => $this->get('router')->generate('api_article_list'),
+            'messages_index' => $this->get('router')->generate('api_news_list')
+        ];
     }
 }

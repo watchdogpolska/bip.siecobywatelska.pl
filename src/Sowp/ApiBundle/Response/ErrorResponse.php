@@ -3,6 +3,11 @@ namespace Sowp\ApiBundle\Response;
 
 use JMS\Serializer\Annotation as JMS_Annotation;
 
+/**
+ * Class ErrorResponse
+ * @package Sowp\ApiBundle\Response
+ * @JMS_Annotation\ExclusionPolicy("NONE")
+ */
 class ErrorResponse implements CodeInterface
 {
     /**

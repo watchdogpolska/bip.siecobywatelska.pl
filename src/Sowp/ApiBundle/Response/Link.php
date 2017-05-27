@@ -3,6 +3,11 @@ namespace Sowp\ApiBundle\Response;
 
 use JMS\Serializer\Annotation as JMS_Annotation;
 
+/**
+ * Class Link
+ * @package Sowp\ApiBundle\Response
+ * @JMS_Annotation\ExclusionPolicy("NONE")
+ */
 class Link
 {
     /**
@@ -14,6 +19,12 @@ class Link
      * @var string
      */
     private $href;
+
+    public function __construct($rel = '', $href = '')
+    {
+        $this->setRel($rel);
+        $this->setHref($href);
+    }
 
     /**
      * @return string

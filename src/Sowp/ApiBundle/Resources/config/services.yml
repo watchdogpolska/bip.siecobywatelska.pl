@@ -5,8 +5,4 @@ services:
 
     api_helper:
         class: Sowp\ApiBundle\Service\ApiHelper
-        arguments: [
-        '@jms_serializer',
-        '@router',
-        '@doctrine.orm.entity_manager'
-        ]
+        arguments: ['@jms_serializer' , '@router', '@doctrine.orm.entity_manager']
