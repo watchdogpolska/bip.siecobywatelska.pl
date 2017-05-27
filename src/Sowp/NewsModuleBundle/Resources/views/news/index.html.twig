@@ -40,7 +40,7 @@
                             <tr>
                                 <td class="attachments">
                                     {% for attachment in news_entry.attachments %}
-                                    <a href="{{ asset('upload/news_attachments/' ~attachment.file) }}" target="_blank">
+                                    <a href="{{ asset('upload/news_attachments/' ~attachment.name) }}" target="_blank">
                                         {{ attachment.name }}
                                     </a>
                                     {% endfor %}
