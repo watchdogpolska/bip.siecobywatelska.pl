@@ -27,16 +27,18 @@ class CollectionController extends Controller
      * @Route("/{id}", name="api_collections_show")
      * @Method("GET")
      */
-    public function showAction()
+    public function showAction($id)
     {
-        $collection = [];
-        return new Response(
-            $this
-                ->get('jms_serializer')
-                ->serialize($collection, 'json'),
-            Response::HTTP_OK,
-            ['content-type' => 'application/json']
-        );
+        $col = $this->getDoctrine()->getRepository(Collection::class)->find($id);
+        $apiHelper = $this->get('api_helper');
+
+        if (!$col) {
+            return $apiHelper->createErrorResponse(404, "Not Found", []);
+        }
+
+
+        return $apiHelper->createApiResponse(200, $col, []);
+
     }
 
     /**
@@ -68,6 +70,23 @@ class CollectionController extends Controller
     }
 
     /**
+     * POST /api/v1/collections
+
+    Tworzy kategorię.
+
+    Parametry:
+    Brak
+
+    Kody:
+
+    201 - gdy się powiodło.
+    400 - gdy się nie powiodło.
+    Treść:
+
+    Nowy kategoria zapisany jako JSON
+
+    Odpowiedź:
+    W nagłóœkach “Location” i “http://127.0.0.1:8000/api/collections/6”, gdy się uda.
      * @Route("/add", name="api_collections_add")
      * @Method("POST")
      */

@@ -126,7 +126,6 @@ class NewsController extends Controller
      * Deletes a news entity.
      *
      * @Route("/delete/{slug}", name="sowp_newsmodule_news_delete")
-     * @Method({"DELETE"})
      */
     public function deleteAction(Request $request, News $news)
     {

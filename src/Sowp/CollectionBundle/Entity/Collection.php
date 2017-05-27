@@ -4,7 +4,6 @@ namespace Sowp\CollectionBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\XmlSerializationVisitor;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
@@ -12,6 +11,8 @@ use JMS\Serializer\Annotation\Accessor;
 use JMS\Serializer\Annotation\HandlerCallback;
 use JMS\Serializer\Annotation\MaxDepth;
 use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\VirtualProperty;
+
 /**
  * @Gedmo\Tree(type="nested")
  * @ORM\Entity(repositoryClass="Sowp\CollectionBundle\Entity\CollectionRepository")
@@ -43,7 +44,6 @@ class Collection
      * @var bool
      *
      * @ORM\Column(name="public", type="boolean", nullable=false)
-     * @Expose
      * @Assert\Type("bool")
      */
     private $public;
@@ -53,7 +53,6 @@ class Collection
      *
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(length=255, unique=true)
-     * @Expose
      */
     private $slug;
 
@@ -86,8 +85,6 @@ class Collection
      * @Gedmo\TreeParent
      * @ORM\ManyToOne(targetEntity="Sowp\CollectionBundle\Entity\Collection", inversedBy="children")
      * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
-     * @Expose
-     * @MaxDepth(1)
      */
     private $parent;
 
@@ -128,10 +125,28 @@ class Collection
     private $createdBy;
 
     /**
+     * @return null|array
+     *
+     * @VirtualProperty()
+     */
+    public function getCreatedByApi()
+    {
+        if (\is_object($this->createdBy)) {
+            $user['id'] = $this->createdBy->getId();
+            $user['username'] = $this->createdBy->getUsername();
+
+            return $user;
+        }
+
+        return null;
+    }
+
+    /**
      * @var \DateTime
      *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="modified_at", type="datetime", nullable=true)
+     * @Expose
      */
     private $modifiedAt;
 

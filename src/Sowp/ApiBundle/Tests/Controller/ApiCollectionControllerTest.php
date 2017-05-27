@@ -4,6 +4,7 @@ namespace Sowp\ApiBundle\Tests\Controller;
 
 
 
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Faker\Factory;
 use GuzzleHttp\Client;
@@ -13,10 +14,10 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
- * Class CollectionControllerTest
+ * Class ApiCollectionControllerTest
  * @package Sowp\ApiBundle\Tests\Controller
  */
-class CollectionControllerTest extends WebTestCase
+class ApiCollectionControllerTest extends WebTestCase
 {
     /**
      * @var Client
@@ -30,47 +31,29 @@ class CollectionControllerTest extends WebTestCase
      * @var EntityManager
      */
     private $em;
-
     /**
      * @var Faker
      */
     private $faker;
-    /**
-     *
-     */
+
     public function setUp()
     {
         parent::setUp();
         self::bootKernel();
-        $this->faker = Factory::create('de_DE');
+        $this->faker = Factory::create();
         $this->container = self::$kernel->getContainer();
         $this->em = $this->container->get('Doctrine')->getManager();
         $this->client = new Client([
-            'base_url' => 'http://jakowaty.pl',
             'defaults' => [
                 'exceptions' => false
             ]
         ]);
     }
 
-    /**
-     *
-     */
-    public function testAddtAction()
+    public function testShowAction()
     {
-
-        $collection = new Collection();
-        $collection->setTitle($this->faker->words(3, 5));
-        $collection->setPublic(true);
-
-        /**
-         * @var Response
-         */
-        $response =  $this->client->post('http://jakowaty.pl/api/v1/collections/add', [
-            'body' => $this->container->get('jms_serializer')->serialize($collection, 'json')
-        ]);
-
-        $json = $response->getBody();
-        $this->assertEquals(201, $response->getStatusCode());
+        $response = $this->client->get('http://jakowaty.pl/api/v1/collections/41');
+        $this->assertEquals(200, $response->getStatusCode());
     }
+
 }
