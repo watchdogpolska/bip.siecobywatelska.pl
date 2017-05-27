@@ -25,100 +25,38 @@ class NewsController extends Controller
         $repo = $this->getDoctrine()->getManager()->getRepository(News::class);
         $pagerAdapter = new DoctrineORMAdapter($repo->getQueryBuilderAll(), false);
         $col = new Pagerfanta($pagerAdapter);
-        $result = [];
+        $news = [];
 
         $col->setMaxPerPage($request->query->get('per_page', 10));
         $col->setCurrentPage($request->query->get('page', 1));
 
-        foreach ($col->getCurrentPageResults() as $news) {
-            $result[] = $news;
+        foreach ($col->getCurrentPageResults() as $entry) {
+            $news[] = $entry;
         }
+        $links = $this->getApiHelper()->generateNavLinks($col, 'page', 'api_news_list');
+        $links = \array_merge($links, $this->commonLinks());
 
-        return new Response(
-            $this
-                ->getSerializer()
-                ->serialize($result, 'json'),
-            Response::HTTP_OK,
-            ['content-type' => 'application/json']
-        );
+        return $this->getApiHelper()->createApiResponse(Response::HTTP_OK, $news, $links);
     }
 
     /**
      * @Route("/{id}", name="api_news_show")
      * @Method("GET")
      */
-    public function showAction(News $news)
+    public function showAction($id)
     {
-        return new Response(
-            $this
-                ->get('jms_serializer')
-                ->serialize($news, 'json'),
-            Response::HTTP_OK,
-            ['content-type' => 'application/json']
-        );
-    }
+        $news = $this->getDoctrine()->getRepository(News::class)->find($id);
 
-    /**
-     * @Route("/add", name="api_news_add")
-     * @Method("POST")
-     */
-    public function newAction(Request $request)
-    {
-        try {
-            $body = $request->getContent();
-            $news = $this->getSerializer()->deserialize($body, News::class, 'json');
-            $this->get('doctrine')->getEntityManager()->persist($news);
-            $this->get('doctrine')->getEntityManager()->flush();
-
-            return new Response(
-                $this->getSerializer()->serialize($news, 'json'),
-                Response::HTTP_CREATED,
-                ['content-type' => 'application/json']
-            );
-        } catch (\Exception $e) {
-            throw $e;
+        if (!$news) {
+            return $this->getApiHelper()->createErrorResponse(Response::HTTP_NOT_FOUND,
+                'Not Found', $this->commonLinks());
         }
 
-    }
+        $links = \array_merge($this->commonLinks(),[
+            'self' => $this->get('router')->generate('api_news_show', ['id' => $id], Router::ABSOLUTE_URL)
+        ]);
 
-    /**
-     * @Route("/edit/{id}", name="api_news_edit")
-     * @Method({"PUT", "PATCH"})
-     */
-    public function editAction(News $news, Request $request)
-    {
-        $clear = ($request->getMethod() === 'PATCH') ? true : false;
-
-        $form = $this->createForm(NewsType::class, $news, ['csrf_protection' => false]);
-        $form->submit(\json_decode($request->getContent(), true), $clear);
-
-        if (!$form->isValid()) {
-            throw new \Exception("", 500);
-        }
-
-        try {
-            $this->getDoctrine()->getEntityManager()->persist($news);
-            $this->getDoctrine()->getEntityManager()->flush();
-        } catch (\Exception $e) {
-            throw $e;
-        }
-
-        return new Response(
-            $this->getSerializer()->serialize($news, 'json'),
-            Response::HTTP_ACCEPTED,
-            ['content-type' => 'application/json']
-        );
-    }
-
-    /**
-     * @Route("/remove/{id}", name="api_news_delete")
-     * @Method("DELETE")
-     */
-    public function removeAction(News $news)
-    {
-        $this->getDoctrine()->getEntityManager()->remove($news);
-        $this->getDoctrine()->getEntityManager()->flush();
-        return new Response(null, Response::HTTP_NO_CONTENT);
+        return $apiHelper->createApiResponse(Response::HTTP_OK, $col, $links);
     }
 
     private function getSerializer()
@@ -129,5 +67,14 @@ class NewsController extends Controller
     private function getApiHelper()
     {
         return $this->get('api_helper');
-    }  
+    }
+
+    private function commonLinks()
+    {
+        return [
+            'collection_index' => $this->get('router')->generate('api_collections_list'),
+            'article_index' => $this->get('router')->generate('api_article_list'),
+            'messages_index' => $this->get('router')->generate('api_news_list')
+        ];
+    }
 }

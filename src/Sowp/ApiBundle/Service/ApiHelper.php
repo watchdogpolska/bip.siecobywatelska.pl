@@ -92,6 +92,12 @@ class ApiHelper
         $this->router = $router;
     }
 
+    /**
+     * @param $code
+     * @param $data
+     * @param array $links
+     * @return Response
+     */
     public function createApiResponse($code, $data, array $links)
     {
         $obj = new ApiResponse();
@@ -106,6 +112,12 @@ class ApiHelper
         ]);
     }
 
+    /**
+     * @param $code
+     * @param $message
+     * @param array $links
+     * @return Response
+     */
     public function createErrorResponse($code, $message, array $links)
     {
         $obj = new ErrorResponse();
@@ -120,6 +132,12 @@ class ApiHelper
         ]);
     }
 
+    /**
+     * @param Pagerfanta $pag
+     * @param $key
+     * @param $route
+     * @return array
+     */
     public function generateNavLinks(Pagerfanta $pag, $key, $route)
     {
         $a = [];
@@ -149,6 +167,10 @@ class ApiHelper
         return $a;
     }
 
+    /**
+     * @param array $links
+     * @return array
+     */
     private function convertLinksArray(array $links)
     {
         $a = [];
@@ -158,5 +180,10 @@ class ApiHelper
         }
 
         return $a;
+    }
+
+    public static function createFilesLinks($json)
+    {
+        $obj = \json_decode($json, true);
     }
 }

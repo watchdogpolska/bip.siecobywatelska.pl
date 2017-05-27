@@ -6,26 +6,33 @@ use Sowp\ArticleBundle\Entity\Article;
 use Sowp\ArticleBundle\Form\ArticleType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @package Sowp\ApiBundle\Controller
  * @Route("/article")
  */
-class ArticleController
+class ArticleController extends Controller
 {
     /**
      * @Route("/{id}", name="api_article_show")
      * @Method("GET")
      */
-    public function showAction(Article $article)
+    public function showAction($id)
     {
-        return new Response(
-            $this
-                ->get('jms_serializer')
-                ->serialize( $article, 'json'),
-            Response::HTTP_OK,
-            ['content-type' => 'application/json']
-        );
+        $art = $this->getDoctrine()->getRepository(Article::class)->find($id);
+
+        if (!$art) {
+            $this->getApiHelper()->createErrorResponse(Response::HTTP_NOT_FOUND,
+                'Not Found', $this->commonLinks());
+        }
+
+        $links = \array_merge($this->commonLinks(),[
+            'self' => $this->get('router')->generate('api_article_show', ['id' => $id], Router::ABSOLUTE_URL)
+        ]);
+
+        return $this->getApiHelper()->createApiResponse(Response::HTTP_OK, $art, $links);
     }
 
     /**
@@ -34,89 +41,22 @@ class ArticleController
      */
     public function listAction(Request $request)
     {
-
         $repo = $this->getDoctrine()->getManager()->getRepository(Article::class);
         $pagerAdapter = new DoctrineORMAdapter($repo->getQueryBuilderAll(), false);
         $col = new Pagerfanta($pagerAdapter);
-        $result = [];
+        $articles = [];
 
         $col->setMaxPerPage($request->query->get('per_page', 10));
         $col->setCurrentPage($request->query->get('page', 1));
 
         foreach ($col->getCurrentPageResults() as $article) {
-            $result[] = $article;
+            $articles[] = $article;
         }
 
-        return new Response(
-            $this
-                ->getSerializer()
-                ->serialize($result, 'json'),
-            Response::HTTP_OK,
-            ['content-type' => 'application/json']
-        );
-    }
+        $links = $this->getApiHelper()->generateNavLinks($col,'page', 'api_article_list');
+        $links = \array_merge($links, $this->commonLinks());
 
-    /**
-     * @Route("/add", name="api_article_add")
-     * @Method("POST")
-     */
-    public function newAction(Request $request)
-    {
-        try {
-            $body = $request->getContent();
-            $article = $this->getSerializer()->deserialize($body, Article::class, 'json');
-            $this->get('doctrine')->getEntityManager()->persist( $article);
-            $this->get('doctrine')->getEntityManager()->flush();
-
-            return new Response(
-                $this->getSerializer()->serialize( $article, 'json'),
-                Response::HTTP_CREATED,
-                ['content-type' => 'application/json']
-            );
-        } catch (\Exception $e) {
-            throw $e;
-        }
-
-    }
-
-    /**
-     * @Route("/edit/{id}", name="api_article_edit")
-     * @Method({"PUT", "PATCH"})
-     */
-    public function editAction(Article $article, Request $request)
-    {
-        $clear = ($request->getMethod() === 'PATCH') ? true : false;
-
-        $form = $this->createForm(ArticleType::class, $article, ['csrf_protection' => false]);
-        $form->submit(\json_decode($request->getContent(), true), $clear);
-
-        if (!$form->isValid()) {
-            throw new \Exception("", 500);
-        }
-
-        try {
-            $this->getDoctrine()->getEntityManager()->persist( $article);
-            $this->getDoctrine()->getEntityManager()->flush();
-        } catch (\Exception $e) {
-            throw $e;
-        }
-
-        return new Response(
-            $this->getSerializer()->serialize( $article, 'json'),
-            Response::HTTP_ACCEPTED,
-            ['content-type' => 'application/json']
-        );
-    }
-
-    /**
-     * @Route("/remove/{id}", name="api_article_delete")
-     * @Method("DELETE")
-     */
-    public function removeAction(Collection $article)
-    {
-        $this->getDoctrine()->getEntityManager()->remove( $article);
-        $this->getDoctrine()->getEntityManager()->flush();
-        return new Response(null, Response::HTTP_NO_CONTENT);
+        return $this->getApiHelper()->createApiResponse(Response::HTTP_OK, $articles, $links);
     }
 
     private function getSerializer()
@@ -129,4 +69,12 @@ class ArticleController
         return $this->get('api_helper');
     }
 
+    private function commonLinks()
+    {
+        return [
+            'collection_index' => $this->get('router')->generate('api_collections_list'),
+            'article_index' => $this->get('router')->generate('api_article_list'),
+            'messages_index' => $this->get('router')->generate('api_news_list')
+        ];
+    }
 }
