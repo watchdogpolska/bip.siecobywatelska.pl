@@ -1,6 +1,8 @@
 <?php
 namespace Sowp\ApiBundle\Controller;
 
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sowp\ApiBundle\Traits\ControllerTait;
