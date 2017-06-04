@@ -2,6 +2,8 @@
 
 namespace Sowp\ApiBundle\Controller;
 
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Sowp\ApiBundle\Traits\ControllerTait;
 use Sowp\ArticleBundle\Entity\Article;
 use Sowp\ArticleBundle\Form\ArticleType;
@@ -9,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -46,7 +49,7 @@ class ArticleController extends Controller
     public function listAction(Request $request)
     {
         $repo = $this->getDoctrine()->getManager()->getRepository(Article::class);
-        $pagerAdapter = new DoctrineORMAdapter($repo->getQueryBuilderAll(), false);
+        $pagerAdapter = new DoctrineORMAdapter($repo->findAllQueryBuilder(), false);
         $col = new Pagerfanta($pagerAdapter);
         $articles = [];
 
