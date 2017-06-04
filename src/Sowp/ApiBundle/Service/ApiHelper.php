@@ -231,20 +231,20 @@ class ApiHelper
         return $a;
     }
 
-    public function getShowLinkForEntity($entity)
+    public function getShowLinkForEntity($entity, $absolute = true)
     {
         if ($entity instanceof Collection) {
             return $this->getRouter()->generate('api_collections_show',[
                 'id' => $entity->getId()
-            ],Router::ABSOLUTE_URL);
+            ],$absolute ? Router::ABSOLUTE_URL : Router::RELATIVE_PATH);
         } elseif ($entity instanceof Article) {
             return $this->getRouter()->generate('api_article_show', [
                 'id' => $entity->getId()
-            ],Router::ABSOLUTE_URL);
+            ],$absolute ? Router::ABSOLUTE_URL : Router::RELATIVE_PATH);
         } elseif ($entity instanceof News) {
             return $this->getRouter()->generate('api_news_show', [
                 'id' => $entity->getId()
-            ], Router::ABSOLUTE_URL);
+            ], $absolute ? Router::ABSOLUTE_URL : Router::RELATIVE_PATH);
         }
     }
 
