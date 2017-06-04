@@ -125,23 +125,6 @@ class Collection
     private $createdBy;
 
     /**
-     * @return null|array
-     *
-     * @VirtualProperty()
-     */
-    public function getCreatedByApi()
-    {
-        if (\is_object($this->createdBy)) {
-            $user['id'] = $this->createdBy->getId();
-            $user['username'] = $this->createdBy->getUsername();
-
-            return $user;
-        }
-
-        return null;
-    }
-
-    /**
      * @var \DateTime
      *
      * @Gedmo\Timestampable(on="update")
@@ -153,7 +136,7 @@ class Collection
     /**
      * @var \AppBundle\Entity\User
      *
-     * @Gedmo\Blameable(on="change", field="modifiedBy")
+     * @Gedmo\Blameable(on="change", field={"title", "public", "parent"})
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="modified_by", referencedColumnName="id")
      */

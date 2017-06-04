@@ -100,7 +100,7 @@ class News
     /**
      * @var \AppBundle\Entity\User
      *
-     * @Gedmo\Blameable(on="change", field="modifiedBy")
+     * @Gedmo\Blameable(on="change", field={"title", "collections", "content", "attachments", "pinned"})
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="modified_by", referencedColumnName="id")
      */

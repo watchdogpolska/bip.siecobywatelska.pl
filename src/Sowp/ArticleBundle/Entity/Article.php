@@ -137,6 +137,22 @@ class Article implements SoftDeleteable
     }
 
     /**
+     * @return \AppBundle\Entity\User
+     */
+    public function getModifiedBy()
+    {
+        return $this->getModifitedBy();
+    }
+
+    /**
+     * @param $v
+     */
+    public function setModifiedBy($v)
+    {
+        $this->setModifitedBy($v);
+    }
+
+    /**
      * Get id.
      *
      * @return int

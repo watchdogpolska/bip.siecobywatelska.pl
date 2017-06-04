@@ -2,11 +2,13 @@
 
 namespace Sowp\ApiBundle\Controller;
 
+use Sowp\ApiBundle\Traits\ControllerTait;
 use Sowp\ArticleBundle\Entity\Article;
 use Sowp\ArticleBundle\Form\ArticleType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -15,6 +17,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ArticleController extends Controller
 {
+    use ControllerTait;
+
     /**
      * @Route("/{id}", name="api_article_show")
      * @Method("GET")
@@ -59,22 +63,4 @@ class ArticleController extends Controller
         return $this->getApiHelper()->createApiResponse(Response::HTTP_OK, $articles, $links);
     }
 
-    private function getSerializer()
-    {
-        return $this->get('serializer');
-    }
-
-    private function getApiHelper()
-    {
-        return $this->get('api_helper');
-    }
-
-    private function commonLinks()
-    {
-        return [
-            'collection_index' => $this->get('router')->generate('api_collections_list'),
-            'article_index' => $this->get('router')->generate('api_article_list'),
-            'messages_index' => $this->get('router')->generate('api_news_list')
-        ];
-    }
 }

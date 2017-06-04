@@ -8,10 +8,12 @@ use Pagerfanta\Pagerfanta;
 use Sowp\ApiBundle\Response\ApiResponse;
 use Sowp\ApiBundle\Response\ErrorResponse;
 use Sowp\ApiBundle\Response\Link;
-use Sowp\ApiBundle\Tests\TestEntity;
+use Sowp\ArticleBundle\Entity\Article;
 use Sowp\CollectionBundle\Entity\Collection;
 use Sowp\NewsModuleBundle\Entity\News;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
@@ -33,15 +35,62 @@ class ApiHelper
      */
     private $em;
 
+    /**
+     * @var Packages
+     */
+    private $templateHelper;
+
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
     public function __construct(
         Serializer $serializer,
         RouterInterface $router,
-        EntityManager $entityManager
+        EntityManager $entityManager,
+        Packages $templateHelper,
+        RequestStack $stack
     )
     {
         $this->setSerializer($serializer);
         $this->setRouter($router);
         $this->setEm($entityManager);
+        $this->setTemplateHelper($templateHelper);
+        $this->setRequestStack($stack);
+    }
+
+
+    /**
+     * @return RequestStack
+     */
+    public function getRequestStack(): RequestStack
+    {
+        return $this->requestStack;
+    }
+
+    /**
+     * @param RequestStack $requestStack
+     */
+    public function setRequestStack(RequestStack $requestStack)
+    {
+        $this->requestStack = $requestStack;
+    }
+
+    /**
+     * @return Packages
+     */
+    public function getTemplateHelper(): Packages
+    {
+        return $this->templateHelper;
+    }
+
+    /**
+     * @param Packages $templateHelper
+     */
+    public function setTemplateHelper(Packages $templateHelper)
+    {
+        $this->templateHelper = $templateHelper;
     }
 
     /**
@@ -182,8 +231,37 @@ class ApiHelper
         return $a;
     }
 
-    public static function createFilesLinks($json)
+    public function getShowLinkForEntity($entity)
     {
-        $obj = \json_decode($json, true);
+        if ($entity instanceof Collection) {
+            return $this->getRouter()->generate('api_collections_show',[
+                'id' => $entity->getId()
+            ],Router::ABSOLUTE_URL);
+        } elseif ($entity instanceof Article) {
+            return $this->getRouter()->generate('api_article_show', [
+                'id' => $entity->getId()
+            ],Router::ABSOLUTE_URL);
+        } elseif ($entity instanceof News) {
+            return $this->getRouter()->generate('api_news_show', [
+                'id' => $entity->getId()
+            ], Router::ABSOLUTE_URL);
+        }
+    }
+
+    public function createAttachmentsLinks($json)
+    {
+        /** @var Request $request */
+        $request = $this->getRequestStack()->getCurrentRequest();
+
+        if (!$request) {
+            return [];
+        }
+
+        return \array_map(function ($a) use ($request) {
+            $a['file'] =
+                $request->getSchemeAndHttpHost() .
+                $this->templateHelper->getUrl('uploads/attachments/'.$a['file']['filename']);
+            return $a;
+        }, $json);
     }
 }

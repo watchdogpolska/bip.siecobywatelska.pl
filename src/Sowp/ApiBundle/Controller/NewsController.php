@@ -3,9 +3,11 @@ namespace Sowp\ApiBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sowp\ApiBundle\Traits\ControllerTait;
 use Sowp\NewsModuleBundle\Entity\News;
 use Sowp\NewsModuleBundle\Form\NewsType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,6 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class NewsController extends Controller
 {
+    use ControllerTait;
+
     /**
      * @Route("/", name="api_news_list")
      * @Method("GET")
@@ -56,25 +60,7 @@ class NewsController extends Controller
             'self' => $this->get('router')->generate('api_news_show', ['id' => $id], Router::ABSOLUTE_URL)
         ]);
 
-        return $apiHelper->createApiResponse(Response::HTTP_OK, $col, $links);
+        return $this->getApiHelper()->createApiResponse(Response::HTTP_OK, $news, $links);
     }
 
-    private function getSerializer()
-    {
-        return $this->get('serializer');
-    }
-
-    private function getApiHelper()
-    {
-        return $this->get('api_helper');
-    }
-
-    private function commonLinks()
-    {
-        return [
-            'collection_index' => $this->get('router')->generate('api_collections_list'),
-            'article_index' => $this->get('router')->generate('api_article_list'),
-            'messages_index' => $this->get('router')->generate('api_news_list')
-        ];
-    }
 }
