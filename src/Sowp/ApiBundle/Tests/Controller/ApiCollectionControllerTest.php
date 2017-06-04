@@ -4,7 +4,9 @@ namespace Sowp\ApiBundle\Tests\Controller;
 
 
 
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
+use Faker\Factory;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use Sowp\CollectionBundle\Entity\Collection;
@@ -12,10 +14,10 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
- * Class CollectionControllerTest
+ * Class ApiCollectionControllerTest
  * @package Sowp\ApiBundle\Tests\Controller
  */
-class CollectionControllerTest extends WebTestCase
+class ApiCollectionControllerTest extends WebTestCase
 {
     /**
      * @var Client
@@ -29,46 +31,33 @@ class CollectionControllerTest extends WebTestCase
      * @var EntityManager
      */
     private $em;
-
     /**
-     * @var
+     * @var Faker
      */
     private $faker;
-    /**
-     *
-     */
+
     public function setUp()
     {
         parent::setUp();
         self::bootKernel();
+        $this->faker = Factory::create();
         $this->container = self::$kernel->getContainer();
         $this->em = $this->container->get('Doctrine')->getManager();
         $this->client = new Client([
-            'base_url' => 'http://jakowaty.pl',
             'defaults' => [
                 'exceptions' => false
             ]
         ]);
     }
 
-    /**
-     *
-     */
-    public function testPostAction()
+    public function testShowAction()
     {
-        $collection = new Collection();
-        $collection->setTitle("");
-        $this
-            ->container
-            ->get('jms_serializer');
-        /**
-         * @var Response
-         */
-        $response =  $this->client->post('http://jakowaty.pl/api/v1/collections/add', [
-            'body' => \GuzzleHttp\json_encode([1,23,3])
-        ]);
+        $response = $this->client->get('http://jakowaty.pl/api/v1/collections/41');
+        $this->assertEquals(200, $response->getStatusCode());
+    }
 
-        $json = $response->getBody();
-        $this->assertEquals(201, $response->getStatusCode());
+    public function testErrorResponse()
+    {
+
     }
 }

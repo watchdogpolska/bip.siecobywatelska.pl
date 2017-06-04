@@ -1,7 +1,5 @@
 <?php
-
 namespace Sowp\NewsModuleBundle\Form;
-
 use Sowp\CollectionBundle\Form\CollectionAutocompleteFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -47,7 +45,6 @@ class NewsType extends AbstractType
                 }
             });
     }
-
     /**
      * {@inheritdoc}
      */

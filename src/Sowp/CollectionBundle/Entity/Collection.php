@@ -5,11 +5,19 @@ namespace Sowp\CollectionBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Accessor;
+use JMS\Serializer\Annotation\HandlerCallback;
+use JMS\Serializer\Annotation\MaxDepth;
+use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\VirtualProperty;
 
 /**
  * @Gedmo\Tree(type="nested")
  * @ORM\Entity(repositoryClass="Sowp\CollectionBundle\Entity\CollectionRepository")
  * @ORM\Table(name="collections")
+ * @ExclusionPolicy("all")
  */
 class Collection
 {
@@ -19,6 +27,7 @@ class Collection
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Expose
      */
     private $id;
 
@@ -27,6 +36,7 @@ class Collection
      *
      * @Assert\NotBlank()
      * @ORM\Column(name="title", type="string", length=255, unique=true, nullable=false)
+     * @Expose
      */
     private $title;
 
@@ -34,6 +44,7 @@ class Collection
      * @var bool
      *
      * @ORM\Column(name="public", type="boolean", nullable=false)
+     * @Assert\Type("bool")
      */
     private $public;
 
@@ -100,6 +111,7 @@ class Collection
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @Expose
      */
     private $createdAt;
 
@@ -117,13 +129,14 @@ class Collection
      *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="modified_at", type="datetime", nullable=true)
+     * @Expose
      */
     private $modifiedAt;
 
     /**
      * @var \AppBundle\Entity\User
      *
-     * @Gedmo\Blameable(on="change", field="modifiedBy")
+     * @Gedmo\Blameable(on="change", field={"title", "public", "parent"})
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="modified_by", referencedColumnName="id")
      */

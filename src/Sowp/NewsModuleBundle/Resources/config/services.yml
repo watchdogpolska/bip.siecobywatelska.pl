@@ -50,3 +50,9 @@ services:
         class: Sowp\NewsModuleBundle\SearchProvider\SearchTemplateProvider
         tags:
             - { name: sowp.bip.search_template }
+
+    sowp.news.form.test_type:
+        class: Sowp\NewsModuleBundle\Form\TestType
+        arguments: ['@sowp.news.form.transform.html_purifier']
+        tags:
+            - { name: form.type}

@@ -1,9 +1,9 @@
-upload:
+sowp_upload:
     resource: "@UploadBundle/Controller/"
     type:     annotation
     prefix:   /
 
-collection:
+sowp_collection:
     resource: "@CollectionBundle/Controller/"
     type:     annotation
     prefix:   /

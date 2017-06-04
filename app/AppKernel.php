@@ -43,7 +43,7 @@ class AppKernel extends Kernel
             new Sowp\ApiBundle\ApiBundle(),
             new Sowp\UploadBundle\UploadBundle(),
 
-            new AppBundle\AppBundle()
+            new AppBundle\AppBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
