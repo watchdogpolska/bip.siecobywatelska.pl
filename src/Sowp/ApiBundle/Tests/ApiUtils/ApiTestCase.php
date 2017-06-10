@@ -6,6 +6,7 @@ use Faker\Factory;
 use GuzzleHttp\Client;
 use Sowp\ApiBundle\Service\ApiHelper;
 use Sowp\CollectionBundle\Entity\Collection;
+use Sowp\NewsModuleBundle\Entity\News;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -57,7 +58,7 @@ class ApiTestCase extends WebTestCase
     {
         $c = new Collection();
         $c->setCreatedAt(new \DateTime());
-        $c->setTitle("Test " . (string)\time());
+        $c->setTitle($this->createItemTitle());
         $c->setPublic(true);
         $this->em->persist($c);
         $this->em->flush($c);
@@ -65,15 +66,37 @@ class ApiTestCase extends WebTestCase
         return $c;
     }
 
-    public function putEntityToTrash($e)
+    public function createNews()
     {
-        $this->trash[] = $e;
+        $n = new News();
+        $n->setTitle($this->createItemTitle());
+        $n->setPinned(true);
+        $n->setContent($this->faker->realText(3000));
+        $this->em->persist($n);
+        $this->em->flush($n);
+        $this->putEntityToTrash($n);
+        return $n;
     }
 
-    public function trashCollect()
+    private function createItemTitle()
     {
+        return "Test " . (string)\time();
+    }
+
+    public function putEntityToTrash($e)
+    {
+        $this->trash[] = $e->getId();
+    }
+
+    public function trashCollect($class)
+    {
+        $r = $this->em->getRepository($class);
+
         foreach ($this->trash as $trash) {
-            $this->em->remove($trash);
+            $e = $r->find($trash);
+            if (\is_object($e)) {
+                $this->em->remove($e);
+            }
         }
 
         $this->em->flush();
@@ -86,5 +109,10 @@ class ApiTestCase extends WebTestCase
         } else {
             return strpos($needle, $haystack) !== false;
         }
+    }
+
+    public function assertArrayPropertyExists($key, array $array)
+    {
+        return $this->assertTrue(array_key_exists($key, $array), "Not in array $key");
     }
 }
