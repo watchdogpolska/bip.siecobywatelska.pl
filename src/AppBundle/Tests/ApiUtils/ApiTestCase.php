@@ -1,5 +1,5 @@
 <?php
-namespace Sowp\ApiBundle\Tests\ApiUtils;
+namespace AppBundle\Tests\ApiUtils;
 
 use Doctrine\ORM\EntityManager;
 use Faker\Factory;

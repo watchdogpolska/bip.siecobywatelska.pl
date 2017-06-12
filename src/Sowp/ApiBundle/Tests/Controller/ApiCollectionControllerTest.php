@@ -2,17 +2,10 @@
 
 namespace Sowp\ApiBundle\Tests\Controller;
 
-use AppBundle\Entity\User;
-use Doctrine\ORM\EntityManager;
-use Faker\Factory;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Response;
+use AppBundle\Tests\ApiUtils\ApiTestCase;
 use GuzzleHttp\Psr7\Stream;
-use Sowp\ApiBundle\Response\ApiResponse;
-use Sowp\ApiBundle\Tests\ApiUtils\ApiTestCase;
 use Sowp\CollectionBundle\Entity\Collection;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\DependencyInjection\Container;
 
 /**
  * Class ApiCollectionControllerTest

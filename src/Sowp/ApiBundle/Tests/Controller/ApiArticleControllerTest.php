@@ -1,7 +1,7 @@
 <?php
 namespace Sowp\ApiBundle\Tests\Controller;
 
-use Sowp\ApiBundle\Tests\ApiUtils\ApiTestCase;
+use AppBundle\Tests\ApiUtils\ApiTestCase;
 use Sowp\ArticleBundle\Entity\Article;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
