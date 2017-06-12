@@ -1,24 +1,11 @@
 <?php
-
 namespace Sowp\ApiBundle\Tests\Controller;
 
-use AppBundle\Entity\User;
-use Doctrine\ORM\EntityManager;
-use Faker\Factory;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Psr7\Stream;
-use Sowp\ApiBundle\Response\ApiResponse;
 use Sowp\ApiBundle\Tests\ApiUtils\ApiTestCase;
-use Sowp\CollectionBundle\Entity\Collection;
+use Sowp\ArticleBundle\Entity\Article;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\DependencyInjection\Container;
 
-/**
- * Class ApiCollectionControllerTest
- * @package Sowp\ApiBundle\Tests\Controller
- */
-class ApiCollectionControllerTest extends ApiTestCase
+class ApiArticleControllerTest extends ApiTestCase
 {
     protected $host = false;
 
@@ -33,17 +20,16 @@ class ApiCollectionControllerTest extends ApiTestCase
 
     protected function tearDown()
     {
-        $this->trashCollect(Collection::class);
+        $this->trashCollect(Article::class);
     }
 
     public function testShowAction()
     {
-        //create random Collection
-        $c = $this->createCollection();
+        $n = $this->createNews();
 
         // get its relative path link,
         // from console I get http://localhost/
-        $link = $this->helper->getShowLinkForEntity($c, false);
+        $link = $this->helper->getShowLinkForEntity($n, false);
 
         if (!$this->host) {
             $this->assertTrue(
@@ -72,6 +58,7 @@ class ApiCollectionControllerTest extends ApiTestCase
         $this->assertEquals(true, \is_array($c_ds), "Deserialized fail");
 
         $this->assertArrayPropertyExists('response_code', $c_ds);
+
     }
 
     public function testListAction()
@@ -83,14 +70,14 @@ class ApiCollectionControllerTest extends ApiTestCase
             );
         }
 
-        $link = $this->container->get('router')->generate('api_collections_list', [], Router::RELATIVE_PATH);
+        $link = $this->container->get('router')->generate('api_news_list', [], Router::RELATIVE_PATH);
 
         try {
             $count = $this
                 ->em
-                ->getRepository(Collection::class)
-                ->createQueryBuilder('col')
-                ->select('COUNT(col.id)')
+                ->getRepository(Article::class)
+                ->createQueryBuilder('art')
+                ->select('COUNT(art.id)')
                 ->getQuery()
                 ->getSingleScalarResult();
         } catch (\Exception $exception) {
@@ -110,4 +97,5 @@ class ApiCollectionControllerTest extends ApiTestCase
             $this->assertArrayPropertyExists('data', $cc_ds);
         }
     }
+
 }
