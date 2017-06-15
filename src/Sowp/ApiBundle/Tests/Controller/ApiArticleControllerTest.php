@@ -25,11 +25,12 @@ class ApiArticleControllerTest extends ApiTestCase
 
     public function testShowAction()
     {
-        $n = $this->createNews();
+        $a = $this->createArticle();
 
         // get its relative path link,
         // from console I get http://localhost/
-        $link = $this->helper->getShowLinkForEntity($n, false);
+        //with last "/"
+        $link = $this->helper->getShowLinkForEntity($a, false);
 
         if (!$this->host) {
             $this->assertTrue(
@@ -81,7 +82,7 @@ class ApiArticleControllerTest extends ApiTestCase
                 ->getQuery()
                 ->getSingleScalarResult();
         } catch (\Exception $exception) {
-            $this->assertTrue(false, $exception->getMessage());
+            $this->assertTrue(false, $exception->getMessage(), "Problem during articles retrieval.");
         }
 
         $response = $this->client->get($this->host.$link);

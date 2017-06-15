@@ -117,7 +117,7 @@ class Article implements SoftDeleteable
     private $editNote;
 
     /**
-     * @var \Sowp\ArticleBundle\Entity\Collection
+     * @var \Sowp\CollectionBundle\Entity\Collection
      *
      * @ORM\ManyToMany(targetEntity="Sowp\CollectionBundle\Entity\Collection", inversedBy="articles", fetch="EAGER", cascade={"persist"})
      */
@@ -456,7 +456,7 @@ class Article implements SoftDeleteable
      *
      * @param \Sowp\ArticleBundle\Entity\Collection $collection
      */
-    public function removeCollection(\Sowp\ArticleBundle\Entity\Collection $collection)
+    public function removeCollection(\Sowp\CollectionBundle\Entity\Collection $collection)
     {
         $this->collection->removeElement($collection);
     }

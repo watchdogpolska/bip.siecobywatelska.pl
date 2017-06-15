@@ -15,6 +15,7 @@ class ApiNewsControllerTest extends ApiTestCase
 
         //exported enviroment var
         //$ export PHP_SERVER_NAME="http://your-server-name.com/"
+        //with last "/"
         $this->host = \getenv('PHP_SERVER_NAME');
     }
 
