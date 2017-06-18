@@ -4,6 +4,7 @@ namespace Sowp\NewsModuleBundle\Tests\Controller;
 use AppBundle\Tests\ApiUtils\ApiTestCase;
 use Sowp\NewsModuleBundle\Entity\News;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\BrowserKit\Client;
 
 class NewsControllerTest extends ApiTestCase
 {
@@ -102,16 +103,89 @@ class NewsControllerTest extends ApiTestCase
         );
     }
 
+    /**
+     * using PHPUnit/Symfony client because
+     * of handy crawler
+     */
     public function testNewActionAccomplish()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', $link = $this->router->generate('sowp_newsmodule_news_new'));
+        $crawler = $client->request('GET', $this->router->generate('sowp_newsmodule_news_new'));
         $form = $crawler->selectButton("Add")->form();
-//        var_dump($form->all());
+        $values = $form->getValues();
+
+        foreach ($values as $key => &$value) {
+            switch ($key) {
+                case 'news[title]':
+                    $value = 'Title Test ' . \mt_rand();
+                    break;
+                case 'news[content]':
+                    $value = 'Content';
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $form->setValues($values);
+        $client->submit($form);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+
+        $linkNewArticle = $client->getResponse()->headers->get('Location');
+
+
+        $client->request('GET', $linkNewArticle);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
+    /**
+     * using PHPUnit/Symfony client because
+     * of handy crawler
+     */
     public function testEditActionAccomplish()
     {
+        $n = $this->createNews();
+        $client = static::createClient();
+        $editLink = $this->router->generate('sowp_newsmodule_news_edit', [
+            'slug' => $n->getSlug()
+        ]);
 
+        $client->request('GET', $editLink);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $form = $client->getCrawler()->selectButton("Edit")->form();
+        $values = $form->getValues();
+
+        foreach ($values as $key => &$value) {
+            $val = \mt_rand();
+            switch ($key) {
+                case 'news[title]':
+                    $value .= 'Edited ' . $val;
+                    break;
+                case 'news[content]':
+                    $value .= 'Edited ' . $val;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $form->setValues($values);
+        $client->submit($form);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $client->request('GET', $client->getResponse()->headers->get('Location'));
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $this->batchDeleteActionTest($client);
+    }
+
+    private function batchDeleteActionTest(Client $c)
+    {
+        $crawler = $c->getCrawler();
+        $form = $crawler->selectButton("Delete")->form();
+        $c->submit($form);
+        $this->assertEquals(302, $c->getResponse()->getStatusCode());
+        $c->request('GET', $c->getResponse()->headers->get('Location'));
+        $this->assertEquals(200, $c->getResponse()->getStatusCode());
     }
 }
