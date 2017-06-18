@@ -65,40 +65,6 @@ class CollectionControllerTest extends ApiTestCase
         );
     }
 
-//    public function testNewActionExists()
-//    {
-//        $link = $this->router->generate('sowp_newsmodule_news_new');
-//        $response = $this->client->get($this->host.$link);
-//
-//        $this->assertEquals(200, $response->getStatusCode(), "Response status code should be 200");
-//
-//        $this->assertTrue(
-//            $this->apiStringContains("Add message", $response->getBody()->getContents()),
-//            "NewsController::newAction do not contain seeked text from entity"
-//        );
-//    }
-//
-//    public function testEditActionExists()
-//    {
-//        $n = $this->createNews();
-//        $slug = $n->getSlug();
-//        $title = $n->getTitle();
-//        $link = $this->router->generate('sowp_newsmodule_news_edit', ['slug' => $slug]);
-//        $response = $this->client->get($this->host.$link);
-//        $body = $response->getBody()->getContents();
-//
-//        $this->assertEquals(200, $response->getStatusCode(), "Response status code should be 200");
-//        $this->assertTrue(
-//            $this->apiStringContains("Message edit", $body),
-//            "NewsController::editAction do not contain seeked text from template"
-//        );
-//
-//        $this->assertTrue(
-//            $this->apiStringContains($title, $body),
-//            "NewsController::editAction do not contain seeked text from entity"
-//        );
-//    }
-//
     /**
      * using PHPUnit/Symfony client because
      * of handy crawler
