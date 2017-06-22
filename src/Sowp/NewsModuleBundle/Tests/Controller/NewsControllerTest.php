@@ -49,8 +49,6 @@ class NewsControllerTest extends ApiTestCase
 
     public function testListAction()
     {
-        $n1 = $this->createNews();
-        $n2 = $this->createNews();
         $link = $this
             ->router
             ->generate('sowp_newsmodule_news_index');
@@ -59,13 +57,10 @@ class NewsControllerTest extends ApiTestCase
         $body = $response->getBody()->getContents();
 
         $this->assertEquals(200, $response->getStatusCode(), "Response code should be 200");
+
         $this->assertTrue(
-            $this->apiStringContains($n1->getTitle(), $body),
-            "NewsController::listAction do not contain seeked text from entity"
-        );
-        $this->assertTrue(
-            $this->apiStringContains($n2->getTitle(), $body),
-            "NewsController::listAction do not contain seeked text from entity"
+            $this->apiStringContains('News list', $body),
+            "NewsController::indexAction do not contain seeked text from template"
         );
     }
 
@@ -77,6 +72,9 @@ class NewsControllerTest extends ApiTestCase
     {
         $client = static::createClient();
         $crawler = $client->request('GET', $this->router->generate('sowp_newsmodule_news_new'));
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Response code shaould be 200 ");
+
         $form = $crawler->selectButton("Add")->form();
         $values = $form->getValues();
 
@@ -117,7 +115,7 @@ class NewsControllerTest extends ApiTestCase
         ]);
 
         $client->request('GET', $editLink);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Response code shaould be 200 ");
 
         $form = $client->getCrawler()->selectButton("Edit")->form();
         $values = $form->getValues();

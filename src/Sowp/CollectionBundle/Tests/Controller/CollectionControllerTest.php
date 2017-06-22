@@ -73,6 +73,9 @@ class CollectionControllerTest extends ApiTestCase
     {
         $client = static::createClient();
         $crawler = $client->request('GET', $this->router->generate('admin_collections_add'));
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Response code shaould be 200 ");
+
         $form = $crawler->selectButton("Add")->form();
         $values = $form->getValues();
 

@@ -1,55 +1,183 @@
 <?php
-
 namespace Sowp\ArticleBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\ApiUtils\ApiTestCase;
+use Sowp\ArticleBundle\Entity\Article;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\BrowserKit\Client;
+use Symfony\Component\DomCrawler\Link;
 
-class ArticleControllerTest extends WebTestCase
+class ArticleControllerTest extends ApiTestCase
 {
-    /*
-    public function testCompleteScenario()
+    /** @var  string|null $host */
+    protected $host;
+
+    /** @var Router $router */
+    protected $router;
+
+    public function setUp()
     {
-        // Create a new client to browse the application
-        $client = static::createClient();
+        parent::setUp();
 
-        // Create a new entry in the database
-        $crawler = $client->request('GET', '/admin/article/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /admin/article/");
-        $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
-
-        // Fill in the form and submit it
-        $form = $crawler->selectButton('Create')->form(array(
-            'sowp_articlebundle_article[field_name]'  => 'Test',
-            // ... other fields to fill
-        ));
-
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-
-        // Check data in the show view
-        $this->assertGreaterThan(0, $crawler->filter('td:contains("Test")')->count(), 'Missing element td:contains("Test")');
-
-        // Edit the entity
-        $crawler = $client->click($crawler->selectLink('Edit')->link());
-
-        $form = $crawler->selectButton('Update')->form(array(
-            'sowp_articlebundle_article[field_name]'  => 'Foo',
-            // ... other fields to fill
-        ));
-
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-
-        // Check the element contains an attribute with value equals "Foo"
-        $this->assertGreaterThan(0, $crawler->filter('[value="Foo"]')->count(), 'Missing element [value="Foo"]');
-
-        // Delete the entity
-        $client->submit($crawler->selectButton('Delete')->form());
-        $crawler = $client->followRedirect();
-
-        // Check the entity has been delete on the list
-        $this->assertNotRegExp('/Foo/', $client->getResponse()->getContent());
+        //exported enviroment var
+        //$ export PHP_SERVER_NAME="http://your-server-name.com/"
+        $this->host = \rtrim(\getenv('PHP_SERVER_NAME'), '/');
+        $this->router = $this->container->get('router');
     }
 
-    */
+    protected function tearDown()
+    {
+        $this->trashCollect(Article::class);
+    }
+
+    public function testShowAction()
+    {
+        $a = $this->createArticle();
+        $title = $a->getTitle();
+        $link = $this
+            ->router
+            ->generate('admin_article_show', ['id' => $a->getId()]);
+
+        $response = $this->client->get($this->host.$link);
+
+        $this->assertEquals(200, $response->getStatusCode(), "Response code should be 200");
+
+        $this->assertTrue(
+            $this->apiStringContains($title, $response->getBody()->getContents()),
+            "NewsController::showAction do not contain seeked text from entity"
+        );
+    }
+
+    public function testListAction()
+    {
+        $a1 = $this->createArticle();
+        $a2 = $this->createArticle();
+        $link = $this
+            ->router
+            ->generate('admin_article_index');
+
+        $response = $this->client->get($this->host.$link);
+        $body = $response->getBody()->getContents();
+
+        $this->assertEquals(200, $response->getStatusCode(), "Response code should be 200");
+
+        $this->assertTrue(
+            $this->apiStringContains('List', $body),
+            "NewsController::indexAction do not contain seeked text from template"
+        );
+    }
+
+    /**
+     * using PHPUnit/Symfony client because
+     * of handy crawler
+     */
+    public function testNewActionAccomplish()
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', $this->router->generate('admin_article_new'));
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Response code shaould be 200 ");
+
+        $form = $crawler->selectButton("Add")->form();
+        $values = $form->getValues();
+
+        foreach ($values as $key => &$value) {
+            switch ($key) {
+                case 'article[title]':
+                    $value = 'Title Test ' . \mt_rand();
+                    break;
+                case 'article[content]':
+                    $value = 'Content ';
+                    break;
+                case 'article[editNote]':
+                    $value = 'note';
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $form->setValues($values);
+        $client->submit($form);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+
+        $linkNewArticle = $client->getResponse()->headers->get('Location');
+
+
+        $client->request('GET', $linkNewArticle);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * using PHPUnit/Symfony client because
+     * of handy crawler
+     */
+    public function testEditActionAccomplish()
+    {
+        $a = $this->createArticle();
+        $client = static::createClient();
+        $editLink = $this->router->generate('admin_article_edit', [
+            'id' => $a->getId()
+        ]);
+
+        $client->request('GET', $editLink);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $form = $client->getCrawler()->selectButton("Edit")->form();
+        $values = $form->getValues();
+
+        foreach ($values as $key => &$value) {
+            switch ($key) {
+                case 'article[title]':
+                    $value = 'Title Test ' . \mt_rand();
+                    break;
+                case 'article[content]':
+                    $value = 'Content ';
+                    break;
+                case 'article[editNote]':
+                    $value = 'note';
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $form->setValues($values);
+        $client->submit($form);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $client->request('GET', $client->getResponse()->headers->get('Location'));
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $clone = clone $client;
+        $this->batchRevisionsListActionTest($clone);
+        /**
+         * TODO:
+         * fix article redirect after delete action
+         */
+//        $this->batchDeleteActionTest($client);
+    }
+//
+//    private function batchDeleteActionTest(Client $c)
+//    {
+//        $crawler = $c->getCrawler();
+//        $form = $crawler->selectButton("Delete")->form();
+//        $c->submit($form);
+//        $this->assertEquals(302, $c->getResponse()->getStatusCode());
+//        $c->request('GET', $c->getResponse()->headers->get('Location'));
+//        $this->assertEquals(200, $c->getResponse()->getStatusCode());
+//    }
+//
+    private function batchRevisionsListActionTest(Client $c)
+    {
+        $crawler = $c->getCrawler();
+
+        $this->assertTrue(
+            $this->apiStringContains("Revisions", $crawler->html())
+        );
+
+        $links = $crawler->filter("a.list-group-item")->links();
+
+        $c->click($links[0]);
+        $this->assertEquals(200, $c->getResponse()->getStatusCode());
+    }
 }
