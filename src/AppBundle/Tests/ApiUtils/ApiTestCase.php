@@ -8,8 +8,10 @@ use Sowp\ApiBundle\Service\ApiHelper;
 use Sowp\ArticleBundle\Entity\Article;
 use Sowp\CollectionBundle\Entity\Collection;
 use Sowp\NewsModuleBundle\Entity\News;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\Client as SymfonyClient;
 
 class ApiTestCase extends WebTestCase
 {
@@ -136,5 +138,31 @@ class ApiTestCase extends WebTestCase
     public function getHelper()
     {
         return $this->helper;
+    }
+
+    public function createAuthClient()
+    {
+        //as user defined in LoadUserData Fixtures
+        return static::createClient([],[
+            'PHP_AUTH_USER' => 'root',
+            'PHP_AUTH_PW'   => 'root',
+        ]);
+    }
+
+    public function generateUrl(string $route, array $params = [], bool $absolute = true)
+    {
+        return $this
+            ->container
+            ->get('router')
+            ->generate(
+                $route,
+                $params,
+                $absolute ? Router::ABSOLUTE_PATH : Router::RELATIVE_PATH
+            );
+    }
+
+    public static function httpCode(SymfonyClient $client)
+    {
+        return $client->getResponse()->getStatusCode();
     }
 }
