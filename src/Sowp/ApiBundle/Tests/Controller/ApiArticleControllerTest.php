@@ -16,6 +16,9 @@ class ApiArticleControllerTest extends ApiTestCase
         //exported enviroment var
         //$ export PHP_SERVER_NAME="http://your-server-name.com/"
         $this->host = \getenv('PHP_SERVER_NAME');
+
+        $this->container->get('app_bundle.fixtures_loader')->addAll();
+        $this->container->get('app_bundle.fixtures_loader')->loadAllFromQueue();
     }
 
     protected function tearDown()
@@ -26,6 +29,7 @@ class ApiArticleControllerTest extends ApiTestCase
     public function testShowAction()
     {
         $a = $this->createArticle();
+        $title = $a->getTitle();
 
         // get its relative path link,
         // from console I get http://localhost/
@@ -58,8 +62,11 @@ class ApiArticleControllerTest extends ApiTestCase
         //assert deserialized var is object
         $this->assertEquals(true, \is_array($c_ds), "Deserialized fail");
 
-        $this->assertArrayPropertyExists('response_code', $c_ds);
+        $fromJsonTitle = $c_ds['data']['title'];
 
+        $this->assertArrayPropertyExists('response_code', $c_ds);
+        $this->assertArrayPropertyExists('links', $c_ds);
+        $this->assertEquals($title, $fromJsonTitle, "Title from object is not the same as from api");
     }
 
     public function testListAction()
@@ -74,13 +81,9 @@ class ApiArticleControllerTest extends ApiTestCase
         $link = $this->container->get('router')->generate('api_news_list', [], Router::RELATIVE_PATH);
 
         try {
-            $count = $this
-                ->em
-                ->getRepository(Article::class)
-                ->createQueryBuilder('art')
-                ->select('COUNT(art.id)')
-                ->getQuery()
-                ->getSingleScalarResult();
+            $count = $this->em->getRepository(Article::class)->countAllArticles();
+            // 100 - comes from fixtures
+            $this->assertEquals(100, $count, "Wrong count of articles");
         } catch (\Exception $exception) {
             $this->assertTrue(false, $exception->getMessage(), "Problem during articles retrieval.");
         }
@@ -93,10 +96,49 @@ class ApiArticleControllerTest extends ApiTestCase
         $this->assertJson($body, "Response Body should be JSON format");
         $this->assertEquals(true, \is_array($cc_ds), "Deserialized fail");
         $this->assertArrayPropertyExists('response_code', $cc_ds);
+        $this->assertArrayPropertyExists('links', $cc_ds);
+        $this->assertArrayPropertyExists('data', $cc_ds);
 
-        if ($count > 0) {
-            $this->assertArrayPropertyExists('data', $cc_ds);
+        $page1Count = \count($cc_ds['data']);
+
+        $this->assertEquals(10, $page1Count, "Data count should be 10");
+
+        foreach ($cc_ds['links'] as $l) {
+            if ($l['rel'] === 'next') {
+                $nextLink = $l['href'];
+                break;
+            }
         }
-    }
 
+        $this->assertTrue(isset($nextLink), "No next link at page 1");
+
+        if (isset($nextLink)) {
+            $response2 = $this->client->get($nextLink);
+            $body2 = $response2->getBody()->getContents();
+            $cc_ds2 = \json_decode($body2, true);
+
+            $this->assertEquals(200, $response2->getStatusCode());
+            $this->assertJson($body2, "Response Body should be JSON format");
+            $this->assertEquals(true, \is_array($cc_ds2), "Deserialized fail");
+            $this->assertArrayPropertyExists('response_code', $cc_ds2);
+            $this->assertArrayPropertyExists('links', $cc_ds2);
+            $this->assertArrayPropertyExists('data', $cc_ds2);
+
+            $page2Count = \count($cc_ds2['data']);
+
+            $this->assertEquals($page1Count, $page2Count, "Count on both pages should be the same");
+
+            foreach ($cc_ds2['links'] as $l) {
+                if ($l['rel'] === 'previous') {
+                    $previous = true;
+                }
+            }
+
+            $this->assertTrue(
+                isset($previous) && $previous,
+                "No 'previous' link set"
+            );
+        }
+
+    }
 }

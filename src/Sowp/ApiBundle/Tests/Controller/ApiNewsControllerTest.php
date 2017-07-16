@@ -17,6 +17,7 @@ class ApiNewsControllerTest extends ApiTestCase
         //$ export PHP_SERVER_NAME="http://your-server-name.com/"
         //with last "/"
         $this->host = \getenv('PHP_SERVER_NAME');
+
     }
 
     protected function tearDown()
@@ -74,13 +75,13 @@ class ApiNewsControllerTest extends ApiTestCase
         $link = $this->container->get('router')->generate('api_news_list', [], Router::RELATIVE_PATH);
 
         try {
-            $count = $this
-                ->em
-                ->getRepository(News::class)
-                ->createQueryBuilder('col')
-                ->select('COUNT(col.id)')
-                ->getQuery()
-                ->getSingleScalarResult();
+//            $count = $this
+//                ->em
+//                ->getRepository(News::class)
+//                ->createQueryBuilder('col')
+//                ->select('COUNT(col.id)')
+//                ->getQuery()
+//                ->getSingleScalarResult();
         } catch (\Exception $exception) {
             $this->assertTrue(false, $exception->getMessage());
         }

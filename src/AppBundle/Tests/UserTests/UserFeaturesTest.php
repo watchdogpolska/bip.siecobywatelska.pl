@@ -17,11 +17,7 @@ class UserFeaturesTest extends ApiTestCase
     public function setUp()
     {
         parent::setUp();
-        $purger = new ORMPurger();
-        $oe = new ORMExecutor($this->em, $purger);
-        $fl = new ContainerAwareLoader($this->container);
-        $fl->addFixture(new LoadUserData());
-        $oe->execute($fl->getFixtures());
+        $this->container->get('app_bundle.fixtures_loader')->loadUsersSeparate();
     }
 
     /**
