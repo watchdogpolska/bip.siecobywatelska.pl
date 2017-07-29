@@ -253,13 +253,14 @@ class ApiHelper
         /** @var Request $request */
         $request = $this->getRequestStack()->getCurrentRequest();
 
-        if (!$request) {
-            return [];
-        }
+        $scheme = $request ?
+            $request->getSchemeAndHttpHost() :
+            \rtrim(\getenv('PHP_SERVER_NAME'), '/');
 
-        return \array_map(function ($a) use ($request) {
+
+        return \array_map(function ($a) use ($scheme) {
             $a['file'] =
-                $request->getSchemeAndHttpHost() .
+                $scheme .
                 $this->templateHelper->getUrl('uploads/attachments/'.$a['file']['filename']);
             return $a;
         }, $json);

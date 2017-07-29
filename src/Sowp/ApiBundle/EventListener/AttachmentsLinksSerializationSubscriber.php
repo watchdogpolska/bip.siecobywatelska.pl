@@ -34,14 +34,21 @@ class AttachmentsLinksSerializationSubscriber implements EventSubscriberInterfac
             Article::class,
             News::class
         ])) {
-            return;
+            return null;
         }
 
-        $d = $oe->getObject()->getAttachments();
-        $oe->getVisitor()->addData(
+        $visitor = $oe->getVisitor();
+
+        if (!$visitor) {
+            return false;
+        }
+
+        $visitor->addData(
             'attachments',
             $this->helper->createAttachmentsLinks($oe->getObject()->getAttachments())
         );
+
+        return true;
     }
 
 }
