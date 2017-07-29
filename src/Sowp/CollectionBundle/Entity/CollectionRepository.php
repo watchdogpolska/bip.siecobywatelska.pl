@@ -29,4 +29,13 @@ class CollectionRepository extends NestedTreeRepository
         return $this
             ->createQueryBuilder('collection');
     }
+
+    public function countAll()
+    {
+        return $this
+            ->createQueryBuilder('col')
+            ->select('COUNT(col.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

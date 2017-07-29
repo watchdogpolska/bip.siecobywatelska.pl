@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             // Doctrine Extensions
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new SimpleThings\EntityAudit\SimpleThingsEntityAuditBundle(),
+            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
 
             // Visual Extension
             new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),

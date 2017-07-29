@@ -1,14 +1,17 @@
 <?php
-namespace Sowp\ApiBundle\Tests\ApiUtils;
+namespace AppBundle\Tests\ApiUtils;
 
 use Doctrine\ORM\EntityManager;
 use Faker\Factory;
 use GuzzleHttp\Client;
 use Sowp\ApiBundle\Service\ApiHelper;
+use Sowp\ArticleBundle\Entity\Article;
 use Sowp\CollectionBundle\Entity\Collection;
 use Sowp\NewsModuleBundle\Entity\News;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\Client as SymfonyClient;
 
 class ApiTestCase extends WebTestCase
 {
@@ -54,6 +57,19 @@ class ApiTestCase extends WebTestCase
         ]);
     }
 
+    public function createArticle()
+    {
+        $a = new Article();
+        $a->setTitle($this->createItemTitle());
+        $a->setContent($this->faker->realText(3000));
+        $a->setCreatedAt(new \DateTime());
+        $a->setEditNote("Article created for automatic tests.");
+        $this->em->persist($a);
+        $this->em->flush($a);
+        $this->putEntityToTrash($a);
+        return $a;
+    }
+
     public function createCollection()
     {
         $c = new Collection();
@@ -80,7 +96,7 @@ class ApiTestCase extends WebTestCase
 
     private function createItemTitle()
     {
-        return "Test " . (string)\time();
+        return "Test " . (string)\time() . uniqid();
     }
 
     public function putEntityToTrash($e)
@@ -96,23 +112,57 @@ class ApiTestCase extends WebTestCase
             $e = $r->find($trash);
             if (\is_object($e)) {
                 $this->em->remove($e);
+                $this->em->flush();
             }
         }
-
-        $this->em->flush();
     }
 
     public function apiStringContains($needle, $haystack, $ignoreCase = false) : bool
     {
-        if ($this->ignoreCase) {
-            return stripos($needle, $haystack) !== false;
-        } else {
-            return strpos($needle, $haystack) !== false;
+        $d = '#';
+        $needle = \preg_quote($needle, $d);
+        $pattern = $d.$needle.$d;
+
+        if ($ignoreCase) {
+            $pattern .= 'i';
         }
+
+        return (preg_match($pattern, $haystack) > 0) ? true : false;
     }
 
     public function assertArrayPropertyExists($key, array $array)
     {
         return $this->assertTrue(array_key_exists($key, $array), "Not in array $key");
+    }
+
+    public function getHelper()
+    {
+        return $this->helper;
+    }
+
+    public function createAuthClient()
+    {
+        //as user defined in LoadUserData Fixtures
+        return static::createClient([],[
+            'PHP_AUTH_USER' => 'root',
+            'PHP_AUTH_PW'   => 'root',
+        ]);
+    }
+
+    public function generateUrl(string $route, array $params = [], bool $absolute = true)
+    {
+        return $this
+            ->container
+            ->get('router')
+            ->generate(
+                $route,
+                $params,
+                $absolute ? Router::ABSOLUTE_PATH : Router::RELATIVE_PATH
+            );
+    }
+
+    public static function httpCode(SymfonyClient $client)
+    {
+        return $client->getResponse()->getStatusCode();
     }
 }

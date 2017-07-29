@@ -1,12 +1,13 @@
 <?php
-namespace Sowp\NewsModuleBundle\Tests\Controller;
+namespace Sowp\CollectionBundle\Tests\Controller;
 
 use AppBundle\Tests\ApiUtils\ApiTestCase;
+use Sowp\CollectionBundle\Entity\Collection;
 use Sowp\NewsModuleBundle\Entity\News;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\BrowserKit\Client;
 
-class NewsControllerTest extends ApiTestCase
+class CollectionControllerTest extends ApiTestCase
 {
     /** @var  string|null $host */
     protected $host;
@@ -26,16 +27,16 @@ class NewsControllerTest extends ApiTestCase
 
     protected function tearDown()
     {
-        $this->trashCollect(News::class);
+        $this->trashCollect(Collection::class);
     }
 
     public function testShowAction()
     {
-        $n = $this->createNews();
-        $title = $n->getTitle();
+        $c = $this->createCollection();
+        $title = $c->getTitle();
         $link = $this
             ->router
-            ->generate('sowp_newsmodule_news_show', ['slug' => $n->getSlug()]);
+            ->generate('admin_collections_show', ['slug' => $c->getSlug()]);
 
         $response = $this->client->get($this->host.$link);
 
@@ -51,7 +52,7 @@ class NewsControllerTest extends ApiTestCase
     {
         $link = $this
             ->router
-            ->generate('sowp_newsmodule_news_index');
+            ->generate('admin_collections_index');
 
         $response = $this->client->get($this->host.$link);
         $body = $response->getBody()->getContents();
@@ -59,8 +60,8 @@ class NewsControllerTest extends ApiTestCase
         $this->assertEquals(200, $response->getStatusCode(), "Response code should be 200");
 
         $this->assertTrue(
-            $this->apiStringContains('News list', $body),
-            "NewsController::indexAction do not contain seeked text from template"
+            $this->apiStringContains('Collection list', $body),
+            "CollectionController::indexAction do not contain seeked text from template"
         );
     }
 
@@ -71,7 +72,7 @@ class NewsControllerTest extends ApiTestCase
     public function testNewActionAccomplish()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', $this->router->generate('sowp_newsmodule_news_new'));
+        $crawler = $client->request('GET', $this->router->generate('admin_collections_add'));
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Response code shaould be 200 ");
 
@@ -80,12 +81,14 @@ class NewsControllerTest extends ApiTestCase
 
         foreach ($values as $key => &$value) {
             switch ($key) {
-                case 'news[title]':
+                case 'add_collection_form[title]':
                     $value = 'Title Test ' . \mt_rand();
                     break;
-                case 'news[content]':
-                    $value = 'Content';
+                case 'add_collection_form[parent]':
+                    unset($values[$key]);
                     break;
+                case 'add_collection_form[public]':
+                    $value = 1;
                 default:
                     break;
             }
@@ -95,10 +98,9 @@ class NewsControllerTest extends ApiTestCase
         $client->submit($form);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
 
-        $linkNewArticle = $client->getResponse()->headers->get('Location');
+        $linkNewCol = $client->getResponse()->headers->get('Location');
 
-
-        $client->request('GET', $linkNewArticle);
+        $client->request('GET', $linkNewCol);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
@@ -108,14 +110,14 @@ class NewsControllerTest extends ApiTestCase
      */
     public function testEditActionAccomplish()
     {
-        $n = $this->createNews();
+        $c = $this->createCollection();
         $client = static::createClient();
-        $editLink = $this->router->generate('sowp_newsmodule_news_edit', [
-            'slug' => $n->getSlug()
+        $editLink = $this->router->generate('admin_collections_edit', [
+            'slug' => $c->getSlug()
         ]);
 
         $client->request('GET', $editLink);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Response code shaould be 200 ");
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $form = $client->getCrawler()->selectButton("Edit")->form();
         $values = $form->getValues();
@@ -123,11 +125,11 @@ class NewsControllerTest extends ApiTestCase
         foreach ($values as $key => &$value) {
             $val = \mt_rand();
             switch ($key) {
-                case 'news[title]':
-                    $value .= 'Edited ' . $val;
+                case 'add_collection_form[title]':
+                    $value .= ' Edited ' . $val;
                     break;
-                case 'news[content]':
-                    $value .= 'Edited ' . $val;
+                case 'add_collection_form[parent]':
+                    unset($values[$key]);
                     break;
                 default:
                     break;
@@ -140,30 +142,16 @@ class NewsControllerTest extends ApiTestCase
         $client->request('GET', $client->getResponse()->headers->get('Location'));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        $clone = clone $client;
-        $this->batchRevisionsListActionTest($clone);
-        $this->batchDeleteActionTest($client);
+//        $this->batchDeleteActionTest($client);
     }
-
-    private function batchDeleteActionTest(Client $c)
-    {
-        $crawler = $c->getCrawler();
-        $form = $crawler->selectButton("Delete")->form();
-        $c->submit($form);
-        $this->assertEquals(302, $c->getResponse()->getStatusCode());
-        $c->request('GET', $c->getResponse()->headers->get('Location'));
-        $this->assertEquals(200, $c->getResponse()->getStatusCode());
-    }
-
-    private function batchRevisionsListActionTest(Client $c)
-    {
-        $crawler = $c->getCrawler();
-        $link = $crawler->selectLink("Historia Zmian")->link();
-        $crawler = $c->click($link);
-
-        $this->assertEquals(200, $c->getResponse()->getStatusCode(), "Status code should be 200");
-        $this->assertTrue(
-            $this->apiStringContains("revisions", $crawler->html())
-        );
-    }
+//
+//    private function batchDeleteActionTest(Client $c)
+//    {
+//        $crawler = $c->getCrawler();
+//        $form = $crawler->selectButton("Delete")->form();
+//        $c->submit($form);
+//        $this->assertEquals(302, $c->getResponse()->getStatusCode());
+//        $c->request('GET', $c->getResponse()->headers->get('Location'));
+//        $this->assertEquals(200, $c->getResponse()->getStatusCode());
+//    }
 }

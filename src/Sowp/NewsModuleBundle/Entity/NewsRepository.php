@@ -3,6 +3,7 @@
 namespace Sowp\NewsModuleBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Sowp\CollectionBundle\Entity\Collection;
 
 class NewsRepository extends EntityRepository
 {
@@ -40,7 +41,7 @@ class NewsRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    public function getNewsCountByCategory(\Sowp\NewsModuleBundle\Entity\Collection $collection)
+    public function getNewsCountByCollection(Collection $collection)
     {
 //        $conn = $this->getEntityManager()->getConnection();
 //        $stmt = $conn->prepare('SELECT COUNT(*) AS count FROM collection_news WHERE collection_id = ? ');
