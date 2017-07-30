@@ -35,12 +35,20 @@ class LinkSelfSerializationSubscriber implements EventSubscriberInterface
             Collection::class,
             News::class
         ])) {
-            return;
+            return null;
         }
 
-        $oe->getVisitor()->addData('links', [
+        $visitor = $oe->getVisitor();
+
+        if (!$visitor) {
+            return false;
+        }
+
+        $visitor->addData('links', [
             'self' => $this->helper->getShowLinkForEntity($oe->getObject())
         ]);
+
+        return true;
     }
 
 }

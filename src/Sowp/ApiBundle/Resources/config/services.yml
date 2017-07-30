@@ -11,6 +11,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@assets.packages'
             - '@request_stack'
+            - '%php_server_name%'
 
     link_serialization_subscriber:
         class: Sowp\ApiBundle\EventListener\LinkSelfSerializationSubscriber

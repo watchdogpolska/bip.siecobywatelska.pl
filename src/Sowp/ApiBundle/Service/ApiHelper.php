@@ -45,12 +45,18 @@ class ApiHelper
      */
     private $requestStack;
 
+    /**
+     * @var string
+     */
+    private $phpServerName;
+
     public function __construct(
         Serializer $serializer,
         RouterInterface $router,
         EntityManager $entityManager,
         Packages $templateHelper,
-        RequestStack $stack
+        RequestStack $stack,
+        $phpServerName
     )
     {
         $this->setSerializer($serializer);
@@ -58,8 +64,24 @@ class ApiHelper
         $this->setEm($entityManager);
         $this->setTemplateHelper($templateHelper);
         $this->setRequestStack($stack);
+        $this->setPhpServerName($phpServerName);
     }
 
+    /**
+     * @return string
+     */
+    public function getPhpServerName(): string
+    {
+        return $this->phpServerName;
+    }
+
+    /**
+     * @param string $phpServerName
+     */
+    public function setPhpServerName(string $phpServerName)
+    {
+        $this->phpServerName = $phpServerName;
+    }
 
     /**
      * @return RequestStack
@@ -255,7 +277,7 @@ class ApiHelper
 
         $scheme = $request ?
             $request->getSchemeAndHttpHost() :
-            \rtrim($this->container->getParameter('php_server_name'), '/');
+            \rtrim($this->getPhpServerName(), '/');
 
 
         return \array_map(function ($a) use ($scheme) {
