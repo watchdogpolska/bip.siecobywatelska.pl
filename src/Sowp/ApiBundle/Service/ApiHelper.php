@@ -255,7 +255,7 @@ class ApiHelper
 
         $scheme = $request ?
             $request->getSchemeAndHttpHost() :
-            \rtrim(\getenv('PHP_SERVER_NAME'), '/');
+            \rtrim($this->container->getParameter('php_server_name'), '/');
 
 
         return \array_map(function ($a) use ($scheme) {

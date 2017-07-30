@@ -17,3 +17,10 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+
+    # Tests - some of tests need to have url of server
+    # set in parameter. This is cross bundle. Please set
+    # param below with the same format (including scheme and
+    # trailing slashes:
+    php_server_name:   "http://your-server.com/app_dev.php/"
