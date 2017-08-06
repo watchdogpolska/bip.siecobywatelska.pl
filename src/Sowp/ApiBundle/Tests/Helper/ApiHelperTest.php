@@ -13,7 +13,7 @@ class ApiHelperTest extends ApiTestCase
         parent::setUp();
     }
 
-    public function testCreateLinksArray()
+    public function testConvertLinksArray()
     {
         $helper = $this->container->get('api_helper');
 
