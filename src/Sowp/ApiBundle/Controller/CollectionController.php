@@ -45,7 +45,7 @@ class CollectionController extends Controller
             'self' => $this->get('router')->generate('api_collections_show', ['id' => $id], Router::ABSOLUTE_URL)
         ]);
 
-        return $apiHelper->createApiResponse(Response::HTTP_OK, $col, $links);
+        return new JsonResponse($apiHelper->createApiResponse(Response::HTTP_OK, $col, $links));
     }
 
     /**
@@ -70,6 +70,6 @@ class CollectionController extends Controller
         $links = $this->getApiHelper()->generateNavLinks($col,'page', 'api_collections_list');
         $links = \array_merge($links, $this->commonLinks());
 
-        return $this->getApiHelper()->createApiResponse(Response::HTTP_OK, $collections, $links);
+        return new JsonResponse($this->getApiHelper()->createApiResponse(Response::HTTP_OK, $collections, $links));
     }
 }

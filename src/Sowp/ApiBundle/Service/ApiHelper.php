@@ -167,7 +167,7 @@ class ApiHelper
      * @param $code
      * @param $data
      * @param array $links
-     * @return Response
+     * @return string
      */
     public function createApiResponse($code, $data, array $links)
     {
@@ -178,9 +178,11 @@ class ApiHelper
 
         $data_serialized = $this->getSerializer()->serialize($obj, 'json');
 
-        return new Response($data_serialized, $code, [
-            'content-type' => 'application/json'
-        ]);
+        return $data_serialized;
+
+//        return new Response($data_serialized, $code, [
+//            'content-type' => 'application/json'
+//        ]);
     }
 
     /**

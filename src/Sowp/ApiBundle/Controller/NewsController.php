@@ -10,6 +10,7 @@ use Sowp\NewsModuleBundle\Entity\News;
 use Sowp\NewsModuleBundle\Form\NewsType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -42,7 +43,7 @@ class NewsController extends Controller
         $links = $this->getApiHelper()->generateNavLinks($col, 'page', 'api_news_list');
         $links = \array_merge($links, $this->commonLinks());
 
-        return $this->getApiHelper()->createApiResponse(Response::HTTP_OK, $news, $links);
+        return new JsonResponse($this->getApiHelper()->createApiResponse(Response::HTTP_OK, $news, $links));
     }
 
     /**
@@ -62,7 +63,7 @@ class NewsController extends Controller
             'self' => $this->get('router')->generate('api_news_show', ['id' => $id], Router::ABSOLUTE_URL)
         ]);
 
-        return $this->getApiHelper()->createApiResponse(Response::HTTP_OK, $news, $links);
+        return new JsonResponse($this->getApiHelper()->createApiResponse(Response::HTTP_OK, $news, $links));
     }
 
 }
