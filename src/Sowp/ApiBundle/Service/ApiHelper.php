@@ -242,14 +242,16 @@ class ApiHelper
 
     /**
      * @param array $links
-     * @return array
+     * @return Link[]|array
      */
-    private function convertLinksArray(array $links)
+    public function convertLinksArray(array $links)
     {
         $a = [];
 
         foreach ($links as $rel => $href) {
-            $a[] = new Link($rel, $href);
+            //if you add 2 or more links with same rel,
+            // they will be overwritten and latest will stay
+            $a[$rel] = new Link($rel, $href);
         }
 
         return $a;
