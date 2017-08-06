@@ -28,7 +28,13 @@ class UserDataSerializationSubscriber implements EventSubscriberInterface
             Collection::class,
             News::class
         ])) {
-            return;
+            return null;
+        }
+
+        $visitor = $oe->getVisitor();
+
+        if (!$visitor) {
+            return false;
         }
 
         $a = function ($user) {
@@ -39,13 +45,23 @@ class UserDataSerializationSubscriber implements EventSubscriberInterface
         };
 
         if (\is_object($oe->getObject()->getCreatedBy())) {
-            $user = $oe->getObject()->getCreatedBy();
-            $oe->getVisitor()->addData('created_by', $a($user));
+            $userCreator = $oe->getObject()->getCreatedBy();
         }
 
         if (\is_object($oe->getObject()->getModifiedBy())) {
-            $user = $oe->getObject()->getModifiedBy();
-            $oe->getVisitor()->addData('modified_by', $a($user));
+            $userModifier = $oe->getObject()->getModifiedBy();
+            $oe->getVisitor()->addData('modified_by', $a($userModifier));
         }
+
+        if (!isset($userCreator)) {
+            $userCreator = [
+                'id' => null,
+                'username' => null
+            ];
+        }
+
+        $oe->getVisitor()->addData('created_by', $a($userCreator));
+
+        return true;
     }
 }
