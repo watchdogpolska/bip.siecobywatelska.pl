@@ -67,6 +67,10 @@ doctrine:
                 prefix: Gedmo\Loggable\Entity
                 dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
                 is_bundle: false
+        filters: # Avoid delete a page. Only SUPER_ADMIN can delete a page
+            softdeleteable:
+                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+                enabled: true
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -81,6 +85,9 @@ fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: AppBundle\Entity\User
+    from_email:
+        address: "%mailer_user%"
+        sender_name: "%mailer_user%"
 
 stof_doctrine_extensions:
     default_locale: en_US
@@ -89,8 +96,5 @@ stof_doctrine_extensions:
             timestampable: true
             blameable: true
             sluggable: true
+            loggable: true
             softdeleteable: true
-            tree: true
-
-white_october_pagerfanta:
-      default_view: 'twitter_bootstrap3'
