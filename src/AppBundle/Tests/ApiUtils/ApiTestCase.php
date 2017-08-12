@@ -53,10 +53,14 @@ class ApiTestCase extends WebTestCase
         $this->client = new Client([
             'defaults' => [
                 'exceptions' => false
-            ]
+            ],
+
         ]);
     }
 
+    /**
+     * @return Article
+     */
     public function createArticle()
     {
         $a = new Article();
@@ -70,6 +74,9 @@ class ApiTestCase extends WebTestCase
         return $a;
     }
 
+    /**
+     * @return Collection
+     */
     public function createCollection()
     {
         $c = new Collection();
@@ -82,6 +89,9 @@ class ApiTestCase extends WebTestCase
         return $c;
     }
 
+    /**
+     * @return News
+     */
     public function createNews()
     {
         $n = new News();
@@ -94,11 +104,22 @@ class ApiTestCase extends WebTestCase
         return $n;
     }
 
+    /**
+     * @return string
+     */
     private function createItemTitle()
     {
+        /**
+         * @TODO: clean here
+         */
+        $this->faker->title; // just a test
         return "Test " . (string)\time() . uniqid();
     }
 
+    /**
+     * @param $e News|Collection|Article
+     * @return int|null
+     */
     public function putEntityToTrash($e)
     {
         $this->trash[] = $e->getId();
@@ -117,6 +138,12 @@ class ApiTestCase extends WebTestCase
         }
     }
 
+    /**
+     * @param $needle string
+     * @param $haystack string
+     * @param bool $ignoreCase
+     * @return bool
+     */
     public function apiStringContains($needle, $haystack, $ignoreCase = false) : bool
     {
         $d = '#';
@@ -135,11 +162,17 @@ class ApiTestCase extends WebTestCase
         return $this->assertTrue(array_key_exists($key, $array), "Not in array $key");
     }
 
+    /**
+     * @return ApiHelper
+     */
     public function getHelper()
     {
         return $this->helper;
     }
 
+    /**
+     * @return SymfonyClient
+     */
     public function createAuthClient()
     {
         //as user defined in LoadUserData Fixtures
@@ -149,6 +182,12 @@ class ApiTestCase extends WebTestCase
         ]);
     }
 
+    /**
+     * @param string $route
+     * @param array $params
+     * @param bool $absolute
+     * @return string
+     */
     public function generateUrl(string $route, array $params = [], bool $absolute = true)
     {
         return $this
@@ -161,6 +200,10 @@ class ApiTestCase extends WebTestCase
             );
     }
 
+    /**
+     * @param SymfonyClient $client
+     * @return int
+     */
     public static function httpCode(SymfonyClient $client)
     {
         return $client->getResponse()->getStatusCode();
