@@ -28,12 +28,6 @@ class ArticleDashboardProvider implements DashboardProvider
     {
         return array(
             new DashboardElement(
-                'Article',
-                DashboardElement::TYPE_FONT_AWESOME,
-                'book',
-                $this->router->generate('admin_article_index')
-            ),
-            new DashboardElement(
                 'Bookmark',
                 DashboardElement::TYPE_FONT_AWESOME,
                 'bookmark',

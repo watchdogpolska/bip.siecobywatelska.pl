@@ -2,13 +2,15 @@
 
 namespace Sowp\ArticleBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\User;
 use Sowp\ArticleBundle\Entity\Article;
-use Sowp\ArticleBundle\Entity\Collection;
+use Sowp\CollectionBundle\Entity\Collection;
 
-class LoadArticleData implements FixtureInterface
+
+class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
 {
     private $faker;
     private $manager;
@@ -23,25 +25,9 @@ class LoadArticleData implements FixtureInterface
     public function load(ObjectManager $manager)
     {
         $this->manager = $manager;
-        $this->loadCollections($manager);
         $this->loadArticles($manager);
 
         $manager->flush();
-    }
-
-    /**
-     * @param ObjectManager $manager
-     *
-     * @return int
-     */
-    public function loadCollections()
-    {
-        for ($i = 0; $i < 100; ++$i) {
-            $collection = new Collection();
-            $collection->setName($this->faker->word);
-            $this->manager->persist($collection);
-            $this->collections[] = $collection;
-        }
     }
 
     /**
@@ -51,6 +37,8 @@ class LoadArticleData implements FixtureInterface
     {
         $users = $manager->getRepository(User::class)->findAll() + [];
 
+        $all_collections = $manager->getRepository(Collection::class)->findAll();
+
         for ($i = 0; $i < 100; ++$i) {
             $article = new Article();
             $article->setTitle($this->faker->text(255));
@@ -59,11 +47,22 @@ class LoadArticleData implements FixtureInterface
             $article->setModifitedBy($this->faker->randomElement($users));
             $article->setCreatedAt($this->faker->dateTimeBetween('-5 years', 'now'));
             $article->setEditNote($this->faker->text());
-            $article_collection = $this->faker->randomElements($this->collections, $this->faker->numberBetween(0, 4));
+            $article_collection = $this->faker->randomElements($all_collections, $this->faker->numberBetween(0, 4));
             foreach ($article_collection as $c) {
-                $article->addCollection($c);
+	            $article->addCollection( $c );
             }
             $manager->persist($article);
         }
     }
+
+    /**
+     * Get the order of this fixture
+     *
+     * @return integer
+     */
+    public function getOrder()
+    {
+        return 4;
+    }
+
 }

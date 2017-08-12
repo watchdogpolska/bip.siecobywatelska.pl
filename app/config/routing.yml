@@ -1,3 +1,27 @@
+#upload:
+#    resource: "@UploadBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
+
+collection:
+    resource: "@CollectionBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+sowp_api:
+    resource: "@ApiBundle/Controller/"
+    type:     annotation
+    prefix:   /api/v1
+
+sowp_news:
+    resource: "@NewsModuleBundle/Controller/"
+    type: annotation
+    prefix:   /
+
+sowp_search:
+    resource: "@SearchModuleBundle/Controller"
+    type: annotation
+
 sowp_dashboard:
     resource: "@SowpDashboardBundle/Controller/"
     type:     annotation
@@ -5,11 +29,6 @@ sowp_dashboard:
 
 sowp_article:
     resource: "@SowpArticleBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
-sowp_news:
-    resource: "@NewsBundle/Controller/"
     type:     annotation
     prefix:   /
 

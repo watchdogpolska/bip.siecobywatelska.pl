@@ -1,0 +1,16 @@
+services:
+#    collection.example:
+#        class: Sowp\CollectionBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+
+
+    sowp.collection.form.type.purified_textarea:
+        class: Sowp\CollectionBundle\Form\addCollectionForm
+        tags:
+            - { name: form.type }
+
+    sowp.collection.dashboard_provider:
+        class: Sowp\CollectionBundle\DashboardProvider\CollectionsDashboardProvider
+        arguments: ['@router']
+        tags:
+            - { name: sowp.dashboard.element_provider }

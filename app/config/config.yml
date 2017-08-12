@@ -1,12 +1,13 @@
 imports:
     - { resource: parameters.yml }
-    - { resource: security.yml }
+#    - { resource: security.yml }
     - { resource: services.yml }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    upload_path: "%kernel.root_dir%/../web/upload/attachments"
 
 framework:
     #esi:             ~
@@ -18,7 +19,7 @@ framework:
     form:            ~
     csrf_protection: ~
     validation:      { enable_annotations: true }
-    #serializer:      { enable_annotations: true }
+    serializer:      { enable_annotations: true }
     templating:
         engines: ['twig']
     default_locale:  "%locale%"
@@ -61,16 +62,16 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
-        mappings:
-            gedmo_loggable:
-                type: annotation
-                prefix: Gedmo\Loggable\Entity
-                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
-                is_bundle: false
-        filters: # Avoid delete a page. Only SUPER_ADMIN can delete a page
-            softdeleteable:
-                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
-                enabled: true
+        dql:
+            string_functions:
+                MATCH_AGAINST: Sowp\SearchModuleBundle\Doctrine\MatchAgainst
+
+#        mappings:
+#            gedmo_loggable:
+#                type: annotation
+#                prefix: Gedmo\Loggable\Entity
+#                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
+#                is_bundle: false
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -96,5 +97,6 @@ stof_doctrine_extensions:
             timestampable: true
             blameable: true
             sluggable: true
-            loggable: true
-            softdeleteable: true
+            tree: true
+white_october_pagerfanta:
+    default_view: 'twitter_bootstrap3'

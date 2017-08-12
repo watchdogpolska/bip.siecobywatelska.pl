@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {#<div class="container">#}
+        {#<h1 class="page-header">Nagłówek strony</h1>#}
+    {#</div>#}
+    <div class="preview">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="logo"></div>
+                </div>
+                <div class="col-md-4">
+                    {#<form class="form search-form">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for...">
+                            <span class="input-group-btn">
+            <button class="btn btn-primary" type="button">Search!</button>
+          </span>
+                        </div>
+                        <!-- /input-group -->
+                    </form>#}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="page-header">
+            <h1>Wynik wyszukiwania <code>search_multi_results</code> - treśc strony</h1>
+        </div>
+    </div>
+    <div class="preview">
+        <div class="container">
+            <h1>Wynik wyszukiwania "{{ query }}"</h1>
+            {% for key, items in results %}
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h2><code>{{ key }}</code></h2>
+                    </div>
+                    <div class="panel-body">
+                        {% set counter = 0 %}
+                        {% set break = false %}
+
+                        {% for item in items if not break %}
+
+                            {{ item|render_search_entry_multi}}
+
+                            {% if counter == 2 %}
+                                {% set break = true %}
+                            {% endif %}
+                            {% set counter = counter + 1 %}
+                        {% endfor %}
+                    </div>
+
+                    <div>
+                        <a class="type-more" href="{{ path("sowp_searchbundle_search") }}?q={{ query }}&mod={{ key|lower }}">Zobacz więcej dla {{ key }} ...</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if items_single %}
+    <div class="container">
+      <div class="page-header">
+            <h1>Wynik wyszukiwania <code>search_single_results</code> - treśc strony</h1>
+        </div>
+    </div>
+    <div class="preview">
+        <div class="container">
+            <h1>Wynik wyszukiwania "{{ query }}"</h1>
+
+            {% for item in items_single %}
+                {{ item|render_search_entry_single}}
+            {% endfor %}
+
+            <div class="panel panel-default">
+                {{ pagerfanta(items_single) }}
+            </div>
+
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

@@ -1,0 +1,31 @@
+services:
+#    api.example:
+#        class: Sowp\ApiBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+
+    api_helper:
+        class: Sowp\ApiBundle\Service\ApiHelper
+        arguments:
+            - '@jms_serializer'
+            - '@router'
+            - '@doctrine.orm.entity_manager'
+            - '@assets.packages'
+            - '@request_stack'
+            - '%php_server_name%'
+
+    link_serialization_subscriber:
+        class: Sowp\ApiBundle\EventListener\LinkSelfSerializationSubscriber
+        arguments: ['@api_helper']
+        tags:
+            - { name: jms_serializer.event_subscriber }
+
+    attachment_serialization_subscriber:
+        class: Sowp\ApiBundle\EventListener\AttachmentsLinksSerializationSubscriber
+        arguments: ['@api_helper']
+        tags:
+            - { name: jms_serializer.event_subscriber }
+
+    user_serialization_subscriber:
+            class: Sowp\ApiBundle\EventListener\UserDataSerializationSubscriber
+            tags:
+                - { name: jms_serializer.event_subscriber }

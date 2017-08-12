@@ -1,0 +1,13 @@
+{% extends '_form_new_layout.html.twig' %}
+
+{% block body %}
+
+    <h1>Edytujesz Kolekcję</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit" class="pull-right" name="edit_collection">Edit</button>
+    {{ form_end(form) }}
+    
+    <hr />
+{% endblock %}

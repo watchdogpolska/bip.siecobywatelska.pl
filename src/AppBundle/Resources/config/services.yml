@@ -1,0 +1,7 @@
+services:
+
+    app_bundle.fixtures_loader:
+        class: AppBundle\FixturesLoader\FixturesLoader
+        arguments:
+            - '@service_container'
+            - '@doctrine.orm.entity_manager'

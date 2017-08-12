@@ -3,6 +3,8 @@
 namespace Sowp\NewsModuleBundle\Controller;
 
 use Sowp\NewsModuleBundle\Entity\News;
+
+use Sowp\NewsModuleBundle\Form\NewsType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -13,7 +15,7 @@ use Pagerfanta\Pagerfanta;
 /**
  * News controller.
  *
- * @Route("/wiadomosci")
+ * @Route("/admin/messages")
  */
 class NewsController extends Controller
 {
@@ -45,12 +47,13 @@ class NewsController extends Controller
      * Creates a new news entity.
      *
      * @Route("/dodaj", name="sowp_newsmodule_news_new")
+     * @Route("/add", name="sowp_newsmodule_news_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
     {
         $news = new News();
-        $form = $this->createForm('Sowp\NewsModuleBundle\Form\NewsType', $news);
+        $form = $this->createForm(NewsType::class, $news);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
@@ -93,18 +96,20 @@ class NewsController extends Controller
     /**
      * Displays a form to edit an existing news entity.
      *
-     * @Route("/edytuj/{slug}", name="sowp_newsmodule_news_edit")
+     * @Route("/edit/{slug}", name="sowp_newsmodule_news_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, News $news)
     {
         $deleteForm = $this->createDeleteForm($news);
         $editForm = $this->createForm('Sowp\NewsModuleBundle\Form\NewsType', $news);
+        $editForm = $this->createForm(NewsType::class, $news);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted()) {
             if ($editForm->isValid()) {
                 $em = $this->getDoctrine()->getManager();
+                //$attachments = $news->getAttachments();
                 $em->persist($news);
                 $em->flush();
                 $this->addFlash('notice', 'Changes saved');
@@ -125,6 +130,7 @@ class NewsController extends Controller
      *
      * @Route("/wykasuj/{slug}", name="sowp_newsmodule_news_delete")
      * @Method({"DELETE"})
+     * @Route("/delete/{slug}", name="sowp_newsmodule_news_delete")
      */
     public function deleteAction(Request $request, News $news)
     {
@@ -147,6 +153,7 @@ class NewsController extends Controller
      * Restores a soft deleted entity.
      *
      * @Route("/przywroc/{slug}", name="sowp_newsmodule_news_restore")
+     * @Route("/restore/{slug}", name="sowp_newsmodule_news_restore")
      * @Method({"POST"})
      */
     public function restoreAction(Request $request, News $news)
@@ -178,6 +185,7 @@ class NewsController extends Controller
      * Shows list of revisions for selected news.
      *
      * @Route("/lista-zmian/{slug}", name="sowp_newsmodule_news_revisions_list")
+     * @Route("/changes-list/{slug}", name="sowp_newsmodule_news_revisions_list")
      * @Method({"GET"})
      */
     public function revisionlistAction(News $news)
@@ -199,6 +207,7 @@ class NewsController extends Controller
      * Shows detail of selected revision for selected news.
      *
      * @Route("/rewizja/{newsId},{revId}", name="sowp_newsmodule_news_revisions_detail")
+     * @Route("/revision/{newsId},{revId}", name="sowp_newsmodule_news_revisions_detail")
      * @Method({"GET"})
      */
     public function revisiondetailAction($newsId, $revId)

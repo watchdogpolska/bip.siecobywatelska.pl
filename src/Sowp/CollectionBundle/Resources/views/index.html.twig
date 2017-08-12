@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+    <h1>Collection list
+        <a href="{{ path('admin_collections_add') }}" class="btn btn-default">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Create a new entry
+        </a>
+    </h1>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">List</h3>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Public</th>
+                    <th>Createdat</th>
+                    <th>Modifiedat</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for collection in collections %}
+                <tr>
+                    <td><a href="{{ path('admin_collections_show', { 'slug': collection.slug }) }}">{{ collection.id }}</a></td>
+                    <td>{{ collection.title }}</td>
+                    <td>{% if collection.public %}Yes{% else %}No{% endif %}</td>
+                    <td>{% if collection.createdAt %}{{ collection.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{% if collection.modifiedAt %}{{ collection.modifiedAt|date('Y-m-d H:i:s') }}{% endif %}</td>                    
+                    <td>
+                        <a href="{{ path('admin_collections_show', { 'slug': collection.slug }) }}" class="btn btn-default">
+                            <i class="fa fa-eye"></i>
+                            Show
+                        </a>                    
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
