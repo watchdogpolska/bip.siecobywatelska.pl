@@ -115,12 +115,12 @@ class ApiHelperTest extends ApiTestCase
             ], //attachment
         ];
 
-    $links = $helper->createAttachmentsLinks($attachmentsMock);
+        $links = $helper->createAttachmentsLinks($attachmentsMock);
 
-    $fileName = 'test1';
-    $this->assertTrue(
-        $this->apiStringContains($fileName, $links[0]['file'])
-    );
+        $fileName = 'test1';
+        $this->assertTrue(
+            $this->apiStringContains($fileName, $links[0]['file'])
+        );
 
     }
 }
