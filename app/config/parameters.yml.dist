@@ -24,3 +24,8 @@ parameters:
     # param below with the same format (including scheme and
     # trailing slashes:
     php_server_name:   "http://your-server.com/app_dev.php/"
+
+    # This configures ApiHelper::getShowLinkForEntity.
+    # Below its standard mapping.
+    api_helper_show_link_map:
+        

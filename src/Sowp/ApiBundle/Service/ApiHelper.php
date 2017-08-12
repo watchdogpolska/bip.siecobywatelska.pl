@@ -50,6 +50,15 @@ class ApiHelper
      */
     private $phpServerName;
 
+    /**
+     * @var array
+     */
+    private $showLinkMap = [
+        Article::class => 'api_article_show',
+        News::class => 'api_news_show',
+        Collection::class => 'api_collections_show'
+    ];
+
     public function __construct(
         Serializer $serializer,
         RouterInterface $router,
@@ -163,6 +172,17 @@ class ApiHelper
         $this->router = $router;
     }
 
+    public function addEntityShowLinkMapping(array $arr)
+    {
+        foreach ($arr as $class => $routeName) {
+            if (!\class_exists($class) ||
+                (null === $this->router->getRouteCollection()->get($routeName))) {
+                continue;
+            }
+            $this->showLinkMap[$class] = $routeName;
+        }
+    }
+
     /**
      * @param $code
      * @param $data
@@ -257,6 +277,39 @@ class ApiHelper
         return $a;
     }
 
+    /**
+     * @param \stdClass $entity
+     * @param bool $absolute
+     * @return string|bool
+     */
+    public function getShowLinkForEntity2(\stdClass $entity, $absolute = true)
+    {
+        $entityClass = \get_class($entity);
+
+        if (!\array_key_exists($entityClass, $this->showLinkMap)) {
+            return false;
+        }
+
+        $routeName = $this->showLinkMap[$entityClass];
+
+        return $this->router->generate(
+            $routeName,
+            ['id' => $entity->getId()],
+            $absolute ? Router::ABSOLUTE_URL : Router::RELATIVE_PATH
+        );
+    }
+
+    public function getShowLinkForEntity3($entity, $absolute = true)
+    {
+
+    }
+
+    /**
+     * @param $entity
+     * @param bool $absolute
+     * @return mixed
+     * @deprecated
+     */
     public function getShowLinkForEntity($entity, $absolute = true)
     {
         if ($entity instanceof Collection) {
