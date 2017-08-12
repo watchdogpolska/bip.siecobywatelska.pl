@@ -47,7 +47,7 @@ class ApiCollectionControllerTest extends ApiTestCase
         }
 
         //request with client to concatenated addr + link
-        $response = $this->client->get($this->host . $link);
+        $response = $this->client->get($this->host . '/' . $link);
 
         /**
          * @var Stream $body
@@ -91,7 +91,7 @@ class ApiCollectionControllerTest extends ApiTestCase
             $this->assertTrue(false, $exception->getMessage(), "Problem during articles retrieval.");
         }
 
-        $response = $this->client->get($this->host.$link);
+        $response = $this->client->get($this->host . '/' . $link);
         $body = $response->getBody()->getContents();
         $cc_ds = \json_decode($body, true);
 

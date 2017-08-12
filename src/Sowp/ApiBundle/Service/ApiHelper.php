@@ -198,11 +198,11 @@ class ApiHelper
 
         $data_serialized = $this->getSerializer()->serialize($obj, 'json');
 
-        return $data_serialized;
+//        return $data_serialized;
 
-//        return new Response($data_serialized, $code, [
-//            'content-type' => 'application/json'
-//        ]);
+        return new Response($data_serialized, $code, [
+            'content-type' => 'application/json'
+        ]);
     }
 
     /**
@@ -278,37 +278,9 @@ class ApiHelper
     }
 
     /**
-     * @param \stdClass $entity
-     * @param bool $absolute
-     * @return string|bool
-     */
-    public function getShowLinkForEntity2(\stdClass $entity, $absolute = true)
-    {
-        $entityClass = \get_class($entity);
-
-        if (!\array_key_exists($entityClass, $this->showLinkMap)) {
-            return false;
-        }
-
-        $routeName = $this->showLinkMap[$entityClass];
-
-        return $this->router->generate(
-            $routeName,
-            ['id' => $entity->getId()],
-            $absolute ? Router::ABSOLUTE_URL : Router::RELATIVE_PATH
-        );
-    }
-
-    public function getShowLinkForEntity3($entity, $absolute = true)
-    {
-
-    }
-
-    /**
      * @param $entity
      * @param bool $absolute
      * @return mixed
-     * @deprecated
      */
     public function getShowLinkForEntity($entity, $absolute = true)
     {
@@ -324,6 +296,8 @@ class ApiHelper
             return $this->getRouter()->generate('api_news_show', [
                 'id' => $entity->getId()
             ], $absolute ? Router::ABSOLUTE_URL : Router::RELATIVE_PATH);
+        } else {
+            throw new \Exception("Invalid class of Entity");
         }
     }
 

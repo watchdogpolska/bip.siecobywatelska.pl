@@ -40,8 +40,8 @@ class ArticleController extends Controller
             'self' => $this->get('router')->generate('api_article_show', ['id' => $id], Router::ABSOLUTE_URL)
         ]);
 
-//        return $this->getApiHelper()->createApiResponse(Response::HTTP_OK, $art, $links);
-        return new JsonResponse($this->getApiHelper()->createApiResponse(Response::HTTP_OK, $art, $links));
+        return $this->getApiHelper()->createApiResponse(Response::HTTP_OK, $art, $links);
+//        return new JsonResponse($this->getApiHelper()->createApiResponse(Response::HTTP_OK, $art, $links));
     }
 
     /**
@@ -65,8 +65,8 @@ class ArticleController extends Controller
         $links = $this->getApiHelper()->generateNavLinks($col,'page', 'api_article_list');
         $links = \array_merge($links, $this->commonLinks());
 
-        return new JsonResponse($this->getApiHelper()->createApiResponse(Response::HTTP_OK, $articles, $links));
-//        return $this->getApiHelper()->createApiResponse(Response::HTTP_OK, $articles, $links);
+//        return new JsonResponse($this->getApiHelper()->createApiResponse(Response::HTTP_OK, $articles, $links));
+        return $this->getApiHelper()->createApiResponse(Response::HTTP_OK, $articles, $links);
     }
 
 }

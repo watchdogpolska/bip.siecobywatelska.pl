@@ -7,4 +7,7 @@ use AppBundle\Tests\ApiUtils\ApiTestCase;
 class NewsRepositoryTest extends ApiTestCase
 {
 
+	public function testIncomplete() {
+		$this->markTestIncomplete();
+	}
 }

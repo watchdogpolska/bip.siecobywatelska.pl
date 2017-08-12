@@ -64,4 +64,38 @@ class ApiHelperTest extends ApiTestCase
             );
         }
     }
+
+    public function testGetShowLinksForEntity()
+    {
+        $helper = $this->container->get('api_helper');
+        $c = $this->createCollection();
+        $a = $this->createArticle();
+        $n = $this->createNews();
+        $wrong = new Link();
+
+        $this->assertTrue(
+            \is_string($helper->getShowLinkForEntity($c)),
+            "Wrong object class"
+        );
+        $this->assertTrue(
+            \is_string($helper->getShowLinkForEntity($a)),
+            "Wrong object class"
+        );
+        $this->assertTrue(
+            \is_string($helper->getShowLinkForEntity($n)),
+            "Wrong object class"
+        );
+
+        try {
+            $helper->getShowLinkForEntity($wrong);
+            $cant_be_here = true;
+        } catch (\Exception $e) {
+            $txt = $e->getMessage();
+            $must_be_here = true;
+        }
+
+        $this->assertFalse(isset($cant_be_here), "You \$cant_be_here =]");
+        $this->assertTrue(isset($must_be_here), "You \$must_be_here");
+        $this->assertTrue($must_be_here, "You \$must_be_here value");
+    }
 }

@@ -72,7 +72,7 @@ class ArticleControllerTest extends ApiTestCase
      */
     public function testNewActionAccomplish()
     {
-        $client = static::createClient();
+        $client = $this->createAuthClient();
         $crawler = $client->request('GET', $this->router->generate('admin_article_new'));
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Response code shaould be 200 ");
@@ -114,7 +114,7 @@ class ArticleControllerTest extends ApiTestCase
     public function testEditActionAccomplish()
     {
         $a = $this->createArticle();
-        $client = static::createClient();
+        $client = $this->createAuthClient();
         $editLink = $this->router->generate('admin_article_edit', [
             'id' => $a->getId()
         ]);
