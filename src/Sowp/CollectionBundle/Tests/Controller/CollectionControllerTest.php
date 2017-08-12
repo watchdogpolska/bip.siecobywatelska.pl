@@ -19,9 +19,7 @@ class CollectionControllerTest extends ApiTestCase
     {
         parent::setUp();
 
-        //exported enviroment var
-        //$ export PHP_SERVER_NAME="http://your-server-name.com/"
-        $this->host = \rtrim(\getenv('PHP_SERVER_NAME'), '/');
+        $this->host = \rtrim($this->container->getParameter('php_server_name'), '/');
         $this->router = $this->container->get('router');
     }
 
@@ -71,7 +69,7 @@ class CollectionControllerTest extends ApiTestCase
      */
     public function testNewActionAccomplish()
     {
-        $client = static::createClient();
+        $client = $this->createAuthClient();
         $crawler = $client->request('GET', $this->router->generate('admin_collections_add'));
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Response code shaould be 200 ");
@@ -111,7 +109,7 @@ class CollectionControllerTest extends ApiTestCase
     public function testEditActionAccomplish()
     {
         $c = $this->createCollection();
-        $client = static::createClient();
+        $client = $this->createAuthClient();
         $editLink = $this->router->generate('admin_collections_edit', [
             'slug' => $c->getSlug()
         ]);

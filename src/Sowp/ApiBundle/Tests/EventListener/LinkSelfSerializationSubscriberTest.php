@@ -5,11 +5,12 @@ use AppBundle\Tests\ApiUtils\ApiTestCase;
 use JMS\Serializer\ContextFactory\DefaultSerializationContextFactory;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
 use Sowp\ApiBundle\EventListener\AttachmentsLinksSerializationSubscriber;
+use Sowp\ApiBundle\EventListener\LinkSelfSerializationSubscriber;
 use Sowp\ArticleBundle\Entity\Article;
 use Sowp\CollectionBundle\Entity\Collection;
 use Sowp\NewsModuleBundle\Entity\News;
 
-class ApiAttachmentsLinksSerializationSubscriberTest extends ApiTestCase
+class LinkSelfSerializationSubscriberTest extends ApiTestCase
 {
     public function setUp()
     {
@@ -18,7 +19,7 @@ class ApiAttachmentsLinksSerializationSubscriberTest extends ApiTestCase
 
     public function testSubscribedEvents()
     {
-        $events = AttachmentsLinksSerializationSubscriber::getSubscribedEvents();
+        $events = LinkSelfSerializationSubscriber::getSubscribedEvents();
 
         $this->assertTrue(\is_array($events), "Subscribed events expected to be array");
         $this->assertEquals(1, \count($events), "Subscribed events count expected to be 1");
@@ -54,14 +55,22 @@ class ApiAttachmentsLinksSerializationSubscriberTest extends ApiTestCase
             'params' => []
         ]);
 
-        $alss = new AttachmentsLinksSerializationSubscriber(
+        $someObject = new \StdClass;
+
+        $oeS = new ObjectEvent($context, $someObject, [
+            'name' => \StdClass::class,
+            'params' => []
+        ]);
+
+        $alss = new LinkSelfSerializationSubscriber(
             $this->container->get('api_helper')
         );
 
         //subscriber returns null on invalid object type
-        $this->assertNull($alss->postSerialize($oeC), "Expect null");
+        $this->assertNull($alss->postSerialize($oeS), "Expect null");
 
         //return false without initialized Context but on proper object
+        $this->assertFalse($alss->postSerialize($oeC), "Expect false");
         $this->assertFalse($alss->postSerialize($oeN), "Expect false");
         $this->assertFalse($alss->postSerialize($oeA), "Expect false");
     }
@@ -69,8 +78,6 @@ class ApiAttachmentsLinksSerializationSubscriberTest extends ApiTestCase
     public function testAddSerializationField()
     {
         $n = new News();
-        $name= 'java';
-        $fname = 'hi.java';
 
         $n->setContent("content");
         $n->setPinned(true);
@@ -80,14 +87,6 @@ class ApiAttachmentsLinksSerializationSubscriberTest extends ApiTestCase
         $this->em->persist($n);
         $this->em->flush($n);
         $this->em->refresh($n);
-        $n->setAttachments([
-            [
-                'name' => $name,
-                'file' => [
-                    'filename' => $fname
-                ]
-            ]
-        ]);
 
         $serializer = $this->container->get('jms_serializer');
         $n_serialized = $serializer->serialize($n, 'json');
@@ -98,31 +97,22 @@ class ApiAttachmentsLinksSerializationSubscriberTest extends ApiTestCase
         );
 
         $this->assertArrayHasKey(
-            'attachments',
+            'links',
             $n_deserialized,
-            "Expected key 'attachments'"
+            "Expected key 'links'"
         );
         $this->assertTrue(
-            \is_array($n_deserialized['attachments']),
+            \is_array($n_deserialized['links']),
             "Attachments expected to be array"
         );
-        $this->assertEquals(
-            1,
-            \count($n_deserialized['attachments']),
-            "Expected one attachment"
-        );
 
-        $att = $n_deserialized['attachments'][0];
-        $this->assertEquals(
-            $att['name'],
-            $name,
-            "Not matching name"
-        );
+        $link = $n_deserialized['links'];
 
-        $url = \parse_url($att['file']);
+        $url = \parse_url($link['self']);
+
         $this->assertNotFalse(
-            \strpos($url['path'], $fname),
-            "Invalid file url"
+            \strpos($url['path'], (string)$n->getId()),
+            "Invalid url"
         );
     }
 }

@@ -45,12 +45,27 @@ class ApiHelper
      */
     private $requestStack;
 
+    /**
+     * @var string
+     */
+    private $phpServerName;
+
+    /**
+     * @var array
+     */
+    private $showLinkMap = [
+        Article::class => 'api_article_show',
+        News::class => 'api_news_show',
+        Collection::class => 'api_collections_show'
+    ];
+
     public function __construct(
         Serializer $serializer,
         RouterInterface $router,
         EntityManager $entityManager,
         Packages $templateHelper,
-        RequestStack $stack
+        RequestStack $stack,
+        $phpServerName
     )
     {
         $this->setSerializer($serializer);
@@ -58,8 +73,24 @@ class ApiHelper
         $this->setEm($entityManager);
         $this->setTemplateHelper($templateHelper);
         $this->setRequestStack($stack);
+        $this->setPhpServerName($phpServerName);
     }
 
+    /**
+     * @return string
+     */
+    public function getPhpServerName(): string
+    {
+        return $this->phpServerName;
+    }
+
+    /**
+     * @param string $phpServerName
+     */
+    public function setPhpServerName(string $phpServerName)
+    {
+        $this->phpServerName = $phpServerName;
+    }
 
     /**
      * @return RequestStack
@@ -141,11 +172,22 @@ class ApiHelper
         $this->router = $router;
     }
 
+    public function addEntityShowLinkMapping(array $arr)
+    {
+        foreach ($arr as $class => $routeName) {
+            if (!\class_exists($class) ||
+                (null === $this->router->getRouteCollection()->get($routeName))) {
+                continue;
+            }
+            $this->showLinkMap[$class] = $routeName;
+        }
+    }
+
     /**
      * @param $code
      * @param $data
      * @param array $links
-     * @return Response
+     * @return string
      */
     public function createApiResponse($code, $data, array $links)
     {
@@ -155,6 +197,8 @@ class ApiHelper
         $obj->setLinks($this->convertLinksArray($links));
 
         $data_serialized = $this->getSerializer()->serialize($obj, 'json');
+
+//        return $data_serialized;
 
         return new Response($data_serialized, $code, [
             'content-type' => 'application/json'
@@ -218,19 +262,26 @@ class ApiHelper
 
     /**
      * @param array $links
-     * @return array
+     * @return Link[]|array
      */
-    private function convertLinksArray(array $links)
+    public function convertLinksArray(array $links)
     {
         $a = [];
 
         foreach ($links as $rel => $href) {
-            $a[] = new Link($rel, $href);
+            //if you add 2 or more links with same rel,
+            // they will be overwritten and latest will stay
+            $a[$rel] = new Link($rel, $href);
         }
 
         return $a;
     }
 
+    /**
+     * @param $entity
+     * @param bool $absolute
+     * @return mixed
+     */
     public function getShowLinkForEntity($entity, $absolute = true)
     {
         if ($entity instanceof Collection) {
@@ -245,6 +296,8 @@ class ApiHelper
             return $this->getRouter()->generate('api_news_show', [
                 'id' => $entity->getId()
             ], $absolute ? Router::ABSOLUTE_URL : Router::RELATIVE_PATH);
+        } else {
+            throw new \Exception("Invalid class of Entity");
         }
     }
 
@@ -255,7 +308,7 @@ class ApiHelper
 
         $scheme = $request ?
             $request->getSchemeAndHttpHost() :
-            \rtrim(\getenv('PHP_SERVER_NAME'), '/');
+            \rtrim($this->getPhpServerName(), '/');
 
 
         return \array_map(function ($a) use ($scheme) {

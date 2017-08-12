@@ -70,6 +70,7 @@ class CollectionController extends Controller
         $links = $this->getApiHelper()->generateNavLinks($col,'page', 'api_collections_list');
         $links = \array_merge($links, $this->commonLinks());
 
+//        return new JsonResponse($this->getApiHelper()->createApiResponse(Response::HTTP_OK, $collections, $links)//);
         return $this->getApiHelper()->createApiResponse(Response::HTTP_OK, $collections, $links);
     }
 }

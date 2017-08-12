@@ -18,9 +18,7 @@ class NewsControllerTest extends ApiTestCase
     {
         parent::setUp();
 
-        //exported enviroment var
-        //$ export PHP_SERVER_NAME="http://your-server-name.com/"
-        $this->host = \rtrim(\getenv('PHP_SERVER_NAME'), '/');
+        $this->host = \rtrim($this->container->getParameter('php_server_name'), '/');
         $this->router = $this->container->get('router');
     }
 
@@ -70,7 +68,7 @@ class NewsControllerTest extends ApiTestCase
      */
     public function testNewActionAccomplish()
     {
-        $client = static::createClient();
+        $client = $this->createAuthClient();
         $crawler = $client->request('GET', $this->router->generate('sowp_newsmodule_news_new'));
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Response code shaould be 200 ");
@@ -109,7 +107,7 @@ class NewsControllerTest extends ApiTestCase
     public function testEditActionAccomplish()
     {
         $n = $this->createNews();
-        $client = static::createClient();
+        $client = $this->createAuthClient();
         $editLink = $this->router->generate('sowp_newsmodule_news_edit', [
             'slug' => $n->getSlug()
         ]);

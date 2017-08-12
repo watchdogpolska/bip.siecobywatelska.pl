@@ -13,9 +13,7 @@ class ApiArticleControllerTest extends ApiTestCase
     {
         parent::setUp();
 
-        //exported enviroment var
-        //$ export PHP_SERVER_NAME="http://your-server-name.com/"
-        $this->host = \getenv('PHP_SERVER_NAME');
+        $this->host = \rtrim($this->container->getParameter('php_server_name'), '/');
 
         $this->container->get('app_bundle.fixtures_loader')->addAll();
         $this->container->get('app_bundle.fixtures_loader')->loadAllFromQueue();
@@ -35,16 +33,15 @@ class ApiArticleControllerTest extends ApiTestCase
         // from console I get http://localhost/
         //with last "/"
         $link = $this->helper->getShowLinkForEntity($a, false);
-
         if (!$this->host) {
             $this->assertTrue(
                 false,
-                "'PHP_SERVER_NAME' env variable must be set with hostname"
+                "'php_server_name' parameter must be set with hostname"
             );
         }
 
         //request with client to concatenated addr + link
-        $response = $this->client->get($this->host . $link);
+        $response = $this->client->get($this->host . '/' . $link);
 
         /**
          * @var Stream $body
@@ -88,7 +85,7 @@ class ApiArticleControllerTest extends ApiTestCase
             $this->assertTrue(false, $exception->getMessage(), "Problem during articles retrieval.");
         }
 
-        $response = $this->client->get($this->host.$link);
+        $response = $this->client->get($this->host . '/' . $link);
         $body = $response->getBody()->getContents();
         $cc_ds = \json_decode($body, true);
 

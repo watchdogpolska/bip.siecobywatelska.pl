@@ -16,9 +16,7 @@ class SearchControllerTest extends ApiTestCase
     {
         parent::setUp();
 
-        //exported enviroment var
-        //$ export PHP_SERVER_NAME="http://your-server-name.com/"
-        $this->host = \rtrim(\getenv('PHP_SERVER_NAME'), '/');
+        $this->host = \rtrim($this->container->getParameter('php_server_name'), '/');
         $this->router = $this->container->get('router');
     }
 
