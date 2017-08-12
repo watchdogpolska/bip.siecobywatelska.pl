@@ -54,7 +54,10 @@ class ApiTestCase extends WebTestCase
             'defaults' => [
                 'exceptions' => false
             ],
-
+            'auth' => [
+                'root',
+                'root'
+            ]
         ]);
     }
 

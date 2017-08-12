@@ -33,7 +33,6 @@ class ApiArticleControllerTest extends ApiTestCase
         // from console I get http://localhost/
         //with last "/"
         $link = $this->helper->getShowLinkForEntity($a, false);
-
         if (!$this->host) {
             $this->assertTrue(
                 false,
@@ -42,13 +41,12 @@ class ApiArticleControllerTest extends ApiTestCase
         }
 
         //request with client to concatenated addr + link
-        $response = $this->client->get($this->host . $link);
+        $response = $this->client->get($this->host . '/' . $link);
 
         /**
          * @var Stream $body
          */
         $body = $response->getBody()->getContents();
-
         //status code
         $this->assertEquals(200, $response->getStatusCode());
 
@@ -86,7 +84,7 @@ class ApiArticleControllerTest extends ApiTestCase
             $this->assertTrue(false, $exception->getMessage(), "Problem during articles retrieval.");
         }
 
-        $response = $this->client->get($this->host.$link);
+        $response = $this->client->get($this->host . '/' . $link);
         $body = $response->getBody()->getContents();
         $cc_ds = \json_decode($body, true);
 

@@ -1,6 +1,7 @@
 <?php
 namespace Sowp\ApiBundle\EventListener;
 
+use AppBundle\Entity\User;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
 use Sowp\ApiBundle\Service\ApiHelper;
@@ -54,10 +55,8 @@ class UserDataSerializationSubscriber implements EventSubscriberInterface
         }
 
         if (!isset($userCreator)) {
-            $userCreator = [
-                'id' => null,
-                'username' => null
-            ];
+            $userCreator = new User();
+            $userCreator->setUsername('anon');
         }
 
         $oe->getVisitor()->addData('created_by', $a($userCreator));
