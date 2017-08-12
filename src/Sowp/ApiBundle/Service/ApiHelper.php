@@ -198,11 +198,11 @@ class ApiHelper
 
         $data_serialized = $this->getSerializer()->serialize($obj, 'json');
 
-        return $data_serialized;
+//        return $data_serialized;
 
-//        return new Response($data_serialized, $code, [
-//            'content-type' => 'application/json'
-//        ]);
+        return new Response($data_serialized, $code, [
+            'content-type' => 'application/json'
+        ]);
     }
 
     /**

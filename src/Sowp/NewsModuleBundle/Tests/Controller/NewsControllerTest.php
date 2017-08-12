@@ -68,7 +68,7 @@ class NewsControllerTest extends ApiTestCase
      */
     public function testNewActionAccomplish()
     {
-        $client = static::createClient();
+        $client = $this->createAuthClient();
         $crawler = $client->request('GET', $this->router->generate('sowp_newsmodule_news_new'));
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Response code shaould be 200 ");
@@ -107,7 +107,7 @@ class NewsControllerTest extends ApiTestCase
     public function testEditActionAccomplish()
     {
         $n = $this->createNews();
-        $client = static::createClient();
+        $client = $this->createAuthClient();
         $editLink = $this->router->generate('sowp_newsmodule_news_edit', [
             'slug' => $n->getSlug()
         ]);

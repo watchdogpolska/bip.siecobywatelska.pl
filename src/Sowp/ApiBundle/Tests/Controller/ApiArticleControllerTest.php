@@ -47,6 +47,7 @@ class ApiArticleControllerTest extends ApiTestCase
          * @var Stream $body
          */
         $body = $response->getBody()->getContents();
+
         //status code
         $this->assertEquals(200, $response->getStatusCode());
 

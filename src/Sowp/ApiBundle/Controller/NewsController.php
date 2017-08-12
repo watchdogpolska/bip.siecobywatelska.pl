@@ -43,7 +43,7 @@ class NewsController extends Controller
         $links = $this->getApiHelper()->generateNavLinks($col, 'page', 'api_news_list');
         $links = \array_merge($links, $this->commonLinks());
 
-        return new JsonResponse($this->getApiHelper()->createApiResponse(Response::HTTP_OK, $news, $links));
+        return $this->getApiHelper()->createApiResponse(Response::HTTP_OK, $news, $links);
     }
 
     /**
@@ -63,7 +63,7 @@ class NewsController extends Controller
             'self' => $this->get('router')->generate('api_news_show', ['id' => $id], Router::ABSOLUTE_URL)
         ]);
 
-        return new JsonResponse($this->getApiHelper()->createApiResponse(Response::HTTP_OK, $news, $links));
+        return $this->getApiHelper()->createApiResponse(Response::HTTP_OK, $news, $links);
     }
 
 }
