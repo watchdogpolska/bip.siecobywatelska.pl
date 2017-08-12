@@ -5,6 +5,8 @@ namespace Sowp\ApiBundle\Tests\Helper;
 use AppBundle\Tests\ApiUtils\ApiTestCase;
 use Sowp\ApiBundle\Response\Link;
 use Sowp\ApiBundle\Service\ApiHelper;
+use Sowp\ArticleBundle\Entity\Article;
+use Sowp\NewsModuleBundle\Entity\News;
 
 class ApiHelperTest extends ApiTestCase
 {
@@ -97,5 +99,46 @@ class ApiHelperTest extends ApiTestCase
         $this->assertFalse(isset($cant_be_here), "You \$cant_be_here =]");
         $this->assertTrue(isset($must_be_here), "You \$must_be_here");
         $this->assertTrue($must_be_here, "You \$must_be_here value");
+    }
+
+    public function testCreateAttachmentsLinks()
+    {
+        $helper = $this->container->get('api_helper');
+        $upload_path = '/uploads/attachments/';
+
+        //mocking adding attachments
+        $attachmentsMock = [ //attachments
+            [
+                'name' => 'test1',
+                'file' => [
+                    'filename' => 'test1.jpg'
+                ]
+            ], //attachment
+            [
+                'name' => 'test2',
+                'file' => [
+                    'filename' => 'test2.gif'
+                ]
+            ] //attachment
+        ];
+
+    $links = $helper->createAttachmentsLinks($attachmentsMock);
+
+    foreach ($attachmentsMock as $count => $mock) {
+
+        $mockNr = $count + 1;
+        $fileName = 'test' . $mockNr;
+        $fileNameAddr = $links[$count]['file'];
+
+
+        $this->assertTrue(
+            $this->apiStringContains($fileName, $fileNameAddr)
+        );
+
+        $this->assertTrue(
+            $this->apiStringContains($upload_path, $fileNameAddr)
+        );
+    }
+
     }
 }
