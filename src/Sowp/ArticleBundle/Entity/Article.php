@@ -42,6 +42,7 @@ class Article implements SoftDeleteable
      *
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(name="slug", type="string", length=255, nullable=false)
+
      * @Serializer\Expose()
      */
     private $slug;
@@ -120,6 +121,7 @@ class Article implements SoftDeleteable
      * @var \Sowp\CollectionBundle\Entity\Collection
      *
      * @ORM\ManyToMany(targetEntity="Sowp\CollectionBundle\Entity\Collection", inversedBy="articles", fetch="EAGER", cascade={"persist"})
+
      */
     private $collection;
 
@@ -415,6 +417,7 @@ class Article implements SoftDeleteable
     /**
      * Set collections.
      *
+
      * @param \Sowp\CollectionBundle\Entity\Collection $collection
      *
      * @return Article
@@ -451,11 +454,11 @@ class Article implements SoftDeleteable
         return $this;
     }
 
-    /**
-     * Remove collection.
-     *
-     * @param \Sowp\ArticleBundle\Entity\Collection $collection
-     */
+	/**
+	 * Remove collection.
+	 *
+	 * @param \Sowp\CollectionBundle\Entity\Collection $collection
+	 */
     public function removeCollection(\Sowp\CollectionBundle\Entity\Collection $collection)
     {
         $this->collection->removeElement($collection);

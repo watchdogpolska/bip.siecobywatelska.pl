@@ -64,6 +64,9 @@
                         <td>
                             {% if news.attachments %}
                                 {% for attachment in news.attachments %}
+<<<<<<< HEAD
+                                    <a href="{{ asset('upload/news_attachments/' ~ attachment.file) }}" target="_blank">{{ attachment.name }}</a>,
+=======
                                     {# TODO:
                                         remove this later after testing upload bundle
                                     #}
@@ -73,6 +76,7 @@
                                     {% else %}
                                         <a href="{{ asset('upload/attachments/' ~ attachment.file) }}" target="_blank">{{ attachment.name }}</a>,
                                     {% endif %}
+>>>>>>> jakowaty/Unit-tests_1
                                 {% endfor %}
                             {% endif %}
                         </td>
@@ -85,7 +89,11 @@
                         <th>Collections</th>
                         <td>
                             {% for collection in news.collections %}
+<<<<<<< HEAD
+                                <a href="{{ url('sowp_news_collection_show', { 'slug' : collection.slug }) }}">{{ collection.title }}</a>
+=======
                                 <a href="{{ url('admin_collections_show', { 'slug' : collection.slug }) }}">{{ collection.title }}</a>
+>>>>>>> jakowaty/Unit-tests_1
                             {% endfor %}
                         </td>
                     </tr>

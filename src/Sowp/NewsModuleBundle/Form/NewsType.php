@@ -1,4 +1,7 @@
 <?php
+
+namespace Sowp\NewsModuleBundle\Form;
+
 namespace Sowp\NewsModuleBundle\Form;
 use Sowp\CollectionBundle\Form\CollectionAutocompleteFormType;
 use Symfony\Component\Form\AbstractType;
@@ -6,7 +9,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType as Select2;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Sowp\UploadBundle\Form\AttachmentType;
@@ -45,6 +47,7 @@ class NewsType extends AbstractType
                 }
             });
     }
+
     /**
      * {@inheritdoc}
      */
@@ -55,3 +58,4 @@ class NewsType extends AbstractType
         ));
     }
 }
+

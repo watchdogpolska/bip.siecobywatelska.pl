@@ -3,6 +3,7 @@
 namespace Sowp\NewsModuleBundle\Controller;
 
 use Sowp\NewsModuleBundle\Entity\News;
+
 use Sowp\NewsModuleBundle\Form\NewsType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -45,6 +46,7 @@ class NewsController extends Controller
     /**
      * Creates a new news entity.
      *
+     * @Route("/dodaj", name="sowp_newsmodule_news_new")
      * @Route("/add", name="sowp_newsmodule_news_new")
      * @Method({"GET", "POST"})
      */
@@ -100,6 +102,7 @@ class NewsController extends Controller
     public function editAction(Request $request, News $news)
     {
         $deleteForm = $this->createDeleteForm($news);
+        $editForm = $this->createForm('Sowp\NewsModuleBundle\Form\NewsType', $news);
         $editForm = $this->createForm(NewsType::class, $news);
         $editForm->handleRequest($request);
 
@@ -125,6 +128,8 @@ class NewsController extends Controller
     /**
      * Deletes a news entity.
      *
+     * @Route("/wykasuj/{slug}", name="sowp_newsmodule_news_delete")
+     * @Method({"DELETE"})
      * @Route("/delete/{slug}", name="sowp_newsmodule_news_delete")
      */
     public function deleteAction(Request $request, News $news)
@@ -147,6 +152,7 @@ class NewsController extends Controller
     /**
      * Restores a soft deleted entity.
      *
+     * @Route("/przywroc/{slug}", name="sowp_newsmodule_news_restore")
      * @Route("/restore/{slug}", name="sowp_newsmodule_news_restore")
      * @Method({"POST"})
      */
@@ -178,6 +184,7 @@ class NewsController extends Controller
     /**
      * Shows list of revisions for selected news.
      *
+     * @Route("/lista-zmian/{slug}", name="sowp_newsmodule_news_revisions_list")
      * @Route("/changes-list/{slug}", name="sowp_newsmodule_news_revisions_list")
      * @Method({"GET"})
      */
@@ -199,6 +206,7 @@ class NewsController extends Controller
     /**
      * Shows detail of selected revision for selected news.
      *
+     * @Route("/rewizja/{newsId},{revId}", name="sowp_newsmodule_news_revisions_detail")
      * @Route("/revision/{newsId},{revId}", name="sowp_newsmodule_news_revisions_detail")
      * @Method({"GET"})
      */

@@ -17,6 +17,7 @@ class DashboardElementPass implements CompilerPassInterface
         $definition = $container->findDefinition('sowp.dashboard.manager');
 
         $taggedServices = $container->findTaggedServiceIds('sowp.dashboard.element_provider');
+
         foreach ($taggedServices as $id => $tags) {
             $definition->addMethodCall('addElementsProvider', array(new Reference($id)));
         }

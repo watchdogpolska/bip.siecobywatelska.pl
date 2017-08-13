@@ -26,8 +26,8 @@ class DataLoader extends AbstractFixture
             $collection->setTitle($faker->words(4, true));
 
             $manager->persist($collection);
-            $manager->flush($collection);
         }
+	    $manager->flush();
     }
 
     public function getOrder()

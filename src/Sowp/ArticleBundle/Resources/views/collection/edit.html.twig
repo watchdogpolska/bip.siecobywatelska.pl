@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="pull-right">
+    
+        <a href="{{ path('admin_collection_index') }}" class="btn btn-default">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            Back to the list
+        </a>
+        {{ form_start(delete_form, {"attr": {"style": "display: inline-block"}}) }}
+            <button type="submit" class="btn btn-default">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                Delete
+            </button>
+        {{ form_end(delete_form) }}
+    </div>
+
+    <h1>Collection edit</h1>
+
+    {{ form_start(edit_form) }}
+    {{ form_widget(edit_form) }}
+    <input type="submit" value="Edit" />
+    {{ form_end(edit_form) }}
+
+{% endblock %}
