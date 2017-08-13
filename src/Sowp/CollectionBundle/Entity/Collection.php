@@ -392,7 +392,7 @@ class Collection
     /**
      * Get parent.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getParent()
     {
