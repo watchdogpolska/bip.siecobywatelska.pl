@@ -40,9 +40,6 @@
                             <tr>
                                 <td class="attachments">
                                     {% for attachment in news_entry.attachments %}
-                                        {# TODO:
-                                                  remove this later after testing upload bundle
-                                         #}
                                         {% if attachment.file is iterable %}
                                             {# leave this after test phase #}
                                             <a href="{{ asset('uploads/attachments/' ~ attachment.file.filename) }}" target="_blank">{{ attachment.name }}</a>,

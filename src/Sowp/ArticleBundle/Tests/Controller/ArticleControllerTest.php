@@ -1,11 +1,12 @@
 <?php
+
+
 namespace Sowp\ArticleBundle\Tests\Controller;
 
 use AppBundle\Tests\ApiUtils\ApiTestCase;
 use Sowp\ArticleBundle\Entity\Article;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\BrowserKit\Client;
-use Symfony\Component\DomCrawler\Link;
 
 class ArticleControllerTest extends ApiTestCase
 {
@@ -154,17 +155,7 @@ class ArticleControllerTest extends ApiTestCase
          */
 //        $this->batchDeleteActionTest($client);
     }
-//
-//    private function batchDeleteActionTest(Client $c)
-//    {
-//        $crawler = $c->getCrawler();
-//        $form = $crawler->selectButton("Delete")->form();
-//        $c->submit($form);
-//        $this->assertEquals(302, $c->getResponse()->getStatusCode());
-//        $c->request('GET', $c->getResponse()->headers->get('Location'));
-//        $this->assertEquals(200, $c->getResponse()->getStatusCode());
-//    }
-//
+
     private function batchRevisionsListActionTest(Client $c)
     {
         $crawler = $c->getCrawler();

@@ -44,5 +44,4 @@ class NewsRepository extends EntityRepository
 
         return (int)$c;
     }
-
 }

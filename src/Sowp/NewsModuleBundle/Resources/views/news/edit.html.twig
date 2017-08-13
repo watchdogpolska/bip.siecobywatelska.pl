@@ -15,10 +15,12 @@
             </button>
         {{ form_end(delete_form) }}
     </div>
-<h1>Message edit</h1>
+
+    <h1>News edit</h1>
 
     {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="pull-right" name="edit_message" type="submit">Edit</button>
+    <input type="submit" value="Edit" class="pull-right" />
+
     {{ form_end(form) }}
 {% endblock %}

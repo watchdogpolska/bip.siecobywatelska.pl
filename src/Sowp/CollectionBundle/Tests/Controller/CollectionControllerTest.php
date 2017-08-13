@@ -76,23 +76,10 @@ class CollectionControllerTest extends ApiTestCase
 
         $form = $crawler->selectButton("Add")->form();
         $values = $form->getValues();
+		$form['add_collection_form[title]'] = "New Title";
+        unset($form['add_collection_form[parent]']);
+		$form['add_collection_form[public]'] = 1;
 
-        foreach ($values as $key => &$value) {
-            switch ($key) {
-                case 'add_collection_form[title]':
-                    $value = 'Title Test ' . \mt_rand();
-                    break;
-                case 'add_collection_form[parent]':
-                    unset($values[$key]);
-                    break;
-                case 'add_collection_form[public]':
-                    $value = 1;
-                default:
-                    break;
-            }
-        }
-
-        $form->setValues($values);
         $client->submit($form);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
 
