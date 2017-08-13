@@ -26,7 +26,6 @@ class SearchControllerTest extends ApiTestCase
      */
     public function testSearchAction()
     {
-    	$this->markTestIncomplete();
         $a = $this->createArticle();
         $n = $this->createNews();
         $client = static::createClient();
