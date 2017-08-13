@@ -25,30 +25,24 @@ class NewsRepository extends EntityRepository
 
     public function getDeletedNewsCount()
     {
-        return $this->createQueryBuilder('n')
+        $c = $this->createQueryBuilder('n')
             ->select('COUNT(n)')
             ->andWhere('n.deletedAt IS NOT NULL')
             ->getQuery()
             ->getSingleScalarResult();
+
+        return (int)$c;
     }
 
     public function getNotDeletedNewsCount()
     {
-        return $this->createQueryBuilder('n')
+        $c = $this->createQueryBuilder('n')
             ->select('COUNT(n)')
             ->andWhere('n.deletedAt IS NULL')
             ->getQuery()
             ->getSingleScalarResult();
+
+        return (int)$c;
     }
 
-    public function getNewsCountByCollection(Collection $collection)
-    {
-//        $conn = $this->getEntityManager()->getConnection();
-//        $stmt = $conn->prepare('SELECT COUNT(*) AS count FROM collection_news WHERE collection_id = ? ');
-//        $stmt->bindValue(1, $collection->getId());
-//        $stmt->execute();
-//
-//        return $stmt->fetch(\PDO::FETCH_OBJ);
-        return 0;
-    }
 }
