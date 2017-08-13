@@ -3,67 +3,78 @@
 
 namespace Sowp\ArticleBundle\Tests\Controller;
 
-use AppBundle\Tests\ApiUtils\ApiTestCase;
+use AppBundle\Entity\User;
+use Doctrine\ORM\EntityManager;
 use Sowp\ArticleBundle\Entity\Article;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\BrowserKit\Client;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class ArticleControllerTest extends ApiTestCase
+class ArticleControllerTest extends WebTestCase
 {
-    /** @var  string|null $host */
-    protected $host;
 
-    /** @var Router $router */
-    protected $router;
+	public function setUp()
+	{
+		self::bootKernel();
+	}
 
-    public function setUp()
-    {
-        parent::setUp();
+	public static function getContainer() {
+		return self::$kernel->getContainer();
+	}
 
-        $this->host = \rtrim($this->container->getParameter('php_server_name'), '/');
-        $this->router = $this->container->get('router');
+	/**
+	 * @return EntityManager
+	 */
+	public static function getEntityManager() {
+	    return self::getContainer()->get('doctrine')->getManager();
     }
 
-    protected function tearDown()
-    {
-        $this->trashCollect(Article::class);
+    public static function url($name, $parameters = array(), $referenceType = Router::ABSOLUTE_PATH) {
+	    return self::getContainer()->get('router')->generate($name, $parameters, $referenceType);
+    }
+
+    public function login($login = null, $password = null) {
+	    $client = self::createClient();
+
+	    $this->createUser('user', 'password');
+
+	    $crawler = $client->request('GET', '/login');
+	    $form = $crawler->filter('form')->form();
+	    $form['_username'] = 'user';
+		$form['_password'] = 'password';
+	    $client->submit($form);
+
+		return $client;
     }
 
     public function testShowAction()
     {
-        $a = $this->createArticle();
-        $title = $a->getTitle();
-        $link = $this
-            ->router
-            ->generate('admin_article_show', ['id' => $a->getId()]);
+	    /**
+	     * @var $instance Article
+	     */
+	    $instance = $this->createArticle();
+	    $url = $this->url('admin_article_show', ['id' => $instance->getId()]);
 
-        $response = $this->client->get($this->host.$link);
+        $client = $this->login();
+		$crawler = $client->request('GET', $url);
 
-        $this->assertEquals(200, $response->getStatusCode(), "Response code should be 200");
+	    $linkNewArticle = $client->getResponse()->headers->get('Location');
 
-        $this->assertTrue(
-            $this->apiStringContains($title, $response->getBody()->getContents()),
-            "NewsController::showAction do not contain seeked text from entity"
-        );
+	    $response = $client->getResponse();
+	    $this->assertEquals(200, $response->getStatusCode());
+        $this->assertContains($instance->getTitle(), $response->getContent());
     }
 
     public function testListAction()
     {
-        $a1 = $this->createArticle();
-        $a2 = $this->createArticle();
-        $link = $this
-            ->router
-            ->generate('admin_article_index');
+	    $instance = $this->createArticle();
+	    $url = $this->url('admin_article_index');
 
-        $response = $this->client->get($this->host.$link);
-        $body = $response->getBody()->getContents();
+	    $client = $this->login();
+	    $crawler = $client->request('GET', $url);
 
-        $this->assertEquals(200, $response->getStatusCode(), "Response code should be 200");
-
-        $this->assertTrue(
-            $this->apiStringContains('List', $body),
-            "NewsController::indexAction do not contain seeked text from template"
-        );
+	    $response = $client->getResponse();
+	    $this->assertEquals(200, $response->getStatusCode());
+	    $this->assertContains($instance->getTitle(), $response->getContent());
     }
 
     /**
@@ -72,39 +83,25 @@ class ArticleControllerTest extends ApiTestCase
      */
     public function testNewActionAccomplish()
     {
-        $client = $this->createAuthClient();
-        $crawler = $client->request('GET', $this->router->generate('admin_article_new'));
+        $client = $this->login();
+	    $url = $this->url('admin_article_new');
+        $crawler = $client->request('GET', $url);
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Response code shaould be 200 ");
+	    $response = $client->getResponse();
+	    $this->assertEquals(200, $response->getStatusCode());
 
-        $form = $crawler->selectButton("Add")->form();
-        $values = $form->getValues();
-
-        foreach ($values as $key => &$value) {
-            switch ($key) {
-                case 'article[title]':
-                    $value = 'Title Test ' . \mt_rand();
-                    break;
-                case 'article[content]':
-                    $value = 'Content ';
-                    break;
-                case 'article[editNote]':
-                    $value = 'note';
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        $form->setValues($values);
+        $form = $crawler->filter('form[name="article"]')->form();
+        $form['article[title]'] = 'New Title';
+        $form['article[content]'] = 'Content';
+	    $form['article[editNote]'] = 'note';
         $client->submit($form);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
 
         $linkNewArticle = $client->getResponse()->headers->get('Location');
-
-
         $client->request('GET', $linkNewArticle);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+	    $this->assertEquals(200, $client->getResponse()->getStatusCode());
+	    $this->assertContains('New Title', $client->getResponse()->getContent());
     }
 
     /**
@@ -113,60 +110,79 @@ class ArticleControllerTest extends ApiTestCase
      */
     public function testEditActionAccomplish()
     {
-        $a = $this->createArticle();
-        $client = $this->createAuthClient();
-        $editLink = $this->router->generate('admin_article_edit', [
-            'id' => $a->getId()
-        ]);
+	    $instance = $this->createArticle();
+        $url = $this->url('admin_article_edit', ['id' => $instance->getId()]);
 
-        $client->request('GET', $editLink);
+	    $client  = $this->login();
+	    $crawler = $client->request('GET', $url);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $form = $client->getCrawler()->selectButton("Edit")->form();
-        $values = $form->getValues();
+        $form['article[title]'] = 'Title Test ' . \mt_rand();
 
-        foreach ($values as $key => &$value) {
-            switch ($key) {
-                case 'article[title]':
-                    $value = 'Title Test ' . \mt_rand();
-                    break;
-                case 'article[content]':
-                    $value = 'Content ';
-                    break;
-                case 'article[editNote]':
-                    $value = 'note';
-                    break;
-                default:
-                    break;
-            }
-        }
+        $form['article[content]'] = 'Content ';
+		$form['article[editNote]'] = 'note';
 
-        $form->setValues($values);
         $client->submit($form);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $client->request('GET', $client->getResponse()->headers->get('Location'));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        $clone = clone $client;
-        $this->batchRevisionsListActionTest($clone);
-        /**
-         * TODO:
-         * fix article redirect after delete action
-         */
-//        $this->batchDeleteActionTest($client);
     }
 
-    private function batchRevisionsListActionTest(Client $c)
+    public function testRevisionList()
     {
-        $crawler = $c->getCrawler();
+	    $instance = $this->createArticle();
+	    $url_edit = $this->url('admin_article_edit', ['id' => $instance->getId()]);
+	    $url_show = $this->url('admin_article_show', ['id' => $instance->getId()]);
 
-        $this->assertTrue(
-            $this->apiStringContains("Revisions", $crawler->html())
-        );
+	    $client  = $this->login();
+	    $crawler = $client->request('GET', $url_edit);
 
-        $links = $crawler->filter("a.list-group-item")->links();
+	    $form = $client->getCrawler()->selectButton("Edit")->form();
+	    $form['article[title]'] = 'Title 1';
+	    $form['article[content]'] = 'Content';
+	    $form['article[editNote]'] = 'Note 1';
+	    $client->submit($form);
+	    $form['article[title]'] = 'Title 1';
+	    $form['article[editNote]'] = 'Note 2';
+	    $client->submit($form);
 
-        $c->click($links[0]);
-        $this->assertEquals(200, $c->getResponse()->getStatusCode());
+	    $crawler = $client->request('GET', $url_show);
+
+		$descriptions = $crawler->filter('.list-group .list-group-item-text');
+		$this->assertCount(3, $descriptions);
+	    $this->assertContains("Note 2", $descriptions->eq(0)->text());
+	    $this->assertContains("Note 1", $descriptions->eq(1)->text());
+	    $this->assertContains("Create", $descriptions->eq(2)->text());
+
     }
+
+	public function createUser($username = 'user', $password  = 'password', $email = null) {
+		$em = $this->getEntityManager();
+
+		$user = new User();
+		$user->setUsername($username);
+		$user->setPlainPassword($password);
+		$user->setEmail($email == null ? $username . '@example.com' : $email);
+		$user->setEnabled(true);
+		$user->setRoles(array('ROLE_SUPER_ADMIN'));
+
+		$em->persist($user);
+		$em->flush();
+
+		return $user;
+	}
+
+	public function createArticle() {
+		$article = new Article();
+		$article->setTitle("Title");
+		$article->setContent("Content");
+		$article->setEditNote("Create");
+
+		$em = $this->getEntityManager();
+		$em->persist($article);
+		$em->flush();
+
+		return $article;
+	}
 }
