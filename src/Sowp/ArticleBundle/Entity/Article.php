@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\SoftDeleteable;
 use SimpleThings\EntityAudit\Mapping\Annotation as Audit;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Article.
@@ -22,6 +23,7 @@ use SimpleThings\EntityAudit\Mapping\Annotation as Audit;
  * @ORM\Entity(repositoryClass="Sowp\ArticleBundle\Entity\ArticleRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Audit\Auditable()
+ * @Serializer\ExclusionPolicy("all")
  */
 class Article implements SoftDeleteable
 {
@@ -31,6 +33,7 @@ class Article implements SoftDeleteable
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serializer\Expose()
      */
     private $id;
 
@@ -39,6 +42,8 @@ class Article implements SoftDeleteable
      *
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(name="slug", type="string", length=255, nullable=false)
+
+     * @Serializer\Expose()
      */
     private $slug;
 
@@ -46,6 +51,7 @@ class Article implements SoftDeleteable
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
+     * @Serializer\Expose()
      */
     private $title;
 
@@ -53,6 +59,7 @@ class Article implements SoftDeleteable
      * @var string
      *
      * @ORM\Column(name="content", type="text")
+     * @Serializer\Expose()
      */
     private $content;
 
@@ -61,6 +68,7 @@ class Article implements SoftDeleteable
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @Serializer\Expose()
      */
     private $createdAt;
 
@@ -105,13 +113,15 @@ class Article implements SoftDeleteable
      * @var string
      *
      * @ORM\Column(name="edit_note", type="string", length=255, nullable=false)
+     * @Serializer\Expose()
      */
     private $editNote;
 
     /**
-     * @var \Sowp\ArticleBundle\Entity\Collection
+     * @var \Sowp\CollectionBundle\Entity\Collection
      *
      * @ORM\ManyToMany(targetEntity="Sowp\CollectionBundle\Entity\Collection", inversedBy="articles", fetch="EAGER", cascade={"persist"})
+
      */
     private $collection;
 
@@ -126,6 +136,22 @@ class Article implements SoftDeleteable
     public function __construct()
     {
         $this->collection = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * @return \AppBundle\Entity\User
+     */
+    public function getModifiedBy()
+    {
+        return $this->getModifitedBy();
+    }
+
+    /**
+     * @param $v
+     */
+    public function setModifiedBy($v)
+    {
+        $this->setModifitedBy($v);
     }
 
     /**
@@ -391,6 +417,7 @@ class Article implements SoftDeleteable
     /**
      * Set collections.
      *
+
      * @param \Sowp\CollectionBundle\Entity\Collection $collection
      *
      * @return Article
@@ -427,12 +454,12 @@ class Article implements SoftDeleteable
         return $this;
     }
 
-    /**
-     * Remove collection.
-     *
-     * @param \Sowp\ArticleBundle\Entity\Collection $collection
-     */
-    public function removeCollection(\Sowp\ArticleBundle\Entity\Collection $collection)
+	/**
+	 * Remove collection.
+	 *
+	 * @param \Sowp\CollectionBundle\Entity\Collection $collection
+	 */
+    public function removeCollection(\Sowp\CollectionBundle\Entity\Collection $collection)
     {
         $this->collection->removeElement($collection);
     }

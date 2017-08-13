@@ -5,8 +5,8 @@
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.8/phpunit.xsd"
          backupGlobals="false"
          colors="true"
-         bootstrap="app/autoload.php"
->
+         bootstrap="app/autoload.php">
+
     <php>
         <ini name="error_reporting" value="-1" />
         <server name="KERNEL_DIR" value="app/" />
@@ -15,6 +15,7 @@
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>tests</directory>
+            <directory>src/**/</directory>
         </testsuite>
     </testsuites>
 
@@ -28,4 +29,8 @@
             </exclude>
         </whitelist>
     </filter>
+
+    <listeners>
+        <listener class="\DAMA\DoctrineTestBundle\PHPUnit\LegacyPHPUnitListener" />
+    </listeners>
 </phpunit>

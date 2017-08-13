@@ -2,7 +2,12 @@
 
 {% block body %}
     
-    <h1>Collection list</h1>
+    <h1>Collection list
+        <a href="{{ path('admin_collections_add') }}" class="btn btn-default">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Create a new entry
+        </a>
+    </h1>
 
     <div class="panel panel-default">
         <div class="panel-heading">

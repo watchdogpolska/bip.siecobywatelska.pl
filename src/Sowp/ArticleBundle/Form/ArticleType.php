@@ -2,12 +2,15 @@
 
 namespace Sowp\ArticleBundle\Form;
 
+use Sowp\ArticleBundle\Entity\Collection;
 use Sowp\CollectionBundle\Form\CollectionAutocompleteFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType as FormCollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 use Sowp\UploadBundle\Form\AttachmentType;
+
 
 class ArticleType extends AbstractType
 {

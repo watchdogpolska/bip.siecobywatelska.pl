@@ -7,11 +7,15 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use SimpleThings\EntityAudit\Mapping\Annotation as Audit;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use JMS\Serializer\Annotation as serializer;
+
+
 /**
  * @ORM\Entity(repositoryClass="Sowp\NewsModuleBundle\Entity\NewsRepository")
  * @ORM\Table(name="news")
  * @Audit\Auditable()
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Serializer\ExclusionPolicy("all")
  */
 class News
 {
@@ -21,6 +25,7 @@ class News
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @serializer\Expose()
      */
     private $id;
 
@@ -29,6 +34,7 @@ class News
      *
      * @Assert\NotBlank()
      * @ORM\Column(name="title", type="string", length=255, unique=true, nullable=false)
+     * @serializer\Expose()
      */
     private $title;
 
@@ -42,37 +48,41 @@ class News
      *
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(length=255, unique=true)
+     * @serializer\Expose()
      */
     private $slug;
 
-    /**
+	/**
      * @var string
      *
      * @ORM\Column(name="content", type="text", length=65535, nullable=false)
+     * @serializer\Expose()
      */
     private $content;
 
-    /**
+	/**
      * @ORM\Column(name="attachments", type="json_array", nullable=true)
      */
     private $attachments;
 
-    /**
+	/**
      * @var bool
      *
      * @ORM\Column(name="pinned", type="boolean", nullable=false)
+     * @serializer\Expose()
      */
     private $pinned;
 
-    /**
+	/**
      * @var \DateTime
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @serializer\Expose()
      */
     private $createdAt;
 
-    /**
+	/**
      * @var \AppBundle\Entity\User
      *
      * @Gedmo\Blameable(on="create")
@@ -81,7 +91,7 @@ class News
      */
     private $createdBy;
 
-    /**
+	/**
      * @var \DateTime
      *
      * @Gedmo\Timestampable(on="update")
@@ -89,28 +99,42 @@ class News
      */
     private $modifiedAt;
 
-    /**
+	/**
      * @var \AppBundle\Entity\User
      *
-     * @Gedmo\Blameable(on="change", field="modifiedBy")
+     * @Gedmo\Blameable(on="change", field={"title", "collections", "content", "attachments", "pinned"})
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="modified_by", referencedColumnName="id")
      */
     private $modifiedBy;
 
-    /**
+	/**
      * @var string
      *
      * @ORM\Column(name="modifynote", type="text", length=10000, nullable=true)
+     * @serializer\Expose()
      */
     private $modifyNote;
 
-    /**
+	/**
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
     private $deletedAt;
 
-    /**
+	public function __construct()
+	{
+		$this->collections = new \Doctrine\Common\Collections\ArrayCollection();
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	/**
      * @return mixed
      */
     public function getDeletedAt()
@@ -118,27 +142,16 @@ class News
         return $this->deletedAt;
     }
 
-    /**
-     * @param mixed $deletedAt
-     */
+	/**
+	 * @param mixed $deletedAt
+	 *
+	 * @return $this
+	 */
     public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
 
         return $this;
-    }
-
-    public function __construct()
-    {
-        $this->collections = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
@@ -246,13 +259,14 @@ class News
         return $this;
     }
 
-    /**
-     * Add collection.
-     *
-     * @param \CollectionBundle\Entity\Collection $collection
-     *
-     * @return News
-     */
+	/**
+	 * Add collection.
+	 *
+	 *
+	 * @param \Sowp\CollectionBundle\Entity\Collection $collection
+	 *
+	 * @return News
+	 */
     public function addCollection(\Sowp\CollectionBundle\Entity\Collection $collection)
     {
         if (!$this->collections->contains($collection)) {
@@ -262,11 +276,11 @@ class News
         return $this;
     }
 
-    /**
-     * Remove collection.
-     *
-     * @param \CollectionBundle\Entity\Collection $collection
-     */
+	/**
+	 * Remove collection.
+	 *
+	 * @param \Sowp\CollectionBundle\Entity\Collection $collection
+	 */
     public function removeCollection(\Sowp\CollectionBundle\Entity\Collection $collection)
     {
         $this->collections->removeElement($collection);
@@ -338,9 +352,11 @@ class News
         return $this->slug;
     }
 
-    /**
-     * @param string $slug
-     */
+	/**
+	 * @param string $slug
+	 *
+	 * @return $this
+	 */
     public function setSlug($slug)
     {
         $this->slug = $slug;

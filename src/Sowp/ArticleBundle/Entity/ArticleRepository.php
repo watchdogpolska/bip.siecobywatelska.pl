@@ -123,4 +123,13 @@ class ArticleRepository extends EntityRepository
     {
         $qb->andWhere($qb->expr()->eq('a.id', $id));
     }
+
+    public function countAllArticles()
+    {
+        return $this
+            ->createQueryBuilder('art')
+            ->select('COUNT(art.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

@@ -20,4 +20,9 @@ class LoadUserData implements FixtureInterface
         $manager->persist($userAdmin);
         $manager->flush();
     }
+
+    public function getOrder()
+    {
+        return 1;
+    }
 }

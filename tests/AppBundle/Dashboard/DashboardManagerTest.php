@@ -2,8 +2,9 @@
 
 namespace Tests\AppBundle\Dashboard;
 
-use AppBundle\Dashboard\DashboardElement;
-use AppBundle\Dashboard\DashboardManager;
+use Sowp\DashboardBundle\Dashboard\DashboardElement;
+use Sowp\DashboardBundle\Dashboard\DashboardManager;
+use Sowp\DashboardBundle\Dashboard\DashboardProvider;
 
 class DashboardManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,17 +27,23 @@ class DashboardManagerTest extends \PHPUnit_Framework_TestCase
         }, $elements), array('AA', 'AA', 'AB', 'BB', 'CC'));
     }
 
+    /**
+     * @return DashboardManager
+     */
     private function getManagerMock($methods = array())
     {
-        return $this->getMockBuilder('AppBundle\Dashboard\DashboardManager')
+        return $this->getMockBuilder(DashboardManager::class)
             ->setMethods($methods)
             ->disableOriginalConstructor()
             ->getMock();
     }
 
+	/**
+	 * @return DashboardProvider
+	 */
     private function getProviderMock($names = array())
     {
-        $mock = $this->getMockBuilder('\AppBundle\Dashboard\DashboardProvider')
+        $mock = $this->getMockBuilder(DashboardProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -45,9 +52,14 @@ class DashboardManagerTest extends \PHPUnit_Framework_TestCase
         return $mock;
     }
 
+	/**
+	 * @param $name
+	 *
+	 * @return DashboardElement
+	 */
     private function getElementMock($name)
     {
-        $mock = $this->getMockBuilder('\AppBundle\Dashboard\DashboardElement')
+        $mock = $this->getMockBuilder(DashboardElement::class)
             ->disableOriginalConstructor()
             ->getMock();
 

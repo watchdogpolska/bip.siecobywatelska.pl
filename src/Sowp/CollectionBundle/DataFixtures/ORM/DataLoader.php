@@ -27,8 +27,11 @@ class DataLoader extends AbstractFixture
 
             $manager->persist($collection);
         }
+	    $manager->flush();
+    }
 
-        $manager->flush();
-
+    public function getOrder()
+    {
+        return 2;
     }
 }

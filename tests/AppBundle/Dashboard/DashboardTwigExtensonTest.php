@@ -8,7 +8,9 @@
 
 namespace Tests\AppBundle\Dashboard;
 
-use AppBundle\Dashboard\DashboardTwigExtension;
+
+use Sowp\DashboardBundle\Dashboard\DashboardRenderer;
+use Sowp\DashboardBundle\Dashboard\DashboardTwigExtension;
 
 class DashboardTwigExtensonTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,7 +34,7 @@ class DashboardTwigExtensonTest extends \PHPUnit_Framework_TestCase
 
     private function getRendererMock(array $methods)
     {
-        return $this->getMockBuilder('AppBundle\Dashboard\DashboardRenderer')
+        return $this->getMockBuilder(DashboardRenderer::class)
             ->disableOriginalConstructor()
             ->setMethods($methods)
             ->getMock()

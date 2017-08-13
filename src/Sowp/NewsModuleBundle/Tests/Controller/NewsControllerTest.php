@@ -1,139 +1,167 @@
 <?php
-
 namespace Sowp\NewsModuleBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\ApiUtils\ApiTestCase;
 use Sowp\NewsModuleBundle\Entity\News;
-use Sowp\NewsModuleBundle\Entity\Collection;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\BrowserKit\Client;
 
-class NewsControllerTest extends WebTestCase
+class NewsControllerTest extends ApiTestCase
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    private $em;
+    /** @var  string|null $host */
+    protected $host;
 
-    /** @var Sowp\NewsmoduleBunlde\Entity\NewsRepository */
-    private $news_R;
+    /** @var Router $router */
+    protected $router;
 
-    /** @var Sowp\NewsmoduleBunlde\Entity\CategoryRepository */
-    private $cat_R;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
+    public function setUp()
     {
-        self::bootKernel();
+        parent::setUp();
 
-        $this->em = static::$kernel->getContainer()
-            ->get('doctrine')
-            ->getManager();
-
-        $this->news_R = $this->em->getRepository('NewsModuleBundle:News');
-        $this->cat_R = $this->em->getRepository('NewsModuleBundle:Collection');
+        $this->host = \rtrim($this->container->getParameter('php_server_name'), '/');
+        $this->router = $this->container->get('router');
     }
 
-    /**
-     *  response and page header.
-     */
-    public function testIndexHeader()
+    protected function tearDown()
     {
-        $client = $this->createClient();
-        $crawler = $client->request('GET', '/wiadomosci/');
+        $this->trashCollect(News::class);
+    }
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(
-            0,
-            $crawler->filter('html:contains("News list")')->count(),
-            'HTML doesn\'t contain proper heading'
+    public function testShowAction()
+    {
+        $n = $this->createNews();
+        $title = $n->getTitle();
+        $link = $this
+            ->router
+            ->generate('sowp_newsmodule_news_show', ['slug' => $n->getSlug()]);
+
+        $response = $this->client->get($this->host.$link);
+
+        $this->assertEquals(200, $response->getStatusCode(), "Response code should be 200");
+
+        $this->assertTrue(
+            $this->apiStringContains($title, $response->getBody()->getContents()),
+            "NewsController::showAction do not contain seeked text from entity"
+        );
+    }
+
+    public function testListAction()
+    {
+        $link = $this
+            ->router
+            ->generate('sowp_newsmodule_news_index');
+
+        $response = $this->client->get($this->host.$link);
+        $body = $response->getBody()->getContents();
+
+        $this->assertEquals(200, $response->getStatusCode(), "Response code should be 200");
+
+        $this->assertTrue(
+            $this->apiStringContains('News list', $body),
+            "NewsController::indexAction do not contain seeked text from template"
         );
     }
 
     /**
-     * structure of news index.
+     * using PHPUnit/Symfony client because
+     * of handy crawler
      */
-    public function testIndexMessageStructure()
+    public function testNewActionAccomplish()
     {
-        $client = $this->createClient();
-        $crawler = $client->request('GET', '/wiadomosci/');
-        $count = (int) $this->news_R->getTotalNewsCount();
-        $divs = $crawler->filter('div.news-entry');
-        $divs_c = $divs->count();
+        $client = $this->createAuthClient();
+        $crawler = $client->request('GET', $this->router->generate('sowp_newsmodule_news_new'));
 
-        if ($count > 0) {
-            $this->assertGreaterThan(0, $divs->count(), 'Count of News objects is greater than 0,
-                                                         but there are no corresponding DOM elements');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Response code shaould be 200 ");
 
-            foreach ($divs as $child) {
-                /* @var $child \DOMElement */
-                $this->assertEquals(
-                    1, $child->getElementsByTagName('table')->length,
-                    "No '<table>' element found in iteration throug div.art-entry"
-                );
-            }
+        $form = $crawler->selectButton("Add")->form();
+        $values = $form->getValues();
 
-            $id_c = $divs->filter('td.id')->count();
-            $title_c = $divs->filter('h3.panel-title')->count();
-
-            $this->assertEquals($divs_c, $id_c, 'Inapropriate structure - lacking td.id');
-            $this->assertEquals($divs_c, $title_c, 'Inapropriate structure - lacking h3.panel-title');
-        } else {
-            $this->assertEquals(0, $divs->count());
-        }
-    }
-
-    public function testAddNews()
-    {
-        $client = $this->createClient();
-        $client->followRedirects();
-        $crawler = $client->request('GET', '/wiadomosci/dodaj');
-        $form = $crawler->selectButton('send_new_message')->form();
-        $coll_ids = [];
-        $faker = \Faker\Factory::create();
-
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(),
-                            "Route '/wiadomosci/dodaj' should return HTTP 200");
-
-        foreach ($form->all() as $input) {
-            $field_name = $input->getName();
-            switch ($field_name) {
-                case \preg_match('#title#', $field_name) === 1:
-                    $form[$field_name] = 'Testing title at '.\time();
+        foreach ($values as $key => &$value) {
+            switch ($key) {
+                case 'news[title]':
+                    $value = 'Title Test ' . \mt_rand();
                     break;
-                case preg_match('#content#', $field_name) === 1:
-                    $str = '';
-                    $x1 = \rand(10, 500);
-                    for ($x = 0; $x < $x1; ++$x) {
-                        $str .= $faker->text(mt_rand(10, 150));
-                    }
-                    $form[$field_name] = $str;
-                    break;
-                case preg_match('#pinned#', $field_name) === 1:
-                    $form[$field_name] = 1;
-                    break;
-                case preg_match('#collections#', $field_name) === 1:
+                case 'news[content]':
+                    $value = 'Content';
                     break;
                 default:
                     break;
             }
         }
 
-        $crawler = $client->submit($form);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(),
-            'Route should return HTTP 200');
+        $form->setValues($values);
+        $client->submit($form);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
 
-        $this->assertTrue($crawler->filter('html:contains("Message added")')->count() > 0,
-            'Client submited form properly, response code OK, but response HTML structure');
+        $linkNewArticle = $client->getResponse()->headers->get('Location');
+
+
+        $client->request('GET', $linkNewArticle);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
-    protected function tearDown()
+    /**
+     * using PHPUnit/Symfony client because
+     * of handy crawler
+     */
+    public function testEditActionAccomplish()
     {
-        parent::tearDown();
+        $n = $this->createNews();
+        $client = $this->createAuthClient();
+        $editLink = $this->router->generate('sowp_newsmodule_news_edit', [
+            'slug' => $n->getSlug()
+        ]);
 
-        $this->news_R = null;
-        $this->cat_R = null;
-        $this->em->close();
-        $this->em = null;
+        $client->request('GET', $editLink);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Response code shaould be 200 ");
+
+        $form = $client->getCrawler()->selectButton("Edit")->form();
+        $values = $form->getValues();
+
+        foreach ($values as $key => &$value) {
+            $val = \mt_rand();
+            switch ($key) {
+                case 'news[title]':
+                    $value .= 'Edited ' . $val;
+                    break;
+                case 'news[content]':
+                    $value .= 'Edited ' . $val;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $form->setValues($values);
+        $client->submit($form);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $client->request('GET', $client->getResponse()->headers->get('Location'));
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $clone = clone $client;
+        $this->batchRevisionsListActionTest($clone);
+        $this->batchDeleteActionTest($client);
+    }
+
+    private function batchDeleteActionTest(Client $c)
+    {
+        $crawler = $c->getCrawler();
+        $form = $crawler->selectButton("Delete")->form();
+        $c->submit($form);
+        $this->assertEquals(302, $c->getResponse()->getStatusCode());
+        $c->request('GET', $c->getResponse()->headers->get('Location'));
+        $this->assertEquals(200, $c->getResponse()->getStatusCode());
+    }
+
+    private function batchRevisionsListActionTest(Client $c)
+    {
+        $crawler = $c->getCrawler();
+        $link = $crawler->selectLink("Historia Zmian")->link();
+        $crawler = $c->click($link);
+
+        $this->assertEquals(200, $c->getResponse()->getStatusCode(), "Status code should be 200");
+        $this->assertTrue(
+            $this->apiStringContains("revisions", $crawler->html())
+        );
     }
 }
