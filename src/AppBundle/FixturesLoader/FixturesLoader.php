@@ -60,21 +60,25 @@ class FixturesLoader
 
     public function loadUsersSeparate()
     {
+        $this->purgeDatabase();
         $this->executor->execute([new LoadUserData()]);
     }
 
     public function loadCollectionsSeparate()
     {
+        $this->purgeDatabase();
         $this->executor->execute([new CollectionLoader()]);
     }
 
     public function loadNewsSeparate()
     {
+        $this->purgeDatabase();
         $this->executor->execute([new NewsLoader()]);
     }
 
     public function loadArticlesSeparate()
     {
+        $this->purgeDatabase();
         $this->executor->execute([new LoadArticleData()]);
     }
 
@@ -113,6 +117,12 @@ class FixturesLoader
 
     public function loadAllFromQueue()
     {
+        $this->purgeDatabase();
         $this->executor->execute($this->loader->getFixtures());
+    }
+
+    public function purgeDatabase()
+    {
+        $this->executor->purge();
     }
 }
